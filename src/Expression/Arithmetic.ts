@@ -7,9 +7,11 @@ export enum ArithmeticOption{
     PLUS,
     MINUS,
     TIMES,
-    DIV
+    DIV, 
+    MODULO,
+    POT,
+    NEGACION,                    
 }
-
 export class Arithmetic extends Expression{
 
     constructor(private left: Expression, private right: Expression, private type : ArithmeticOption, line: number, column: number){
@@ -17,25 +19,31 @@ export class Arithmetic extends Expression{
     }
 
     public execute(environment : Environment) : Retorno{
-        const leftValue = this.left.execute(environment);
-        const rightValue = this.right.execute(environment);
+
+        const valueIzq = this.left.execute(environment);
+        const valueDer = this.right.execute(environment);
         let result : Retorno;
 
         if(this.type == ArithmeticOption.PLUS){
-            result = {value : (leftValue.value + rightValue.value), type : Type.NUMBER};
+            result = {value : (valueIzq.value + valueDer.value), type : Type.NUMBER};
         }
         else if(this.type == ArithmeticOption.MINUS){
-            result = {value : (leftValue.value - rightValue.value), type : Type.NUMBER};
+            result = {value : (valueIzq.value - valueDer.value), type : Type.NUMBER};
         }
         else if(this.type == ArithmeticOption.TIMES){
-            result = {value : (leftValue.value * rightValue.value), type : Type.NUMBER};
+            result = {value : (valueIzq.value * valueDer.value), type : Type.NUMBER};
         }
-        else{
-            if(rightValue.value == 0){
+        else if(this.type == ArithmeticOption.DIV){
+            if(valueDer.value == 0){
                 throw new Error("No se puede dividir entre 0");
             }
-            result = {value : (leftValue.value / rightValue.value), type : Type.NUMBER};
+            result = {value : (valueIzq.value / valueDer.value), type : Type.NUMBER};
+        }else if (this.type == ArithmeticOption.POT){
+            result = {value : Math.pow(valueIzq.value, valueDer.value), type : Type.NUMBER};
+        }else{
+            result = {value : (valueIzq.value % valueDer.value), type : Type.NUMBER};
         }
+        
         return result;
     }
 

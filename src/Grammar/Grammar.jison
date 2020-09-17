@@ -15,22 +15,29 @@
 %options case-insensitive
 number  [0-9]+
 decimal {entero}"."{entero}
-string  (\"[^"]*\")
-stringsimple  (\'[^']*\')
+string          (\"[^"]*\")
+stringsimple    (\'[^']*\')
+stringplantilla (\`[^`]*\`)
 %%
 \s+                   /* skip whitespace */
+"//".*                              // comentario simple línea
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // comentario multiple líneas
 
+"true"                  return 'true'
+"false"                 return 'false'
 {number}                return 'NUMBER'
 {decimal}               return 'DECIMAL'
 {string}                return 'STRING'
 {stringsimple}          return 'STRINGG'
+{stringplantilla}       return 'STRINGGG'
 
+"**"                    return '**'
 "+"                     return '+'
 "-"                     return '-'
 "*"                     return '*'
 "/"                     return '/'
-
-
+"/"                     return '/'
+"%"                     return '%'
 ";"                     return ';'
 "."                     return '.'
 
@@ -68,6 +75,7 @@ stringsimple  (\'[^']*\')
 %left '>=', '<=', '<', '>'
 %left '+' '-'
 %left '*' '/'
+%left '**' '%'
 
 %start Init
 
@@ -171,6 +179,15 @@ Expr
     {
         $$ = new Arithmetic($1, $3, ArithmeticOption.DIV, @1.first_line,@1.first_column);
     }
+    | Expr '%' Expr
+    {
+        $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO, @1.first_line,@1.first_column);
+    }
+    | Expr '**' Expr
+    {
+        $$ = new Arithmetic($1, $3, ArithmeticOption.POT, @1.first_line,@1.first_column);
+    }
+    
     | Expr '<' Expr
     {
         $$ = new Relational($1, $3,RelationalOption.LESS, @1.first_line, @1.first_column);
@@ -221,6 +238,18 @@ F   : '(' Expr ')'
     | STRINGG
     {
         $$ = new Literal($1.replace(/\'/g,""), @1.first_line, @1.first_column, 2);
+    }
+    | STRINGGG
+    {
+        $$ = new Literal($1.replace(/\`/g,""), @1.first_line, @1.first_column, 2);
+    }
+    | true
+    {
+        $$ = new Literal($1, @1.first_line, @1.first_column,3);
+    }
+    | false
+    {
+        $$ = new Literal($1, @1.first_line, @1.first_column,3);
     }
     | ID{
         $$ = new Access($1, @1.first_line, @1.first_column);
