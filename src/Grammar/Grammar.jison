@@ -41,10 +41,10 @@ stringplantilla (\`[^`]*\`)
 ";"                     return ';'
 "."                     return '.'
 
-"<"                   return '<'
-">"                   return '>'
 "<="                  return '<='
 ">="                  return '>='
+"<"                   return '<'
+">"                   return '>'
 "=="                  return '=='
 "!="                  return '!='
 "||"                  return '||'
@@ -162,96 +162,33 @@ PrintSt
     }
 ;
 
-Expr
-    : Expr '+' Expr
-    {
-        $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS, @1.first_line,@1.first_column);
-    }       
-    | Expr '-' Expr
-    {
-        $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS, @1.first_line,@1.first_column);
-    }
-    | Expr '*' Expr
-    { 
-        $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES, @1.first_line,@1.first_column);
-    }       
-    | Expr '/' Expr
-    {
-        $$ = new Arithmetic($1, $3, ArithmeticOption.DIV, @1.first_line,@1.first_column);
-    }
-    | Expr '%' Expr
-    {
-        $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO, @1.first_line,@1.first_column);
-    }
-    | Expr '**' Expr
-    {
-        $$ = new Arithmetic($1, $3, ArithmeticOption.POT, @1.first_line,@1.first_column);
-    }
+Expr /*aritmeticas*/
+    : Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,   @1.first_line, @1.first_column); }       
+    | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS,  @1.first_line, @1.first_column); }
+    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES,  @1.first_line, @1.first_column); }       
+    | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV,    @1.first_line, @1.first_column); }
+    | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO, @1.first_line, @1.first_column); }
+    | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT,    @1.first_line, @1.first_column); }
     
-    | Expr '<' Expr
-    {
-        $$ = new Relational($1, $3,RelationalOption.LESS, @1.first_line, @1.first_column);
-    }
-    | Expr '<=' Expr
-    {
-        $$ = new Relational($1, $3,RelationalOption.LESSOREQUAL ,@1.first_line, @1.first_column);
-    }
-    | Expr '>' Expr
-    {
-        $$ = new Relational($1, $3,RelationalOption.GREATER ,@1.first_line, @1.first_column);
-    }
-    | Expr '>=' Expr
-    {
-        $$ = new Relational($1, $3,RelationalOption.GREATEROREQUAL ,@1.first_line, @1.first_column);
-    }
-    | Expr '==' Expr
-    {
-        $$ = new Relational($1, $3,RelationalOption.EQUAL ,@1.first_line, @1.first_column);
-    }
-    | Expr '!=' Expr
-    {
-        $$ = new Relational($1, $3,RelationalOption.NOTEQUAL ,@1.first_line, @1.first_column);
-    }
-    | F
-    {
-        $$ = $1;
-    }
+    | F  {  $$ = $1; }
+    
+    /*relacionales*/
+    | Expr '<'  Expr { $$ = new Relational($1, $3,RelationalOption.MENOR,           @1.first_line, @1.first_column); }
+    | Expr '<=' Expr { $$ = new Relational($1, $3,RelationalOption.MENORIGUAL,      @1.first_line, @1.first_column); }
+    | Expr '>'  Expr { $$ = new Relational($1, $3,RelationalOption.MAYOR,           @1.first_line, @1.first_column); }
+    | Expr '>=' Expr { $$ = new Relational($1, $3,RelationalOption.MAYORIGUAL,      @1.first_line, @1.first_column); }
+    | Expr '==' Expr { $$ = new Relational($1, $3,RelationalOption.IGUAL ,          @1.first_line, @1.first_column); }
+    | Expr '!=' Expr { $$ = new Relational($1, $3,RelationalOption.DIFERENCIACION , @1.first_line, @1.first_column); }
 ;
 
 
-F   : '(' Expr ')'
-    { 
-        $$ = $2;
-    }
-    | DECIMAL
-    { 
-        $$ = new Literal($1, @1.first_line, @1.first_column, 0);
-    }
-    | NUMBER
-    { 
-        $$ = new Literal($1, @1.first_line, @1.first_column, 1);
-    }
-    | STRING
-    {
-        $$ = new Literal($1.replace(/\"/g,""), @1.first_line, @1.first_column, 2);
-    }
-    | STRINGG
-    {
-        $$ = new Literal($1.replace(/\'/g,""), @1.first_line, @1.first_column, 2);
-    }
-    | STRINGGG
-    {
-        $$ = new Literal($1.replace(/\`/g,""), @1.first_line, @1.first_column, 2);
-    }
-    | true
-    {
-        $$ = new Literal($1, @1.first_line, @1.first_column,3);
-    }
-    | false
-    {
-        $$ = new Literal($1, @1.first_line, @1.first_column,3);
-    }
-    | ID{
-        $$ = new Access($1, @1.first_line, @1.first_column);
-    }
+F   : '(' Expr ')'  {  $$ = $2; }
+    | DECIMAL       {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 0); }
+    | NUMBER        {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 1); }
+    | STRING        {  $$ = new Literal($1.replace(/\"/g,""), @1.first_line, @1.first_column, 2); }
+    | STRINGG       {  $$ = new Literal($1.replace(/\'/g,""), @1.first_line, @1.first_column, 2); }
+    | STRINGGG      {  $$ = new Literal($1.replace(/\`/g,""), @1.first_line, @1.first_column, 2); }
+    | true          {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
+    | false         {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
+    | ID            {  $$ = new Access($1,                    @1.first_line, @1.first_column);    }
 ;
