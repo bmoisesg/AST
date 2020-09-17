@@ -1,0 +1,4 @@
+console.log("TU ERES TODO"+"este es un mensaje");
+console.log("TU ERES TODO");
+console.log("TU ERES TODO");
+console.log('hola');
