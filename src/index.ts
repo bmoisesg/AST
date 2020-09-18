@@ -6,7 +6,7 @@ const fs = require('fs');
 
 try {
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    //console.log(!!(!(5+5==10)));
+    //console.log(5.2);
     console.log("------------------------------------------------------------------------");
     if (true){
 

@@ -1,3 +1,15 @@
 
-console.log(false==true && !false);
-console.log(!!true||!false);
+if (false==true){
+    console.log(10);
+}else if(false==true){
+    console.log(69);
+}
+else if(false==true){
+    console.log(690);
+}
+else if(10>5){
+    console.log(691);
+}else{
+    console.log("mensaje no aparecer");
+}
+console.log("fuera del if");

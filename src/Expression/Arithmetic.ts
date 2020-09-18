@@ -10,7 +10,8 @@ export enum ArithmeticOption{
     DIV, 
     MODULO,
     POT,
-    NEGACION,                    
+    NEGACION,
+    MAS                 
 }
 export class Arithmetic extends Expression{
 
@@ -40,6 +41,10 @@ export class Arithmetic extends Expression{
             result = {value : (valueIzq.value / valueDer.value), type : Type.NUMBER};
         }else if (this.type == ArithmeticOption.POT){
             result = {value : Math.pow(valueIzq.value, valueDer.value), type : Type.NUMBER};
+        }else if (this.type == ArithmeticOption.NEGACION){
+            result = {value : valueIzq.value*-1, type : Type.NUMBER};
+        }else if (this.type == ArithmeticOption.MAS){
+            result = {value : valueIzq.value*1, type : Type.NUMBER};
         }else{
             result = {value : (valueIzq.value % valueDer.value), type : Type.NUMBER};
         }

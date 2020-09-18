@@ -11,6 +11,7 @@ export class If extends Instruction{
     }
 
     public execute(env : Environment) {
+        
         const condition = this.condition.execute(env);
         if(condition.type != Type.BOOLEAN){
             throw {error: "La condicion no es booleana", linea: this.line, columna : this.column};
@@ -24,10 +25,3 @@ export class If extends Instruction{
         }
     }
 }
-
-
-
-/*
-    PADRE <- HIJO <- IF
-    PADRE <- HIJO <- WHILE
-*/

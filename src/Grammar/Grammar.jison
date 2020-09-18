@@ -13,11 +13,11 @@
 
 %lex
 %options case-insensitive
+decimal {number}"."{number}
 number  [0-9]+
-decimal {entero}"."{entero}
-string          (\"[^"]*\")
-stringsimple    (\'[^']*\')
-stringplantilla (\`[^`]*\`)
+string           [\"][^"]* [\"]
+stringsimple     [\'][^']* [\']
+stringplantilla  [\`][^`]* [\`]
 %%
 \s+                   /* skip whitespace */
 "//".*                              // comentario simple línea
@@ -25,8 +25,8 @@ stringplantilla (\`[^`]*\`)
 
 "true"                  return 'true'
 "false"                 return 'false'
-{number}                return 'NUMBER'
 {decimal}               return 'DECIMAL'
+{number}                return 'NUMBER'
 {string}                return 'STRING'
 {stringsimple}          return 'STRINGG'
 {stringplantilla}       return 'STRINGGG'
@@ -83,38 +83,20 @@ stringplantilla (\`[^`]*\`)
 %%
 
 Init    
-    : Instructions EOF 
-    {
-        return $1;
-    } 
+    : Instructions EOF  {        return $1;    }
 ;
 
 Instructions
-    : Instructions Instruction{
-        $1.push($2);
-        $$ = $1;
-    }
-    | Instruction{
-        $$ = [$1];
-    }
+    : Instructions Instruction  { $1.push($2); $$ = $1; }
+    | Instruction               { $$ = [$1];            }
 ;
 
 Instruction
-    : IfSt {
-        $$ = $1;
-    }
-    | WhileSt {
-        $$ = $1;
-    }
-    | Statement {
-        $$ = $1;
-    }
-    | PrintSt {
-        $$ = $1;
-    }
-    | Declaration{
-        $$ = $1;
-    }
+    : IfSt          {    $$ = $1;    }
+    | WhileSt       {    $$ = $1;    }
+    | Statement     {    $$ = $1;    }
+    | PrintSt       {    $$ = $1;    }
+    | Declaration   {    $$ = $1;    }
 ;
 
 Declaration 
@@ -123,11 +105,7 @@ Declaration
     }
 ;
 
-IfSt
-    : 'IF' '(' Expr ')' Statement ElseSt{
-        $$ = new If($3, $5, $6, @1.first_line, @1.first_column);
-    }
-;
+IfSt : 'IF' '(' Expr ')' Statement ElseSt{  $$ = new If($3, $5, $6, @1.first_line, @1.first_column);    };
 
 ElseSt
     : 'ELSE' Statement {
@@ -164,7 +142,9 @@ PrintSt
 ;
 
 Expr /*aritmeticas*/
-    : Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,   @1.first_line, @1.first_column); }       
+    : '-'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.NEGACION,  @1.first_line, @1.first_column); }       
+    | '+'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.MAS,       @1.first_line, @1.first_column); }       
+    | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,   @1.first_line, @1.first_column); }       
     | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS,  @1.first_line, @1.first_column); }
     | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES,  @1.first_line, @1.first_column); }       
     | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV,    @1.first_line, @1.first_column); }
@@ -200,5 +180,6 @@ F   : '(' Expr ')'  {  $$ = $2; }
     /*boolean*/
     | true          {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
     | false         {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
+
     | ID            {  $$ = new Access($1,                    @1.first_line, @1.first_column);    }
 ;

@@ -24,11 +24,11 @@ export class Relational extends Expression{
 
         const valueIzq = this.left.execute(environment);
         if (Boolean(valueIzq.value)==false && this.type== RelationalOption.AND){
-            console.log("pase por el corto circuito del and")
+            //console.log("pase por el corto circuito del and")
             const result =Boolean(false);
             return {value : result, type : Type.BOOLEAN};
         } else if (Boolean(valueIzq.value)==true && this.type== RelationalOption.OR){
-            console.log("pase por el corto circuito del or")
+            //console.log("pase por el corto circuito del or")
             const result =Boolean(true);
             return {value : result, type : Type.BOOLEAN};
         }
