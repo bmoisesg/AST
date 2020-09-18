@@ -36,21 +36,20 @@ stringplantilla (\`[^`]*\`)
 "-"                     return '-'
 "*"                     return '*'
 "/"                     return '/'
-"/"                     return '/'
 "%"                     return '%'
 ";"                     return ';'
 "."                     return '.'
 
-"<="                  return '<='
-">="                  return '>='
-"<"                   return '<'
-">"                   return '>'
-"=="                  return '=='
-"!="                  return '!='
-"||"                  return '||'
-"&&"                  return '&&'
-"!"                   return '!'
-"="                   return '='
+"<="                    return '<='
+">="                    return '>='
+"<"                     return '<'
+">"                     return '>'
+"=="                    return '=='
+"!="                    return '!='
+"||"                    return '||'
+"&&"                    return '&&'
+"!"                     return '!'
+"="                     return '='
 
 "("                     return '('
 ")"                     return ')' 
@@ -59,7 +58,8 @@ stringplantilla (\`[^`]*\`)
 "if"                    return 'IF'
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
-"print"                 return 'PRINT'
+
+
 "console"               return 'CONSOLE'
 "log"                   return 'LOG'
 
@@ -76,6 +76,7 @@ stringplantilla (\`[^`]*\`)
 %left '+' '-'
 %left '*' '/'
 %left '**' '%'
+%right '!'
 
 %start Init
 
@@ -179,15 +180,24 @@ Expr /*aritmeticas*/
     | Expr '>=' Expr { $$ = new Relational($1, $3,RelationalOption.MAYORIGUAL,      @1.first_line, @1.first_column); }
     | Expr '==' Expr { $$ = new Relational($1, $3,RelationalOption.IGUAL ,          @1.first_line, @1.first_column); }
     | Expr '!=' Expr { $$ = new Relational($1, $3,RelationalOption.DIFERENCIACION , @1.first_line, @1.first_column); }
+
+    /*logicas*/
+    | Expr '&&' Expr { $$ = new Relational($1, $3,RelationalOption.AND  , @1.first_line, @1.first_column); }
+    | Expr '||' Expr { $$ = new Relational($1, $3,RelationalOption.OR   , @1.first_line, @1.first_column); }
+    | '!' Expr       { $$ = new Relational($2, $2,RelationalOption.NOT  , @1.first_line, @1.first_column); }
+
 ;
 
 
 F   : '(' Expr ')'  {  $$ = $2; }
+    /*numeros*/
     | DECIMAL       {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 0); }
     | NUMBER        {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 1); }
+    /*strings*/
     | STRING        {  $$ = new Literal($1.replace(/\"/g,""), @1.first_line, @1.first_column, 2); }
     | STRINGG       {  $$ = new Literal($1.replace(/\'/g,""), @1.first_line, @1.first_column, 2); }
     | STRINGGG      {  $$ = new Literal($1.replace(/\`/g,""), @1.first_line, @1.first_column, 2); }
+    /*boolean*/
     | true          {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
     | false         {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
     | ID            {  $$ = new Access($1,                    @1.first_line, @1.first_column);    }

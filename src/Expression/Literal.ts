@@ -12,8 +12,14 @@ export class Literal extends Expression{
             return {value : Number(this.value), type : Type.NUMBER};
         else if (this.type==2)
             return {value : this.value, type : Type.STRING};
-        else if (this.type==3)
-            return {value : this.value, type : Type.BOOLEAN};
+        else if (this.type==3){
+            if (this.value=="true")
+            {
+                return {value : Boolean(true), type : Type.BOOLEAN};
+            }
+            else{
+                return {value : Boolean(false), type : Type.BOOLEAN};}    
+            }
         else 
             return {value : this.value, type : Type.error};
             
