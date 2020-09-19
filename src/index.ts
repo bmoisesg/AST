@@ -14,12 +14,13 @@ try {
     const ast = parser.parse(entrada.toString());
     const env = new Environment(null);
     //console.log(ast)
+    console.log(parser.Lista_errores);
     for(const instr of ast){
         try {
-            instr.execute(env);
-            
+            instr.execute(env);            
         } catch (error) {
-            console.error(error);        
+            //console.error(error);  
+            //error      
         }
     }
     //console.log(env)

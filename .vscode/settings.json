@@ -1,0 +1,9 @@
+{
+    "vim.autoindent": false,
+    "vim.argumentObjectClosingDelimiters": [],
+    "vim.argumentObjectOpeningDelimiters": [
+        "["
+    ],
+    "vim.argumentObjectSeparators": [],
+    "vim.disableExtension": true
+}

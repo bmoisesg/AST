@@ -9,6 +9,7 @@
     const {Statement} = require('../Instruction/Statement');
     const {While} = require('../Instruction/While');
     const {Declaration} = require('../Instruction/Declaration');
+    var Lista_errores=[];
 %}
 
 %lex
@@ -58,6 +59,7 @@ stringplantilla  [\`][^`]* [\`]
 "if"                    return 'IF'
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
+"const"                 return 'const'
 
 
 "console"               return 'CONSOLE'
@@ -65,8 +67,7 @@ stringplantilla  [\`][^`]* [\`]
 
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
-
-
+.      {Lista_errores.push("<tr><td>lexico</td><td>No se reconoce el caracter "+yytext + '</td><td>' + (yylineno+1) +'</td><td>'+(yylloc.first_column+1)+'</td></tr>');	}
 /lex
 
 %left '||'
@@ -77,13 +78,14 @@ stringplantilla  [\`][^`]* [\`]
 %left '*' '/'
 %left '**' '%'
 %right '!'
-
 %start Init
 
 %%
 
 Init    
-    : Instructions EOF  {        return $1;    }
+    : Instructions EOF  {
+        exports.Lista_errores= Lista_errores;
+        return $1;  }
 ;
 
 Instructions
@@ -92,16 +94,18 @@ Instructions
 ;
 
 Instruction
-    : IfSt          {    $$ = $1;    }
-    | WhileSt       {    $$ = $1;    }
-    | Statement     {    $$ = $1;    }
-    | PrintSt       {    $$ = $1;    }
-    | Declaration   {    $$ = $1;    }
+    : IfSt          {  $$ = $1;    }
+    | WhileSt       {  $$ = $1;    }
+    | Statement     {  $$ = $1;    }
+    | PrintSt       {  $$ = $1;    }
+    | Declaration1  {  $$ = $1;    }
+    | error ';' 
+      //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                      
 ;
 
-Declaration 
-    : ID '=' Expr ';'{
-        $$ = new Declaration($1, $3, @1.first_line, @1.first_column);
+Declaration1 
+    : 'const' ID '=' Expr ';'{
+        $$ = new Declaration($2, $4, @1.first_line, @1.first_column);
     }
 ;
 
@@ -121,9 +125,7 @@ ElseSt
 ;
 
 WhileSt
-    : 'WHILE' '(' Expr ')' Statement{
-        $$ = new While($1, $5, @1.first_line, @1.first_column);
-    }
+    : 'WHILE' '(' Expr ')' Statement {  $$ = new While($3, $5, @1.first_line, @1.first_column);    }
 ;
 
 Statement
