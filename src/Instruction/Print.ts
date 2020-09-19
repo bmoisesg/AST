@@ -10,9 +10,13 @@ export class Print extends Instruction{
     }
 
     public execute(environment : Environment) {
-        const value = this.value.execute(environment);
-        if (value.type!=Type.error){
-            console.log(value);
+        const value = this.value?.execute(environment);
+        if ( value!= null){
+            if (value.type!=Type.error){
+                console.log(value);
+            }
+        }else if (value==null){
+            console.log();
         }
     }
 }

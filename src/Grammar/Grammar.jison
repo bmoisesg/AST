@@ -163,11 +163,13 @@ PrintSt
     : 'CONSOLE' '.' 'LOG' '(' Expr ')' ';' {
         $$ = new Print($5, @1.first_line, @1.first_column);
     }
+    |'CONSOLE' '.' 'LOG' '('  ')' ';' {
+        $$ = new Print(null, @1.first_line, @1.first_column);
+    }
 ;
 
 Expr /*aritmeticas*/
     : '-'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.NEGACION,  @1.first_line, @1.first_column); }       
-    | '+'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.MAS,       @1.first_line, @1.first_column); }       
     | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,   @1.first_line, @1.first_column); }       
     | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS,  @1.first_line, @1.first_column); }
     | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES,  @1.first_line, @1.first_column); }       
