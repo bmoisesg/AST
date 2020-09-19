@@ -28,9 +28,20 @@ export class Arithmetic extends Expression {
         let result: Retorno;
 
         if (this.type == ArithmeticOption.PLUS) {
-            result = { value: (valueIzq.value + valueDer.value), type: Type.NUMBER };
-        }
+            if (valueIzq.type == Type.BOOLEAN && valueDer.type == Type.BOOLEAN ||
+                valueIzq.type == Type.BOOLEAN && valueDer.type == Type.NUMBER ||
+                valueIzq.type == Type.NUMBER && valueDer.type == Type.BOOLEAN
+            ) {
+                result = { value: 0, type: Type.error };
+                throw new Error("<tr><td>semantico</td><td>Error de tipos [suma], no se pude " + valueIzq.type + " con " + valueDer.type + "</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            if (valueDer.type == Type.NUMBER && valueIzq.type == Type.NUMBER) {
+                result = { value: (valueIzq.value + valueDer.value), type: Type.NUMBER };
+            } else {
+                result = { value: (valueIzq.value + valueDer.value), type: Type.STRING };
 
+            }
+        }
         //-----------------------------------------------------------
         //                      resta
         //-----------------------------------------------------------   
@@ -44,7 +55,6 @@ export class Arithmetic extends Expression {
                 throw new Error("<tr><td>semantico</td><td>Error de tipos [resta], no se pude " + valueIzq.type + " con " + valueDer.type + "</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
         }
-
         //-----------------------------------------------------------
         //                      multiplicacion
         //-----------------------------------------------------------
