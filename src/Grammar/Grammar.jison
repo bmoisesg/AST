@@ -10,16 +10,37 @@
     const {While} = require('../Instruction/While');
     const {Declaration} = require('../Instruction/Declaration');
     var Lista_errores=[];
+    var tmp="";
 %}
 
 %lex
 %options case-insensitive
 decimal {number}"."{number}
 number  [0-9]+
-string           [\"][^"]* [\"]
+
 stringsimple     [\'][^']* [\']
 stringplantilla  [\`][^`]* [\`]
+%s  string 
 %%
+
+<INITIAL>["]   {this.begin('string');/*console.log("+entre en el estado string");*/ tmp="";}
+
+<string>[^"\\]      { /*console.log("dentro del estado string: "+yytext);*/  tmp= tmp+yytext;   this.begin('string'); }
+<string>[\\][n]     { tmp= tmp+yytext;   this.begin('string'); }
+<string>[\\][t]     { tmp= tmp+yytext;   this.begin('string'); }
+<string>[\\][r]     { tmp= tmp+yytext;   this.begin('string'); }
+<string>[\\]["]     { tmp= tmp+yytext;   this.begin('string'); }
+<string>[\\][\\]    { tmp= tmp+yytext;   this.begin('string'); }
+<string>[\"]        {
+                    //console.log("-saliendo del estado string->" +tmp);
+                    this.begin('INITIAL');
+                    yytext= tmp;
+                    return 'STRING'
+                    }
+
+
+
+
 \s+                   /* skip whitespace */
 "//".*                              // comentario simple línea
 [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] // comentario multiple líneas
@@ -28,7 +49,7 @@ stringplantilla  [\`][^`]* [\`]
 "false"                 return 'false'
 {decimal}               return 'DECIMAL'
 {number}                return 'NUMBER'
-{string}                return 'STRING'
+
 {stringsimple}          return 'STRINGG'
 {stringplantilla}       return 'STRINGGG'
 

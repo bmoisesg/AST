@@ -1,4 +1,5 @@
-const s=3;
-console.log("inicie con");
-console.log(s);if ;
-console.log("moi"+"este es un mensjae");
+console.log("moises gonzalez \t\r \" \nz \"\"\"\\\n ");
+console.log("dsafsda");
+console.log('hola mundo');
+console.log('"hola\"\'');
+console.log(`hola \"s\\`);
