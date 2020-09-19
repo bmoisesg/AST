@@ -1,5 +1,4 @@
-const s;@
+const s=3;
 console.log("inicie con");
-console.log(5+);$
-console.log("moi");
-//s=0;
+console.log(s);if ;
+console.log("moi"+"este es un mensjae");

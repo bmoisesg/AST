@@ -99,8 +99,9 @@ Instruction
     | Statement     {  $$ = $1;    }
     | PrintSt       {  $$ = $1;    }
     | Declaration1  {  $$ = $1;    }
-    | error ';' 
-      //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                      
+    | error ';'     { console.log("error sintactico en linea " + (yylineno+1) );}
+      //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');
+                      
 ;
 
 Declaration1 
