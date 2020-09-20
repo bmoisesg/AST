@@ -1,13 +1,1 @@
-console.log(1+1);
-console.log(1+1.2);
-console.log(1+"hola");
-console.log(1.2+1);
-console.log(1.2+1.2);
-console.log(1.2+"hola");
-console.log(true+"hola");
-console.log("hola"+1);
-console.log("hola"+1.2);
-console.log("hola"+true);
-console.log("hola"+"hola");
-console.log();
-console.log("cafesto?");
+const variable_2:string= true+"s";

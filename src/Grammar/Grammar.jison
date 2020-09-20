@@ -60,6 +60,7 @@ stringplantilla  [\`][^`]* [\`]
 "/"                     return '/'
 "%"                     return '%'
 ";"                     return ';'
+":"                     return ':'
 "."                     return '.'
 
 "<="                    return '<='
@@ -81,6 +82,9 @@ stringplantilla  [\`][^`]* [\`]
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
 "const"                 return 'const'
+"number"                return 't_number'
+"string"                return 't_string'
+"boolean"               return 't_boolean'
 
 
 "console"               return 'CONSOLE'
@@ -127,8 +131,18 @@ Instruction
 
 Declaration1 
     : 'const' ID '=' Expr ';'{
-        $$ = new Declaration($2, $4, @1.first_line, @1.first_column);
+        $$ = new Declaration($2, $4, null, @1.first_line, @1.first_column);
     }
+    | 'const' ID ':' 't_boolean' '='  Expr ';'{
+        $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
+    }
+    | 'const' ID ':' 't_string' '='  Expr ';'{
+        $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
+    }
+    | 'const' ID ':' 't_number' '='  Expr ';'{
+        $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
+    }
+
 ;
 
 IfSt : 'IF' '(' Expr ')' Statement ElseSt{  $$ = new If($3, $5, $6, @1.first_line, @1.first_column);    };
@@ -193,7 +207,6 @@ Expr /*aritmeticas*/
     | '!' Expr       { $$ = new Relational($2, $2,RelationalOption.NOT  , @1.first_line, @1.first_column); }
 
 ;
-
 
 F   : '(' Expr ')'  {  $$ = $2; }
     /*numeros*/
