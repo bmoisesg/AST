@@ -4,7 +4,7 @@ import { Expression } from "../Abstract/Expression";
 import { env } from "process";
 
 export class Declaration extends Instruction {
-
+    //este es codigo de bmoisesg
     private id: string;
     private value: Expression;
     private valorSeteando: string;

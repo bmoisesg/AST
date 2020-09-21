@@ -1,9 +1,7 @@
-let maria_:string="dafds";
-const maria_:boolean= true;
-let moi= 123;
-let moi=8; 
-
-let s=0;
-let S="afdsa";
-let s="sfs";
-console.log(s);
+let variable=false;
+variable=1;
+variable=true;
+console.log(variable);
+const hol:string = "moises";
+hol= "liz";
+console.log(hol);

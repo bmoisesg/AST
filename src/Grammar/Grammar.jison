@@ -10,6 +10,7 @@
     const {While} = require('../Instruction/While');
     const {Declaration} = require('../Instruction/Declaration');
     const {Let} = require('../Instruction/let');
+    const {Asignacion} = require('../Instruction/Asignacion');
     var Lista_errores=[];
     var tmp="";
 %}
@@ -127,10 +128,19 @@ Instruction
     | PrintSt       {  $$ = $1;    }
     | Declaration1  {  $$ = $1;    }
     | Declaration2  {  $$ = $1;    }
+    | Asignacion    {  $$ = $1;    }
     | error ';'     { console.log("error sintactico en linea " + (yylineno+1) );}
       //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');
                       
 ;
+
+
+Asignacion
+    : ID '=' Expr ';' { 
+          $$ = new Asignacion($1, $3, @1.first_line, @1.first_column);
+    }
+;
+
 Declaration2
     : 't_let' ID '=' Expr ';'{
         $$ = new Let($2, $4, null, @1.first_line, @1.first_column);

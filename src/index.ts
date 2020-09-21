@@ -5,11 +5,9 @@ const parser = require('./Grammar/Grammar');
 const fs = require('fs');
 
 try {
+
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    var num:number = 1; // OK
-    var Num:number = 2;// OK
-    var NUM:number = 3;// OK
-    var NuM:number = 4;// OK
+
     console.log("------------------------------------------------------------------------");
     if (true) {
 
@@ -30,8 +28,6 @@ try {
         //console.log(env)
         console.log("Errores", parser.Lista_errores);
     }
-
-
 }
 catch (error) {
     console.log(error);
