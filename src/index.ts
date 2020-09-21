@@ -7,7 +7,10 @@ const fs = require('fs');
 try {
 
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-
+    let dsafsa;
+    dsafsa=2;
+    dsafsa=true;
+    
     console.log("------------------------------------------------------------------------");
     if (true) {
 

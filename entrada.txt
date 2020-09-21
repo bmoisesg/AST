@@ -1,7 +1,6 @@
-let variable=false;
-variable=1;
-variable=true;
-console.log(variable);
-const hol:string = "moises";
-hol= "liz";
-console.log(hol);
+let moi:string="hola";
+let juan;
+juan=110+1;
+console.log(juan);
+juan="0";
+console.log(juan);

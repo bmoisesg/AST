@@ -2,6 +2,7 @@ import { Instruction } from "../Abstract/Instruction";
 import { Environment } from "../Symbol/Environment";
 import { Expression } from "../Abstract/Expression";
 import { env } from "process";
+import { Type } from "../Abstract/Retorno";
 
 export class Let extends Instruction {
 
@@ -17,28 +18,32 @@ export class Let extends Instruction {
     }
 
     public execute(environment: Environment) {
-        if (this.valorSeteando == null) {
-            const val = this.value.execute(environment);
-            let condicion = environment.guardar(this.id, val.value, val.type, true);
-            if (!condicion){
-                throw new Error("<tr><td>semantico</td><td>Esta variable '" + this.id + "' ya existe en el entorno actual</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-            }
+        if (this.value == null) {
+            //console.log("metodo cuento esta solo <let id;>");
+            environment.guardar(this.id, null, -1, true);
         } else {
-            //yo le estoy diciendo el tipo, tengo que validar eso, sino es un error semantico
-            const val = this.value.execute(environment);
-
-            if (val.type == 0 && this.valorSeteando == "number" ||
-                val.type == 1 && this.valorSeteando == "string" ||
-                val.type == 2 && this.valorSeteando == "boolean"
-            ) {
-                let condicion=environment.guardar(this.id, val.value, val.type, true);
+            if (this.valorSeteando == null) {
+                const val = this.value.execute(environment);
+                let condicion = environment.guardar(this.id, val.value, val.type, true);
                 if (!condicion) {
                     throw new Error("<tr><td>semantico</td><td>Esta variable '" + this.id + "' ya existe en el entorno actual</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
                 }
             } else {
-                throw new Error("<tr><td>semantico</td><td>Type '" + val.type + "' is not assignable to type '" + this.valorSeteando + "'</td><td>" + this.value.line + "</td><td>" + this.value.column + "</td></tr>");
+                //yo le estoy diciendo el tipo, tengo que validar eso, sino es un error semantico
+                const val = this.value.execute(environment);
+
+                if (val.type == 0 && this.valorSeteando == "number" ||
+                    val.type == 1 && this.valorSeteando == "string" ||
+                    val.type == 2 && this.valorSeteando == "boolean"
+                ) {
+                    let condicion = environment.guardar(this.id, val.value, val.type, true);
+                    if (!condicion) {
+                        throw new Error("<tr><td>semantico</td><td>Esta variable '" + this.id + "' ya existe en el entorno actual</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+                    }
+                } else {
+                    throw new Error("<tr><td>semantico</td><td>Type '" + val.type + "' is not assignable to type '" + this.valorSeteando + "'</td><td>" + this.value.line + "</td><td>" + this.value.column + "</td></tr>");
+                }
             }
         }
     }
-
 }
