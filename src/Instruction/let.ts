@@ -3,7 +3,7 @@ import { Environment } from "../Symbol/Environment";
 import { Expression } from "../Abstract/Expression";
 import { env } from "process";
 
-export class Declaration extends Instruction {
+export class Let extends Instruction {
 
     private id: string;
     private value: Expression;
@@ -19,7 +19,7 @@ export class Declaration extends Instruction {
     public execute(environment: Environment) {
         if (this.valorSeteando == null) {
             const val = this.value.execute(environment);
-            environment.guardar(this.id, val.value, val.type, false);
+            environment.guardar(this.id, val.value, val.type, true);
         } else {
             //yo le estoy diciendo el tipo, tengo que validar eso, sino es un error semantico
             const val = this.value.execute(environment);
@@ -28,7 +28,7 @@ export class Declaration extends Instruction {
                 val.type == 1 && this.valorSeteando == "string" ||
                 val.type == 2 && this.valorSeteando == "boolean"
             ) {
-                environment.guardar(this.id, val.value, val.type, false);
+                environment.guardar(this.id, val.value, val.type, true);
             } else {
                 throw new Error("<tr><td>semantico</td><td>Type '" + val.type + "' is not assignable to type '" + this.valorSeteando + "'</td><td>" + this.value.line + "</td><td>" + this.value.column + "</td></tr>");
             }

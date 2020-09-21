@@ -1,1 +1,4 @@
-const variable_2:string= true+"s";
+const variable_2=1320;
+console.log(variable_2);
+let variable_3:boolean=true;
+console.log(variable_3);

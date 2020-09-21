@@ -9,6 +9,7 @@
     const {Statement} = require('../Instruction/Statement');
     const {While} = require('../Instruction/While');
     const {Declaration} = require('../Instruction/Declaration');
+    const {Let} = require('../Instruction/let');
     var Lista_errores=[];
     var tmp="";
 %}
@@ -85,6 +86,7 @@ stringplantilla  [\`][^`]* [\`]
 "number"                return 't_number'
 "string"                return 't_string'
 "boolean"               return 't_boolean'
+"let"                   return 't_let'
 
 
 "console"               return 'CONSOLE'
@@ -124,9 +126,25 @@ Instruction
     | Statement     {  $$ = $1;    }
     | PrintSt       {  $$ = $1;    }
     | Declaration1  {  $$ = $1;    }
+    | Declaration2  {  $$ = $1;    }
     | error ';'     { console.log("error sintactico en linea " + (yylineno+1) );}
       //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');
                       
+;
+Declaration2
+    : 't_let' ID '=' Expr ';'{
+        $$ = new Let($2, $4, null, @1.first_line, @1.first_column);
+    }
+    | 't_let' ID ':' 't_boolean' '='  Expr ';'{
+        $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
+    }
+    | 't_let' ID ':' 't_string' '='  Expr ';'{
+        $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
+    }
+    | 't_let' ID ':' 't_number' '='  Expr ';'{
+        $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
+    }
+
 ;
 
 Declaration1 

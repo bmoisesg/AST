@@ -10,8 +10,8 @@ export class Environment{
         this.variables = new Map();
     }
 
-    public guardar(id: string, valor: any, type: Type){
-        this.variables.set(id, new Symbol(valor, id, type));
+    public guardar(id: string, valor: any, type: Type, condicion:boolean){
+        this.variables.set(id, new Symbol(valor, id, type, condicion));
     }
     
     public getVar(id: string) : Symbol | undefined | null{
