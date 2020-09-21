@@ -1,4 +1,9 @@
-const variable_2=1320;
-console.log(variable_2);
-let variable_3:boolean=true;
-console.log(variable_3);
+let maria_:string="dafds";
+const maria_:boolean= true;
+let moi= 123;
+let moi=8; 
+
+let s=0;
+let S="afdsa";
+let s="sfs";
+console.log(s);

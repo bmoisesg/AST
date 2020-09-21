@@ -10,8 +10,19 @@ export class Environment{
         this.variables = new Map();
     }
 
-    public guardar(id: string, valor: any, type: Type, condicion:boolean){
+    public guardar(id: string, valor: any, type: Type, condicion:boolean) : boolean{
+        for (let entry of Array.from(this.variables.entries())) {
+            let key = entry[0];
+            let value = entry[1];
+            //console.log("->",key,value);
+            //console.log(key +"=="+id+"?");
+            if(key == id){
+                //console.log("si");
+                return false
+            }
+        }
         this.variables.set(id, new Symbol(valor, id, type, condicion));
+        return true
     }
     
     public getVar(id: string) : Symbol | undefined | null{

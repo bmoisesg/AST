@@ -6,6 +6,10 @@ const fs = require('fs');
 
 try {
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    var num:number = 1; // OK
+    var Num:number = 2;// OK
+    var NUM:number = 3;// OK
+    var NuM:number = 4;// OK
     console.log("------------------------------------------------------------------------");
     if (true) {
 
