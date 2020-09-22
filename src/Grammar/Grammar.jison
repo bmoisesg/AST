@@ -11,6 +11,7 @@
     const {Declaration} = require('../Instruction/Declaration');
     const {Let} = require('../Instruction/let');
     const {Asignacion} = require('../Instruction/Asignacion');
+    const {OperadorTernario} = require('../Instruction/OperadorTernario');
     var Lista_errores=[];
     var tmp="";
 %}
@@ -64,6 +65,7 @@ stringplantilla  [\`][^`]* [\`]
 ";"                     return ';'
 ":"                     return ':'
 "."                     return '.'
+"?"                     return '?'
 
 "<="                    return '<='
 ">="                    return '>='
@@ -125,18 +127,29 @@ Instruction
     : IfSt          {  $$ = $1;    }
     | WhileSt       {  $$ = $1;    }
     | Statement     {  $$ = $1;    }
-    | PrintSt       {  $$ = $1;    }
-    | Declaration1  {  $$ = $1;    }
-    | Declaration2  {  $$ = $1;    }
-    | Asignacion    {  $$ = $1;    }
+    | PrintSt          ';' {  $$ = $1;  }
+    | Declaration1         {  $$ = $1;  }
+    | Declaration2         {  $$ = $1;  }
+    | Asignacion       ';' {  $$ = $1;  }
+    | OperadorTernario ';' {  $$ = $1;  }
     | error ';'     { console.log("error sintactico en linea " + (yylineno+1) );}
       //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');
                       
 ;
 
+OperadorTernario
+    : Expr '?' ParaOperadorTernario ':' ParaOperadorTernario {
+            $$=new OperadorTernario($1, $3, $5 ,@1.first_line, @1.first_column );
+    } 
+;
+
+ParaOperadorTernario
+    :PrintSt          { $$=$1; }
+    |Asignacion     { $$=$1; }
+;
 
 Asignacion
-    : ID '=' Expr ';' { 
+    : ID '=' Expr { 
           $$ = new Asignacion($1, $3, @1.first_line, @1.first_column);
     }
 ;
@@ -205,10 +218,10 @@ Statement
 ;
 
 PrintSt 
-    : 'CONSOLE' '.' 'LOG' '(' Expr ')' ';' {
+    : 'CONSOLE' '.' 'LOG' '(' Expr ')'  {
         $$ = new Print($5, @1.first_line, @1.first_column);
     }
-    |'CONSOLE' '.' 'LOG' '('  ')' ';' {
+    |'CONSOLE' '.' 'LOG' '('  ')'  {
         $$ = new Print(null, @1.first_line, @1.first_column);
     }
 ;

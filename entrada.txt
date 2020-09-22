@@ -1,6 +1,5 @@
-let moi:string="hola";
-let juan;
-juan=110+1;
-console.log(juan);
-juan="0";
-console.log(juan);
+let numero=10;
+numero= numero+1;
+console.log(numero);
+numero<100 ? console.log("moi") : numero=70;
+console.log("valor numero= "+numero);
