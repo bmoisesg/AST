@@ -7,10 +7,9 @@ const fs = require('fs');
 try {
 
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    let x=20;
-    let y=10;
-    
-    x>y? y=456: console.log("mo");
+    for (let index = 0; index < 10; index++) {
+        
+    }
 
     console.log("------------------------------------------------------------------------");
     if (true) {

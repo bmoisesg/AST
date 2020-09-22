@@ -1,11 +1,19 @@
+console.log("hola mundi");
+
+for (let x=0; x<=16; x=x+2){
+    console.log(x);
+}
+
+console.log("-------------");
+
 let num=0;
-num=0;
-do{
+for (let x=10; x<16; x=x+1){
+    console.log(x);
     console.log(num);
-    num=num+1;
-}while(num<=8);
-num=0;
-do{
-    console.log(num);
-    num=num+1;
-}while(num<=8)
+}
+
+console.log("-------------");
+for (num=50; num<55; num= num+1){
+    console.log("->"+num);
+}
+console.log(num);

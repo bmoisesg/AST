@@ -13,6 +13,8 @@
     const {Asignacion} = require('../Instruction/Asignacion');
     const {OperadorTernario} = require('../Instruction/OperadorTernario');
     const {DoWhile} = require('../Instruction/Dowhile');
+    const {InstFor} = require('../Instruction/InstFor');
+    
     var Lista_errores=[];
     var tmp="";
 %}
@@ -92,7 +94,7 @@ stringplantilla  [\`][^`]* [\`]
 "boolean"               return 't_boolean'
 "let"                   return 't_let'
 "do"                    return 't_do'
-
+"for"                   return 't_for'
 "console"               return 'CONSOLE'
 "log"                   return 'LOG'
 
@@ -125,19 +127,40 @@ Instructions
 ;
 
 Instruction
-    : IfSt          {  $$ = $1;    }
-    | WhileSt       {  $$ = $1;    }
-    | Statement     {  $$ = $1;    }
+    : IfSt          {$$=$1;}
+    | WhileSt       {$$=$1;}
+    | Statement     {$$=$1;}
+    | FOR           {$$=$1;}
     | PrintSt          ';' {  $$ = $1;  }
-    | Declaration1         {  $$ = $1;  }
-    | Declaration2         {  $$ = $1;  }
+    
+    | Declaration1     ';' {  $$ = $1;  }
+    
+    | Declaration2     ';' {  $$ = $1;  }
+
     | Asignacion       ';' {  $$ = $1;  }
+
     | OperadorTernario ';' {  $$ = $1;  }
+
     | DOWHILE          ';' {  $$ = $1;  }
-    | DOWHILE              {  $$ = $1;  }
+
+
     | error ';'     { console.log("error sintactico en linea " + (yylineno+1) );}
       //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');
                       
+;
+
+FOR
+    : 't_for' '(' for1 ';' Expr ';' for2 ')' Statement{
+            $$=new InstFor($3, $5, $7 , $9, @1.first_line, @1.first_column );
+    }
+;
+for1 
+    : Declaration1   {$$=$1;} 
+    | Declaration2   {$$=$1;} 
+    | Asignacion     {$$=$1;} 
+;
+for2
+    : Asignacion  {$$=$1;}
 ;
 
 OperadorTernario
@@ -158,41 +181,43 @@ Asignacion
 ;
 
 Declaration2
-    : 't_let' ID '=' Expr ';'{
+    : 't_let' ID '=' Expr {
         $$ = new Let($2, $4, null, @1.first_line, @1.first_column);
     }
-    | 't_let' ID ':' 't_boolean' '='  Expr ';'{
+    | 't_let' ID ':' 't_boolean' '='  Expr {
         $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
     }
-    | 't_let' ID ':' 't_string' '='  Expr ';'{
+    | 't_let' ID ':' 't_string' '='  Expr {
         $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
     }
-    | 't_let' ID ':' 't_number' '='  Expr ';'{
+    | 't_let' ID ':' 't_number' '='  Expr {
         $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
     }
-    | 't_let' ID  ';'{
+    | 't_let' ID  {
         $$ = new Let($2, null, null, @1.first_line, @1.first_column);
     }
 
 ;
 
 Declaration1 
-    : 'const' ID '=' Expr ';'{
+    : 'const' ID '=' Expr {
         $$ = new Declaration($2, $4, null, @1.first_line, @1.first_column);
     }
-    | 'const' ID ':' 't_boolean' '='  Expr ';'{
+    | 'const' ID ':' 't_boolean' '='  Expr {
         $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
     }
-    | 'const' ID ':' 't_string' '='  Expr ';'{
+    | 'const' ID ':' 't_string' '='  Expr {
         $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
     }
-    | 'const' ID ':' 't_number' '='  Expr ';'{
+    | 'const' ID ':' 't_number' '='  Expr {
         $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
     }
 
 ;
 
-IfSt : 'IF' '(' Expr ')' Statement ElseSt{  $$ = new If($3, $5, $6, @1.first_line, @1.first_column);    };
+IfSt : 'IF' '(' Expr ')' Statement ElseSt{
+      $$ = new If($3, $5, $6, @1.first_line, @1.first_column);  }
+;
 
 ElseSt
     : 'ELSE' Statement {
