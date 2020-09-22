@@ -12,6 +12,7 @@
     const {Let} = require('../Instruction/let');
     const {Asignacion} = require('../Instruction/Asignacion');
     const {OperadorTernario} = require('../Instruction/OperadorTernario');
+    const {DoWhile} = require('../Instruction/Dowhile');
     var Lista_errores=[];
     var tmp="";
 %}
@@ -90,7 +91,7 @@ stringplantilla  [\`][^`]* [\`]
 "string"                return 't_string'
 "boolean"               return 't_boolean'
 "let"                   return 't_let'
-
+"do"                    return 't_do'
 
 "console"               return 'CONSOLE'
 "log"                   return 'LOG'
@@ -132,6 +133,8 @@ Instruction
     | Declaration2         {  $$ = $1;  }
     | Asignacion       ';' {  $$ = $1;  }
     | OperadorTernario ';' {  $$ = $1;  }
+    | DOWHILE          ';' {  $$ = $1;  }
+    | DOWHILE              {  $$ = $1;  }
     | error ';'     { console.log("error sintactico en linea " + (yylineno+1) );}
       //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');
                       
@@ -145,7 +148,7 @@ OperadorTernario
 
 ParaOperadorTernario
     :PrintSt          { $$=$1; }
-    |Asignacion     { $$=$1; }
+    |Asignacion       { $$=$1; }
 ;
 
 Asignacion
@@ -202,6 +205,10 @@ ElseSt
     {
         $$ = null;
     }
+;
+
+DOWHILE
+    : 't_do' Statement 'WHILE' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @5.first_line, @5.first_column);    }
 ;
 
 WhileSt
