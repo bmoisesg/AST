@@ -205,7 +205,7 @@ ElseSt
 ;
 
 WhileSt
-    : 'WHILE' '(' Expr ')' Statement {  $$ = new While($3, $5, @1.first_line, @1.first_column);    }
+    : 'WHILE' '(' Expr ')' Statement {  $$ = new While($3, $5, @1.first_line, @3.first_column);    }
 ;
 
 Statement

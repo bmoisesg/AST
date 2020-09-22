@@ -12,14 +12,14 @@ export class While extends Instruction{
     public execute(env : Environment) {
         let condition = this.condition.execute(env);
         if(condition.type != Type.BOOLEAN){
-            throw {error: "La condicion no es booleana", linea: this.line, columna : this.column};
+            throw new Error("<tr><td>semantico</td><td>La expresion del while no es una condicion 'boolean'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
         }
 
         while  (condition.value == true){
             this.code.execute(env);
             condition = this.condition.execute(env);
             if(condition.type != Type.BOOLEAN){
-                throw {error: "La condicion no es booleana", linea: this.line, columna : this.column};
+                throw new Error("<tr><td>semantico</td><td>La expresion del while no es una condiicon 'boolean'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
         }
     }

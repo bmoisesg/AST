@@ -158,7 +158,7 @@ case 29:
     
 break;
 case 30:
-  this.$ = new While($$[$0-2], $$[$0], _$[$0-4].first_line, _$[$0-4].first_column);    
+  this.$ = new While($$[$0-2], $$[$0], _$[$0-4].first_line, _$[$0-2].first_column);    
 break;
 case 31:
 
