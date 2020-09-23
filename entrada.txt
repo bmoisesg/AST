@@ -1,19 +1,15 @@
-console.log("hola mundi");
+let dsafdsa=69;
+console.log(dsafdsa);
+dsafdsa++;
+++dsafdsa;
+--dsafdsa;
+dsafdsa--;
+console.log(dsafdsa);
 
-for (let x=0; x<=16; x=x+2){
-    console.log(x);
-}
-
-console.log("-------------");
-
-let num=0;
-for (let x=10; x<16; x=x+1){
-    console.log(x);
-    console.log(num);
-}
-
-console.log("-------------");
-for (num=50; num<55; num= num+1){
-    console.log("->"+num);
-}
-console.log(num);
+let x=0;
+x++;
+x++;
+x++;
+x--;
+--x;
+console.log(x);

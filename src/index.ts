@@ -7,9 +7,6 @@ const fs = require('fs');
 try {
 
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    for (let index = 0; index < 10; index++) {
-        
-    }
 
     console.log("------------------------------------------------------------------------");
     if (true) {

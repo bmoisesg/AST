@@ -5,9 +5,11 @@ import { Type } from "../Abstract/Retorno";
 export class Environment {
 
     private variables: Map<string, Symbol>;
+    public funciones : Map<string, Function>;
 
     constructor(public anterior: Environment | null) {
         this.variables = new Map();
+        this.funciones = new Map();
     }
 
     public guardar(id: string, valor: any, type: Type, condicion: boolean): boolean {
@@ -59,6 +61,28 @@ export class Environment {
         return null;
     }
 
+    public guardarFuncion(id: string, funcion : Function){
+        //TODO ver si la funcion ya existe, reportar error
+        this.funciones.set(id, funcion);
+        console.log(this.funciones)
+    }
 
+    public getFuncion(id: string) : Function | undefined{
+        let env : Environment | null = this;
+        while(env != null){
+            if(env.funciones.has(id)){
+                return env.funciones.get(id);
+            }
+            env = env.anterior;
+        }
+        return undefined;
+    }
 
+    public getGlobal() : Environment{
+        let env : Environment | null = this;
+        while(env?.anterior != null){
+            env = env.anterior;
+        }
+        return env;
+    }
 }

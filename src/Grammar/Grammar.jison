@@ -14,6 +14,7 @@
     const {OperadorTernario} = require('../Instruction/OperadorTernario');
     const {DoWhile} = require('../Instruction/Dowhile');
     const {InstFor} = require('../Instruction/InstFor');
+    const {Incre} = require('../Instruction/Incre')
     
     var Lista_errores=[];
     var tmp="";
@@ -60,6 +61,8 @@ stringplantilla  [\`][^`]* [\`]
 {stringplantilla}       return 'STRINGGG'
 
 "**"                    return '**'
+"++"                    return '++'
+"--"                    return '--'
 "+"                     return '+'
 "-"                     return '-'
 "*"                     return '*'
@@ -97,6 +100,7 @@ stringplantilla  [\`][^`]* [\`]
 "for"                   return 't_for'
 "console"               return 'CONSOLE'
 "log"                   return 'LOG'
+"function"              return 't_function'
 
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
@@ -127,26 +131,67 @@ Instructions
 ;
 
 Instruction
-    : IfSt          {$$=$1;}
-    | WhileSt       {$$=$1;}
-    | Statement     {$$=$1;}
-    | FOR           {$$=$1;}
+    : IfSt                 {  $$ = $1;  }
+    | WhileSt              {  $$ = $1;  }
+    | Statement            {  $$ = $1;  }
+    | FOR                  {  $$ = $1;  }
+    | FUNCION              {  $$ = $1;  }
     | PrintSt          ';' {  $$ = $1;  }
-    
     | Declaration1     ';' {  $$ = $1;  }
-    
     | Declaration2     ';' {  $$ = $1;  }
-
     | Asignacion       ';' {  $$ = $1;  }
 
+    | INCREMENTO       ';' {  $$ = $1;  }
+    
     | OperadorTernario ';' {  $$ = $1;  }
-
     | DOWHILE          ';' {  $$ = $1;  }
+    | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
+;
 
 
-    | error ';'     { console.log("error sintactico en linea " + (yylineno+1) );}
-      //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');
-                      
+/*CALLFUNCION
+    : ID '(' ')' {
+        $$ = new Call($1, [], @1.first_line, @1.first_column);
+    }
+    | ID '(' ListaExpr ')' {
+        $$ = new Call($1, $3, @1.first_line, @1.first_column);
+    }
+;
+*/
+ListaExpr 
+    : ListaExpr ',' Expr{
+        $1.push($3);
+        $$ = $1;
+    }
+    | Expr{
+        $$ = [$1];
+    }
+;    
+
+
+FUNCION
+    : 't_function' ID '(' ')' Statement {
+        $$ = new Function($2, $5, [], @1.first_line, @1.first_column);
+    }
+    | 't_function' ID '(' Parametros ')' Statement {
+        $$ = new Function($2, $6, $4, @1.first_line, @1.first_column);
+    }
+;
+
+Parametros
+    : Parametros ',' TIPOS ID {
+        $1.push($4);
+        $$ = $1;
+    }
+    | TIPOS ID{
+        $$ = [$2];
+    }
+;
+
+TIPOS
+    :t_boolean {$$=$1;}
+    |t_string  {$$=$1;}
+    |t_number  {$$=$1;}
 ;
 
 FOR
@@ -178,6 +223,12 @@ Asignacion
     : ID '=' Expr { 
           $$ = new Asignacion($1, $3, @1.first_line, @1.first_column);
     }
+;
+INCREMENTO
+    :   '++' ID     { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
+    |   ID  '++'    { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   ID  '--'    { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   '--' ID     { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
 ;
 
 Declaration2
