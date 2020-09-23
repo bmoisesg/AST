@@ -113,8 +113,13 @@ stringplantilla  [\`][^`]* [\`]
 %left '>=', '<=', '<', '>'
 %left '+' '-'
 %left '*' '/'
-%left '**' '%'
+%left '**' '%' 
+
+
 %right '!'
+%right AUX1
+%right AUX2
+
 %start Init
 
 %%
@@ -141,9 +146,10 @@ Instruction
     | Declaration2     ';' {  $$ = $1;  }
     | Asignacion       ';' {  $$ = $1;  }
 
-    | INCREMENTO       ';' {  $$ = $1;  }
+    | INCREMENTO          {  $$ = $1;  }
     
-    | OperadorTernario ';' {  $$ = $1;  }
+    | OperadorTernario ';'  {  $$ = $1;  }
+
     | DOWHILE          ';' {  $$ = $1;  }
     | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
@@ -206,6 +212,7 @@ for1
 ;
 for2
     : Asignacion  {$$=$1;}
+    | INCREMENTO  {$$=$1;}
 ;
 
 OperadorTernario
@@ -224,11 +231,12 @@ Asignacion
           $$ = new Asignacion($1, $3, @1.first_line, @1.first_column);
     }
 ;
+
 INCREMENTO
-    :   '++' ID     { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
-    |   ID  '++'    { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   ID  '--'    { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   '--' ID     { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
+    :   '++' ID  ';'  { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
+    |   ID  '++' ';'  { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   ID  '--' ';'  { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   '--' ID  ';'  { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
 ;
 
 Declaration2
@@ -311,6 +319,11 @@ PrintSt
 
 Expr /*aritmeticas*/
     : '-'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.NEGACION,  @1.first_line, @1.first_column); }       
+    | ID  '++'               { $$ = new Arithmetic($1, $1, ArithmeticOption.INCREMENTO1, $1, @1.first_line, @1.first_column); } 
+    | '++' ID                { $$ = new Arithmetic($2, $2, ArithmeticOption.INCREMENTO2, $2, @2.first_line, @2.first_column); } 
+    | ID  '--'               { $$ = new Arithmetic($1, $1, ArithmeticOption.DECREMENTO1, $1, @1.first_line, @1.first_column); } 
+    | '--' ID                { $$ = new Arithmetic($2, $2, ArithmeticOption.DECREMENTO2, $2, @2.first_line, @2.first_column); } 
+   
     | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,   @1.first_line, @1.first_column); }       
     | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS,  @1.first_line, @1.first_column); }
     | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES,  @1.first_line, @1.first_column); }       
@@ -332,7 +345,10 @@ Expr /*aritmeticas*/
     | Expr '&&' Expr { $$ = new Relational($1, $3,RelationalOption.AND  , @1.first_line, @1.first_column); }
     | Expr '||' Expr { $$ = new Relational($1, $3,RelationalOption.OR   , @1.first_line, @1.first_column); }
     | '!' Expr       { $$ = new Relational($2, $2,RelationalOption.NOT  , @1.first_line, @1.first_column); }
-
+   
+   // | ID '++'        { $$ = new Relational($1, $1,RelationalOption.INCREMENTO2  , @1.first_line, @1.first_column); }   
+   // | '--' ID        { $$ = new Relational($2, $2,RelationalOption.DECREMENTO1  , @2.first_line, @2.first_column); } 
+   // | ID '--'        { $$ = new Relational($1, $1,RelationalOption.DECREMENTO2  , @1.first_line, @1.first_column); }   
 ;
 
 F   : '(' Expr ')'  {  $$ = $2; }

@@ -6,27 +6,117 @@ import { type } from "os";
 import { toNamespacedPath } from "path";
 
 export enum ArithmeticOption {
-    PLUS,
-    MINUS,
-    TIMES,
-    DIV,
-    MODULO,
+    PLUS,  //mas
+    MINUS,  //menos
+    TIMES,   //multiplicacion
+    DIV,    //division
+    MODULO, 
     POT,
     NEGACION,
-    MAS
+    MAS,
+    INCREMENTO1,
+    INCREMENTO2,
+    DECREMENTO1,
+    DECREMENTO2
 }
 export class Arithmetic extends Expression {
 
-    constructor(private left: Expression, private right: Expression, private type: ArithmeticOption, line: number, column: number) {
+    constructor(
+        private left: Expression,
+        private right: Expression,
+        private type: ArithmeticOption,
+        private cadena: string,
+        line: number,
+        column: number) {
         super(line, column);
     }
 
     public execute(environment: Environment): Retorno {
-
+        let result: Retorno;
+        if ( this.type == ArithmeticOption.INCREMENTO1){
+            const variable = environment.getVar(this.cadena);
+            //validar que exista
+            if( variable==null){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            if (variable.condicion==false){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //validar que sea numerico
+            if (variable?.type != 0) {
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' tiene que ser de tipo numero</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //retornar
+            result = { value: variable.valor, type: Type.NUMBER };
+            variable.valor++;
+            //actualiza 
+            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            return result;
+          
+        }else if ( this.type == ArithmeticOption.DECREMENTO1){
+            const variable = environment.getVar(this.cadena);
+            //validar que exista
+            if( variable==null){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            if (variable.condicion==false){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //validar que sea numerico
+            if (variable?.type != 0) {
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' tiene que ser de tipo numero</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //retornar
+            result = { value: variable.valor, type: Type.NUMBER };
+            variable.valor--;
+            //actualiza 
+            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            return result;
+          
+        }else if ( this.type == ArithmeticOption.INCREMENTO2){
+            const variable = environment.getVar(this.cadena);
+            //validar que exista
+            if( variable==null){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            if (variable.condicion==false){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //validar que sea numerico
+            if (variable?.type != 0) {
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' tiene que ser de tipo numero</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //retornar
+            variable.valor++;
+            result = { value: variable.valor, type: Type.NUMBER };
+            //actualiza 
+            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            return result;
+          
+        }else if ( this.type == ArithmeticOption.DECREMENTO2){
+            const variable = environment.getVar(this.cadena);
+            //validar que exista
+            if( variable==null){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            if (variable.condicion==false){
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //validar que sea numerico
+            if (variable?.type != 0) {
+                throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' tiene que ser de tipo numero</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            //retornar
+            variable.valor--;
+            result = { value: variable.valor, type: Type.NUMBER };
+            //actualiza 
+            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            return result;
+          
+        }
         const valueIzq = this.left.execute(environment);
         const valueDer = this.right.execute(environment);
-        let result: Retorno;
-
+        //console.log("->",this.type);
         if (this.type == ArithmeticOption.PLUS) {
             if (valueIzq.type == Type.BOOLEAN && valueDer.type == Type.BOOLEAN ||
                 valueIzq.type == Type.BOOLEAN && valueDer.type == Type.NUMBER ||
@@ -41,7 +131,7 @@ export class Arithmetic extends Expression {
                 result = { value: (valueIzq.value + valueDer.value), type: Type.STRING };
 
             }
-        }
+        } 
         //-----------------------------------------------------------
         //                      resta
         //-----------------------------------------------------------   

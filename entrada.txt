@@ -1,15 +1,5 @@
-let dsafdsa=69;
-console.log(dsafdsa);
-dsafdsa++;
-++dsafdsa;
---dsafdsa;
-dsafdsa--;
-console.log(dsafdsa);
+console.log("hola mundo");
+let x="10";
 
-let x=0;
-x++;
-x++;
-x++;
-x--;
---x;
 console.log(x);
+console.log(--x+1);
