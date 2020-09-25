@@ -148,7 +148,8 @@ Instruction
     | Declaration1     ';' {  $$ = $1;  }
     | Declaration2     ';' {  $$ = $1;  }
     | Asignacion       ';' {  $$ = $1;  }
-
+    | CALLFUNCION      ';' {  $$ = $1;  }
+    | CALLFUNCION          {  $$ = $1;  }
     | INCREMENTO          {  $$ = $1;  }
     
     | OperadorTernario ';'  {  $$ = $1;  }
@@ -159,7 +160,7 @@ Instruction
 ;
 
 
-/*CALLFUNCION
+CALLFUNCION
     : ID '(' ')' {
         $$ = new Call($1, [], @1.first_line, @1.first_column);
     }
@@ -167,7 +168,7 @@ Instruction
         $$ = new Call($1, $3, @1.first_line, @1.first_column);
     }
 ;
-*/
+
 ListaExpr 
     : ListaExpr ',' Expr{
         $1.push($3);
