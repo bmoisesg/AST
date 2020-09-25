@@ -1,5 +1,5 @@
 console.log("hola mundo");
-let x="10";
 
-console.log(x);
-console.log(--x+1);
+function moises ( ) {
+    console.log("dentro de la funcion");
+}

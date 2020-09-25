@@ -1,11 +1,12 @@
 import { env } from "process"
 import { Symbol } from "./Symbol";
 import { Type } from "../Abstract/Retorno";
+import { Function } from "../Instruction/Function"
 
 export class Environment {
 
     private variables: Map<string, Symbol>;
-    public funciones : Map<string, Function>;
+    public funciones: Map<string, Function>;
 
     constructor(public anterior: Environment | null) {
         this.variables = new Map();
@@ -37,8 +38,8 @@ export class Environment {
                     let value = entry[1];
                     if (key == id) {
                         entry[1].valor = valor;
-                        entry[1].type= type;
-                        entry[1].condicion= condicion;
+                        entry[1].type = type;
+                        entry[1].condicion = condicion;
                         //console.log("supuestamente actuazlice el valor de la variable " + id + " por el valor " + entry[1].valor);
                         return true//significa que si encontro el entorno
                     }
@@ -61,16 +62,25 @@ export class Environment {
         return null;
     }
 
-    public guardarFuncion(id: string, funcion : Function){
-        //TODO ver si la funcion ya existe, reportar error
+    public guardarFuncion(id: string, funcion: Function) {
         this.funciones.set(id, funcion);
-        console.log(this.funciones)
+    }
+    public getExisteIdFuncion(id: string): boolean {
+        
+        for (let entry of Array.from(this.funciones.entries())) {
+            let key = entry[0];
+            //console.log("pregunta:", key,"," ,id, "condicion=",  key == id)
+            if (key == id) {
+                return true// si encontro una funcion con este nombre
+            }
+        }
+        return false;
     }
 
-    public getFuncion(id: string) : Function | undefined{
-        let env : Environment | null = this;
-        while(env != null){
-            if(env.funciones.has(id)){
+    public getFuncion(id: string): Function | undefined {
+        let env: Environment | null = this;
+        while (env != null) {
+            if (env.funciones.has(id)) {
                 return env.funciones.get(id);
             }
             env = env.anterior;
@@ -78,9 +88,9 @@ export class Environment {
         return undefined;
     }
 
-    public getGlobal() : Environment{
-        let env : Environment | null = this;
-        while(env?.anterior != null){
+    public getGlobal(): Environment {
+        let env: Environment | null = this;
+        while (env?.anterior != null) {
             env = env.anterior;
         }
         return env;

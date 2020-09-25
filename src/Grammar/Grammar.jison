@@ -14,7 +14,9 @@
     const {OperadorTernario} = require('../Instruction/OperadorTernario');
     const {DoWhile} = require('../Instruction/Dowhile');
     const {InstFor} = require('../Instruction/InstFor');
-    const {Incre} = require('../Instruction/Incre')
+    const {Incre} = require('../Instruction/Incre');
+    const {Function} = require('../Instruction/Function');
+    const {Call} = require('../Instruction/Call')
     
     var Lista_errores=[];
     var tmp="";
@@ -72,6 +74,7 @@ stringplantilla  [\`][^`]* [\`]
 ":"                     return ':'
 "."                     return '.'
 "?"                     return '?'
+","                     return ','
 
 "<="                    return '<='
 ">="                    return '>='
@@ -152,6 +155,7 @@ Instruction
 
     | DOWHILE          ';' {  $$ = $1;  }
     | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
+    //| error            '}' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
 
 
@@ -177,20 +181,26 @@ ListaExpr
 
 FUNCION
     : 't_function' ID '(' ')' Statement {
-        $$ = new Function($2, $5, [], @1.first_line, @1.first_column);
+        $$ = new Function($2, $5, [], "",@1.first_line, @1.first_column);
     }
     | 't_function' ID '(' Parametros ')' Statement {
-        $$ = new Function($2, $6, $4, @1.first_line, @1.first_column);
+        $$ = new Function($2, $6, $4, "",@1.first_line, @1.first_column);
+    }
+    |'t_function' ID '(' ')' ':' TIPOS Statement  {
+        $$ = new Function($2, $7, [], $6,@1.first_line, @1.first_column);
+    }
+    | 't_function' ID '(' Parametros ')' ':' TIPOS  Statement {
+        $$ = new Function($2, $8, $4, $7 ,@1.first_line, @1.first_column);
     }
 ;
 
 Parametros
-    : Parametros ',' TIPOS ID {
-        $1.push($4);
+    : Parametros ',' ID ':' TIPOS {
+        $1.push($3+","+$5);
         $$ = $1;
     }
-    | TIPOS ID{
-        $$ = [$2];
+    | ID ':' TIPOS{
+        $$ = [$1+","+$3];
     }
 ;
 
