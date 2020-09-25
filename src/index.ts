@@ -8,7 +8,6 @@ try {
 
     console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-    console.log("------------------------------------------------------------------------");
     if (true) {
 
         const entrada = fs.readFileSync('./entrada.txt');
@@ -26,7 +25,8 @@ try {
             }
         }
         //console.log(env)
-        console.log("Errores", parser.Lista_errores);
+        console.log("Errores:", parser.Lista_errores);
+        console.log("Consola:",parser.consola);
     }
 }
 catch (error) {

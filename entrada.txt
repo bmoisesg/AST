@@ -8,9 +8,8 @@ function id(){
 function moises ( id:string, condicion:boolean):number{
     console.log("val1: "+id);
     console.log("val2: "+condicion);
-    return  true ;
+    return  0 ;
 }
 
-//moises("moise", true);
+moises("moise", true);
 id();
-return 5;

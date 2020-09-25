@@ -22,6 +22,7 @@
     var Lista_errores=[];
     var pila_funciones=[];
     var tmp="";
+    var consola="";
 %}
 
 %lex
@@ -134,6 +135,7 @@ Init
     : Instructions EOF  {
         exports.Lista_errores= Lista_errores;
         exports.pila_funciones= pila_funciones;
+        exports.consola= consola;
         return $1;  }
 ;
 
