@@ -10,7 +10,10 @@ export class Statement extends Instruction{
     public execute(env : Environment) {
         const newEnv = new Environment(env);
         for(const instr of this.code){
-            instr.execute(newEnv);
+            let instruccion =instr.execute(newEnv);
+            if (instruccion =="@si"){
+                return
+            }
         }
 
     }

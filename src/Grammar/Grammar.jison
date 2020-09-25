@@ -16,9 +16,11 @@
     const {InstFor} = require('../Instruction/InstFor');
     const {Incre} = require('../Instruction/Incre');
     const {Function} = require('../Instruction/Function');
-    const {Call} = require('../Instruction/Call')
-    
+    const {Call} = require('../Instruction/Call');
+    const {Ret} =require('../Instruction/Ret');
+
     var Lista_errores=[];
+    var pila_funciones=[];
     var tmp="";
 %}
 
@@ -104,6 +106,7 @@ stringplantilla  [\`][^`]* [\`]
 "console"               return 'CONSOLE'
 "log"                   return 'LOG'
 "function"              return 't_function'
+"return"                return 't_return'
 
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
@@ -130,6 +133,7 @@ stringplantilla  [\`][^`]* [\`]
 Init    
     : Instructions EOF  {
         exports.Lista_errores= Lista_errores;
+        exports.pila_funciones= pila_funciones;
         return $1;  }
 ;
 
@@ -150,8 +154,9 @@ Instruction
     | Asignacion       ';' {  $$ = $1;  }
     | CALLFUNCION      ';' {  $$ = $1;  }
     | CALLFUNCION          {  $$ = $1;  }
-    | INCREMENTO          {  $$ = $1;  }
+    | INCREMENTO           {  $$ = $1;  }
     
+    | RETORNO          ';' {  $$ = $1;  } 
     | OperadorTernario ';'  {  $$ = $1;  }
 
     | DOWHILE          ';' {  $$ = $1;  }
@@ -159,6 +164,10 @@ Instruction
     //| error            '}' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
 
+RETORNO
+    :'t_return'      { $$= new Ret(null,@1.first_line, @1.first_column);}
+    |'t_return' Expr { $$= new Ret($2  ,@1.first_line, @1.first_column);}
+;
 
 CALLFUNCION
     : ID '(' ')' {

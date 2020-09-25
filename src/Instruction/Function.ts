@@ -5,7 +5,7 @@ import { Environment } from "../Symbol/Environment";
 export class Function extends Instruction {
 
     constructor(
-        private id: string,
+        public id: string,
         public statment: Instruction,
         public parametros: Array<string>,
         public retorno:string,

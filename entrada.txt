@@ -1,19 +1,16 @@
-console.log("hola mundo");
 
-
-function moises ( id:string, condicion:boolean) {
-    console.log("funcion moises "+id);
-    console.log(condicion);
+function id(){
+    console.log("hola");
+    console.log("mundo linda");
+    return ;
 }
 
-function getNumero(num:number,  id :string){
-    console.log("dentro del metodo getNumero");
-    console.log("valor1:"+num);
-    console.log("valor2:"+id);
+function moises ( id:string, condicion:boolean):number{
+    console.log("val1: "+id);
+    console.log("val2: "+condicion);
+    return  true ;
 }
-function getNumero2(id:string):boolean{
 
-}
-//getNumero(59+8-9,"juan"+" perez");
-let n= false;
-moises("liz", n);
+//moises("moise", true);
+id();
+return 5;

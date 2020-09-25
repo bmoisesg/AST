@@ -57,6 +57,8 @@ export class Call extends Instruction {
                 const value = this.expresiones[i].execute(environment);
                 // newEnv.guardar(func.parametros[i], value.value, value.type);
             }
+            const parser = require('../Grammar/Grammar');
+            parser.pila_funciones.push(func);
             func.statment.execute(newEnv);
 
 
