@@ -1,7 +1,5 @@
 let numero:boolean=true;
 let constabtes=0+5;
-const maria="juan"+"luis";
-constabtes++;
-constabtes--;
-++constabtes;
---constabtes;
+numero=5+5>10;
+return 9/8;
+return;

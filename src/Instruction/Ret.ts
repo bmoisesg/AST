@@ -17,8 +17,8 @@ export class Ret extends Instruction {
         //console.log("-------------------");
         //console.log(parser.pila_funciones);
         //console.log("-------------------");
-        if (parser.pila_funciones.length==0){
-            throw new Error("<tr><td>semantico</td><td>Este return  esta fuera de una funcion</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");   
+        if (parser.pila_funciones.length == 0) {
+            throw new Error("<tr><td>semantico</td><td>Este return  esta fuera de una funcion</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
         }
         if (this.expresion == null) {
             //-----------------------------------------------------------
@@ -57,11 +57,15 @@ export class Ret extends Instruction {
         else {
             parser.pila_funciones.pop()
             throw new Error("<tr><td>semantico</td><td>Rratas de retornar tipo :" +
-            expre.type+ " y tiene que ser '" + funcion_analizar.retorno + "'"+"</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-           
+                expre.type + " y tiene que ser '" + funcion_analizar.retorno + "'" + "</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+
         }
     }
-    public ast(){
-        
+    public ast() {
+        parser.ast += 'node' + this.line + '_' + this.column + ' [label="\\<Instruccion\\> \\n Return"];\n';
+        if (this.expresion != null){
+            parser.ast += 'node' + this.line + '_' + this.column + "-> ";
+            this.expresion.ast("");
+        }
     }
 }

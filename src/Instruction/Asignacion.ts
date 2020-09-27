@@ -4,7 +4,7 @@ import { Environment } from "../Symbol/Environment";
 import { Expression } from "../Abstract/Expression";
 import { env } from "process";
 import { toNamespacedPath } from "path";
-
+const parser = require('../Grammar/Grammar');
 
 export class Asignacion extends Instruction {
 
@@ -45,6 +45,10 @@ export class Asignacion extends Instruction {
         //console.log(condi);
     }
     public ast(){
-        
+        parser.ast += 'node' + this.line + '_' + this.column + ' [label="\\<Instruccion\\> \\n Asignacion"];\n';
+        parser.ast += 'node' + this.line + '_' + this.column + '1 [label="' + this.id + '"];\n';
+        parser.ast += 'node' + this.line + '_' + this.column + '->node' + this.line + '_' + this.column + '1;\n'
+        parser.ast += 'node' + this.line + '_' + this.column + "-> ";
+        this.value.ast("");
     }
 }
