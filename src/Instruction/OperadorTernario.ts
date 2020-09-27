@@ -34,5 +34,7 @@ export class OperadorTernario extends Instruction {
             this.valor2.execute(environment);
         }
     }
-
+    public ast(){
+        
+    }
 }

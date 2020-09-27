@@ -10,7 +10,7 @@ export enum ArithmeticOption {
     MINUS,  //menos
     TIMES,   //multiplicacion
     DIV,    //division
-    MODULO, 
+    MODULO,
     POT,
     NEGACION,
     MAS,
@@ -19,6 +19,7 @@ export enum ArithmeticOption {
     DECREMENTO1,
     DECREMENTO2
 }
+const parser = require('../Grammar/Grammar');
 export class Arithmetic extends Expression {
 
     constructor(
@@ -32,14 +33,15 @@ export class Arithmetic extends Expression {
     }
 
     public execute(environment: Environment): Retorno {
+        //parser.ast += 'node'+(this.line)+'_'+(this.column+1)+ '[label="'+get(this.type) +'"];\n'
         let result: Retorno;
-        if ( this.type == ArithmeticOption.INCREMENTO1){
+        if (this.type == ArithmeticOption.INCREMENTO1) {
             const variable = environment.getVar(this.cadena);
             //validar que exista
-            if( variable==null){
+            if (variable == null) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
-            if (variable.condicion==false){
+            if (variable.condicion == false) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
             //validar que sea numerico
@@ -50,16 +52,16 @@ export class Arithmetic extends Expression {
             result = { value: variable.valor, type: Type.NUMBER };
             variable.valor++;
             //actualiza 
-            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            environment.actualizar(this.cadena, variable.valor, variable.type, true);
             return result;
-          
-        }else if ( this.type == ArithmeticOption.DECREMENTO1){
+
+        } else if (this.type == ArithmeticOption.DECREMENTO1) {
             const variable = environment.getVar(this.cadena);
             //validar que exista
-            if( variable==null){
+            if (variable == null) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
-            if (variable.condicion==false){
+            if (variable.condicion == false) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
             //validar que sea numerico
@@ -70,16 +72,16 @@ export class Arithmetic extends Expression {
             result = { value: variable.valor, type: Type.NUMBER };
             variable.valor--;
             //actualiza 
-            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            environment.actualizar(this.cadena, variable.valor, variable.type, true);
             return result;
-          
-        }else if ( this.type == ArithmeticOption.INCREMENTO2){
+
+        } else if (this.type == ArithmeticOption.INCREMENTO2) {
             const variable = environment.getVar(this.cadena);
             //validar que exista
-            if( variable==null){
+            if (variable == null) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
-            if (variable.condicion==false){
+            if (variable.condicion == false) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
             //validar que sea numerico
@@ -90,16 +92,16 @@ export class Arithmetic extends Expression {
             variable.valor++;
             result = { value: variable.valor, type: Type.NUMBER };
             //actualiza 
-            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            environment.actualizar(this.cadena, variable.valor, variable.type, true);
             return result;
-          
-        }else if ( this.type == ArithmeticOption.DECREMENTO2){
+
+        } else if (this.type == ArithmeticOption.DECREMENTO2) {
             const variable = environment.getVar(this.cadena);
             //validar que exista
-            if( variable==null){
+            if (variable == null) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
-            if (variable.condicion==false){
+            if (variable.condicion == false) {
                 throw new Error("<tr><td>semantico</td><td>La variable '" + this.cadena + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
             }
             //validar que sea numerico
@@ -110,12 +112,14 @@ export class Arithmetic extends Expression {
             variable.valor--;
             result = { value: variable.valor, type: Type.NUMBER };
             //actualiza 
-            environment.actualizar(this.cadena, variable.valor,variable.type,true);
+            environment.actualizar(this.cadena, variable.valor, variable.type, true);
             return result;
-          
+
         }
         const valueIzq = this.left.execute(environment);
+        //parser.ast+='node'+(this.line)+'_'+(this.column+1)+'->node'+(this.left.line)+'_'+(this.left.column+1)+';\n';
         const valueDer = this.right.execute(environment);
+        //parser.ast+='node'+(this.line)+'_'+(this.column+1)+'->node'+(this.right.line)+'_'+(this.right.column+1)+';\n';
         //console.log("->",this.type);
         if (this.type == ArithmeticOption.PLUS) {
             if (valueIzq.type == Type.BOOLEAN && valueDer.type == Type.BOOLEAN ||
@@ -131,7 +135,7 @@ export class Arithmetic extends Expression {
                 result = { value: (valueIzq.value + valueDer.value), type: Type.STRING };
 
             }
-        } 
+        }
         //-----------------------------------------------------------
         //                      resta
         //-----------------------------------------------------------   
@@ -201,5 +205,45 @@ export class Arithmetic extends Expression {
         }
         return result;
     }
+    public ast() {
+        parser.ast += ' node' + (this.line) + '_' + (this.column) + ";\n"
+                    + 'node' + (this.line) + '_' + (this.column) + '[label="' + get(this.type) + '"];\n';
 
+        parser.ast += 'node' + (this.line) + '_' + (this.column) + "->"
+        this.left.ast("");
+        parser.ast += 'node' + (this.line) + '_' + (this.column) + "->"
+        this.right.ast("");
+
+    }
+
+}
+function get(tipo: ArithmeticOption): string {
+    switch (tipo) {
+        case 0:
+            return "+"
+        case 1:
+            return "-"
+        case 2:
+            return "*"
+        case 3:
+            return "/"
+        case 4:
+            return "%"
+        case 5:
+            return "**"
+        case 6:
+            return "-"
+        case 7:
+            return "+"
+        case 8:
+            return "++"
+        case 9:
+            return "++"
+        case 10:
+            return "--"
+        case 11:
+            return "--"
+        default:
+            return "";
+    }
 }

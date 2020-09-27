@@ -41,4 +41,7 @@ export class Function extends Instruction {
         //console.log("--\n");
         environment.guardarFuncion(this.id, this);
     }
+    public ast(){
+        
+    }
 }

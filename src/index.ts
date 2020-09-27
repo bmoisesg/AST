@@ -1,3 +1,4 @@
+import { parse } from "path";
 import { Instruction } from "./Abstract/Instruction";
 import { Environment } from "./Symbol/Environment";
 
@@ -15,6 +16,16 @@ try {
         const env = new Environment(null);
         //console.log(ast)
         //console.log(parser.Lista_errores);
+        parser.ast='nodeOriginal[label="Lista_Instrucciones"];\n'
+        for (const instr of ast) {
+            try {
+                instr.ast();
+                parser.ast+='nodeOriginal->node'+instr.line+'_'+instr.column+";\n";
+            } catch (error) {
+                //console.error(error);  
+                parser.Lista_errores.push(error.message);
+            }
+        }
 
         for (const instr of ast) {
             try {
@@ -25,8 +36,9 @@ try {
             }
         }
         //console.log(env)
-        console.log("Errores:", parser.Lista_errores);
+        console.log("Errores:",parser.Lista_errores);
         console.log("Consola:",parser.consola);
+        console.log("ast:\n\n", parser.ast);
     }
 }
 catch (error) {

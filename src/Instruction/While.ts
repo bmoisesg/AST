@@ -23,4 +23,7 @@ export class While extends Instruction{
             }
         }
     }
+    public ast(){
+        
+    }
 }

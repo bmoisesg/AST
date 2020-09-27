@@ -66,4 +66,7 @@ export class Call extends Instruction {
             throw new Error("<tr><td>semantico</td><td>No enconte la funcion  '" + this.id + "' </td><td>" + (this.line) + "</td><td>" + (this.column+1) + "</td></tr>");
         }
     }
+    public ast(){
+        
+    }
 }

@@ -24,4 +24,7 @@ export class DoWhile extends Instruction{
         }
         while  (condition.value == true)
     }
+    public ast(){
+        
+    }
 }

@@ -32,4 +32,7 @@ export class Incre extends Instruction {
         //console.log(value.valor)
         env.actualizar(this.id, value.valor,value.type,true);
     }
+    public ast(){
+        
+    }
 }

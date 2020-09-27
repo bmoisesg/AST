@@ -44,4 +44,7 @@ export class Asignacion extends Instruction {
         var condi = environment.actualizar(this.id, val.value, val.type, true);
         //console.log(condi);
     }
+    public ast(){
+        
+    }
 }

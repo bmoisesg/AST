@@ -12,5 +12,5 @@ export abstract class Expression {
     }
 
     public abstract execute(environment: Environment) : Retorno;
-
+    public abstract ast(id:string):void;
 }

@@ -1,5 +1,4 @@
 import { Environment } from "../Symbol/Environment";
-
 export abstract class Instruction {
 
     public line: number;
@@ -11,5 +10,6 @@ export abstract class Instruction {
     }
 
     public abstract execute(environment : Environment) : any;
+    public abstract ast():void
 
 }

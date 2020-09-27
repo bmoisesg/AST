@@ -24,4 +24,7 @@ export class InstFor extends Instruction {
            // console.log(condicion)
         }   
     }
+    public ast(){
+        
+    }
 }

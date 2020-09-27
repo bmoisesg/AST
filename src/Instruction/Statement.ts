@@ -17,4 +17,7 @@ export class Statement extends Instruction{
         }
 
     }
+    public ast(){
+        
+    }
 }

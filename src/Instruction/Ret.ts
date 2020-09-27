@@ -61,4 +61,7 @@ export class Ret extends Instruction {
            
         }
     }
+    public ast(){
+        
+    }
 }

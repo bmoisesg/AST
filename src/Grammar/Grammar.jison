@@ -23,6 +23,7 @@
     var pila_funciones=[];
     var tmp="";
     var consola="";
+    var ast="";
 %}
 
 %lex
@@ -136,6 +137,7 @@ Init
         exports.Lista_errores= Lista_errores;
         exports.pila_funciones= pila_funciones;
         exports.consola= consola;
+        exports.ast= ast;
         return $1;  }
 ;
 
@@ -346,31 +348,28 @@ Expr /*aritmeticas*/
     | ID  '--'               { $$ = new Arithmetic($1, $1, ArithmeticOption.DECREMENTO1, $1, @1.first_line, @1.first_column); } 
     | '--' ID                { $$ = new Arithmetic($2, $2, ArithmeticOption.DECREMENTO2, $2, @2.first_line, @2.first_column); } 
    
-    | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,   @1.first_line, @1.first_column); }       
-    | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS,  @1.first_line, @1.first_column); }
-    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES,  @1.first_line, @1.first_column); }       
-    | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV,    @1.first_line, @1.first_column); }
-    | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO, @1.first_line, @1.first_column); }
-    | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT,    @1.first_line, @1.first_column); }
+    | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,  "", @2.first_line, @2.first_column); }       
+    | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS, "", @2.first_line, @2.first_column); }
+    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES, "", @2.first_line, @2.first_column); }       
+    | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV,   "", @2.first_line, @2.first_column); }
+    | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO,"", @2.first_line, @2.first_column); }
+    | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT,   "", @2.first_line, @2.first_column); }
     
     | F  {  $$ = $1; }
     
     /*relacionales*/
-    | Expr '<'  Expr { $$ = new Relational($1, $3,RelationalOption.MENOR,           @1.first_line, @1.first_column); }
-    | Expr '<=' Expr { $$ = new Relational($1, $3,RelationalOption.MENORIGUAL,      @1.first_line, @1.first_column); }
-    | Expr '>'  Expr { $$ = new Relational($1, $3,RelationalOption.MAYOR,           @1.first_line, @1.first_column); }
-    | Expr '>=' Expr { $$ = new Relational($1, $3,RelationalOption.MAYORIGUAL,      @1.first_line, @1.first_column); }
-    | Expr '==' Expr { $$ = new Relational($1, $3,RelationalOption.IGUAL ,          @1.first_line, @1.first_column); }
-    | Expr '!=' Expr { $$ = new Relational($1, $3,RelationalOption.DIFERENCIACION , @1.first_line, @1.first_column); }
+    | Expr '<'  Expr { $$ = new Relational($1, $3,RelationalOption.MENOR,           @2.first_line, @2.first_column); }
+    | Expr '<=' Expr { $$ = new Relational($1, $3,RelationalOption.MENORIGUAL,      @2.first_line, @2.first_column); }
+    | Expr '>'  Expr { $$ = new Relational($1, $3,RelationalOption.MAYOR,           @2.first_line, @2.first_column); }
+    | Expr '>=' Expr { $$ = new Relational($1, $3,RelationalOption.MAYORIGUAL,      @2.first_line, @2.first_column); }
+    | Expr '==' Expr { $$ = new Relational($1, $3,RelationalOption.IGUAL ,          @2.first_line, @2.first_column); }
+    | Expr '!=' Expr { $$ = new Relational($1, $3,RelationalOption.DIFERENCIACION , @2.first_line, @2.first_column); }
 
     /*logicas*/
-    | Expr '&&' Expr { $$ = new Relational($1, $3,RelationalOption.AND  , @1.first_line, @1.first_column); }
-    | Expr '||' Expr { $$ = new Relational($1, $3,RelationalOption.OR   , @1.first_line, @1.first_column); }
+    | Expr '&&' Expr { $$ = new Relational($1, $3,RelationalOption.AND  , @2.first_line, @2.first_column); }
+    | Expr '||' Expr { $$ = new Relational($1, $3,RelationalOption.OR   , @2.first_line, @2.first_column); }
     | '!' Expr       { $$ = new Relational($2, $2,RelationalOption.NOT  , @1.first_line, @1.first_column); }
    
-   // | ID '++'        { $$ = new Relational($1, $1,RelationalOption.INCREMENTO2  , @1.first_line, @1.first_column); }   
-   // | '--' ID        { $$ = new Relational($2, $2,RelationalOption.DECREMENTO1  , @2.first_line, @2.first_column); } 
-   // | ID '--'        { $$ = new Relational($1, $1,RelationalOption.DECREMENTO2  , @1.first_line, @1.first_column); }   
 ;
 
 F   : '(' Expr ')'  {  $$ = $2; }

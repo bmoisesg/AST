@@ -1,15 +1,2 @@
-
-function id(){
-    console.log("hola");
-    console.log("mundo linda");
-    return ;
-}
-
-function moises ( id:string, condicion:boolean):number{
-    console.log("val1: "+id);
-    console.log("val2: "+condicion);
-    return  0 ;
-}
-
-moises("moise", true);
-id();
+let numero=0;
+console.log(!true);

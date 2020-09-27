@@ -24,4 +24,7 @@ export class If extends Instruction{
             this.elsSt?.execute(env);
         }
     }
+    public ast(){
+        
+    }
 }

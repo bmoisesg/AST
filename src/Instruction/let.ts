@@ -3,7 +3,7 @@ import { Environment } from "../Symbol/Environment";
 import { Expression } from "../Abstract/Expression";
 import { env } from "process";
 import { Type } from "../Abstract/Retorno";
-
+const parser = require('../Grammar/Grammar');
 export class Let extends Instruction {
 
     private id: string;
@@ -44,6 +44,15 @@ export class Let extends Instruction {
                     throw new Error("<tr><td>semantico</td><td>Type '" + val.type + "' is not assignable to type '" + this.valorSeteando + "'</td><td>" + this.value.line + "</td><td>" + this.value.column + "</td></tr>");
                 }
             }
+        }
+    }
+    public ast() {
+        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Declarcion let"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="' + this.id + '"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
+        if (this.value != null) {
+            parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="expresion"];\n';
+            parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
         }
     }
 }
