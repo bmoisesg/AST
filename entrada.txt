@@ -1,5 +1,5 @@
 let numero:boolean=true;
 let constabtes=0+5;
 numero=5+5>10;
-return 9/8;
-return;
+juan();
+maria(5+5,"false",true||true,5);

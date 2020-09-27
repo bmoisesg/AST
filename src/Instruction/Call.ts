@@ -1,7 +1,7 @@
 import { Instruction } from "../Abstract/Instruction";
 import { Environment } from "../Symbol/Environment";
 import { Expression } from "../Abstract/Expression";
-
+const parser = require('../Grammar/Grammar');
 export class Call extends Instruction {
 
     constructor(
@@ -67,6 +67,15 @@ export class Call extends Instruction {
         }
     }
     public ast(){
-        
+        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Llamada funcion"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="' + this.id + '"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="Parametros"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
+        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
+        this.expresiones.forEach(element => {
+            parser.ast += 'node' + this.line + '_' + (this.column) + "2-> ";
+            element.ast("");
+        });
+       
     }
 }
