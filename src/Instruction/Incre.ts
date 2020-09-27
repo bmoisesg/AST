@@ -2,7 +2,7 @@ import { Instruction } from "../Abstract/Instruction";
 import { Expression } from "../Abstract/Expression";
 import { Environment } from "../Symbol/Environment";
 import { Type } from "../Abstract/Retorno";
-
+const parser = require('../Grammar/Grammar');
 export class Incre extends Instruction {
 
     constructor(
@@ -33,6 +33,9 @@ export class Incre extends Instruction {
         env.actualizar(this.id, value.valor,value.type,true);
     }
     public ast(){
-        
+        if (this.tipo=="++") parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Incremento"];\n';
+        else parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Decremento"];\n';
+             parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="' + this.id + '"];\n';
+             parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column)+"1;\n" ;
     }
 }
