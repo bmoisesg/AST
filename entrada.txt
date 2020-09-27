@@ -1,13 +1,16 @@
 let numero:boolean=true;
 let constabtes=0+5;
 {
-    let numero=0;
-    console.log("pruebas");
+    if (10>5){
+        console.log("pablo");
+    }else if (5==10)
     {
-        console.log("mensaje");
+        console.log("dentro del else"+"moises");
     }
-    do{
-        console.log("dentro while");
-        console.log("hola mundo"+5);
-    }while(5>10);
+    else if (5==10)
+    {
+        console.log("dentro del else"+"moises");
+    }else{
+        console.log("hola");
+    }
 }
