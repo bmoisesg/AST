@@ -2,6 +2,7 @@ import { Instruction } from "../Abstract/Instruction";
 import { Expression } from "../Abstract/Expression";
 import { Environment } from "../Symbol/Environment";
 import { Type } from "../Abstract/Retorno";
+const parser = require('../Grammar/Grammar');
 export class InstFor extends Instruction {
 
     constructor(
@@ -25,6 +26,15 @@ export class InstFor extends Instruction {
         }   
     }
     public ast(){
+        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n for"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.primerArgumento.line + '_' + (this.primerArgumento.column)+';\n'
+        this.primerArgumento.ast();
+        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.tercerArgumento.line + '_' + (this.tercerArgumento.column)+';\n'
+        this.tercerArgumento.ast();
+        parser.ast += 'node' + this.line + '_' + (this.column) +'->'
+        this.segundoArgumento.ast("")
+        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.code.line + '_' + (this.code.column)+';\n'
+        this.code.ast()
         
     }
 }
