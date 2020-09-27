@@ -6,8 +6,8 @@ let constabtes=0+5;
     {
         console.log("mensaje");
     }
-    while(5>10){
+    do{
         console.log("dentro while");
         console.log("hola mundo"+5);
-    }
+    }while(5>10);
 }

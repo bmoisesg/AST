@@ -329,7 +329,7 @@ ElseSt
 ;
 
 DOWHILE
-    : 't_do' Statement 'WHILE' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @5.first_line, @5.first_column);    }
+    : 't_do' Statement 'WHILE' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @1.first_line, @1.first_column);    }
 ;
 
 WhileSt
