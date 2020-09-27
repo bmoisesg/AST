@@ -1,7 +1,7 @@
 import { Instruction } from "../Abstract/Instruction";
 import { Expression } from "../Abstract/Expression";
 import { Environment } from "../Symbol/Environment";
-
+const parser = require('../Grammar/Grammar');
 export class Function extends Instruction {
 
     constructor(
@@ -42,6 +42,19 @@ export class Function extends Instruction {
         environment.guardarFuncion(this.id, this);
     }
     public ast(){
+        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n funcion"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '1[label="'+this.id+'"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '2[label="parametros"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.line + '_' + (this.column)+"1;\n"
+        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.line + '_' + (this.column)+"2;\n"
+        this.statment.ast();
         
+        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.statment.line + '_' + (this.statment.column)+';\n'
+        var x=0;
+        this.parametros.forEach(element => {
+            parser.ast += 'node' + this.line + '_' + (this.column) + '_'+x+' [label="'+element+'"];\n';
+            parser.ast += 'node' + this.line + '_' + (this.column) +'2->node' + this.line + '_' + (this.column) + '_'+x+";\n"
+            x++;
+        });
     }
 }

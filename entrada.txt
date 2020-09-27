@@ -1,16 +1,8 @@
 let numero:boolean=true;
 let constabtes=0+5;
-{
-    if (10>5){
-        console.log("pablo");
-    }else if (5==10)
-    {
-        console.log("dentro del else"+"moises");
-    }
-    else if (5==10)
-    {
-        console.log("dentro del else"+"moises");
-    }else{
-        console.log("hola");
-    }
+function moises(id:string, x:number){
+    console.log("texto");
+}
+function moises2(){
+    console.log("t");
 }
