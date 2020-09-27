@@ -10,7 +10,12 @@ export class Let extends Instruction {
     private value: Expression;
     private valorSeteando: string;
 
-    constructor(id: string, value: Expression, valorSeteando: string, line: number, column: number) {
+    constructor(
+        id: string,
+        value: Expression,
+        valorSeteando: string,
+        line: number, column: number) {
+
         super(line, column);
         this.id = id;
         this.value = value;
@@ -49,10 +54,12 @@ export class Let extends Instruction {
     public ast() {
         parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Declarcion let"];\n';
         parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="' + this.id + '"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="' + this.valorSeteando + '"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column)+ '->node' + this.line + '_' + (this.column) + '2;\n' 
         parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
         if (this.value != null) {
-            parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="expresion"];\n';
-            parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
+            parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
+            this.value.ast("");
         }
     }
 }

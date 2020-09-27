@@ -31,7 +31,7 @@ export class Declaration extends Instruction {
                 val.type == 1 && this.valorSeteando == "string" ||
                 val.type == 2 && this.valorSeteando == "boolean"
             ) {
-                let condicion=environment.guardar(this.id, val.value, val.type, false);
+                let condicion = environment.guardar(this.id, val.value, val.type, false);
                 if (!condicion) {
                     throw new Error("<tr><td>semantico</td><td>Esta variable '" + this.id + "' ya existe en el entorno actual</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
                 }
@@ -40,12 +40,15 @@ export class Declaration extends Instruction {
             }
         }
     }
-    public ast(){
+    public ast() {
         parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Declarcion const"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="'+this.id+'"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="expresion"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="' + this.id + '"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="' + this.valorSeteando + '"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column)+ '->node' + this.line + '_' + (this.column) + '2;\n' 
         parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
-        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
+
+        parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
+        this.value.ast("");
     }
 
 }

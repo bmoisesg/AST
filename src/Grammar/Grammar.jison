@@ -276,6 +276,15 @@ Declaration2
     | 't_let' ID ':' 't_number' '='  Expr {
         $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
     }
+    | 't_let' ID ':' 't_boolean'  {
+        $$ = new Let($2, null, $4, @1.first_line, @1.first_column);
+    }
+    | 't_let' ID ':' 't_string'  {
+        $$ = new Let($2, null, $4, @1.first_line, @1.first_column);
+    }
+    | 't_let' ID ':' 't_number' {
+        $$ = new Let($2, null, $4, @1.first_line, @1.first_column);
+    }
     | 't_let' ID  {
         $$ = new Let($2, null, null, @1.first_line, @1.first_column);
     }

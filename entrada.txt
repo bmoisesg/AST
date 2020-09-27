@@ -1,2 +1,3 @@
-let numero=0;
-console.log(!true);
+let numero:boolean=true;
+let constabtes=0+5;
+const maria="juan"+"luis";
