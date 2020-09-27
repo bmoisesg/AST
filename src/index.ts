@@ -1,5 +1,6 @@
 import { parse } from "path";
 import { Instruction } from "./Abstract/Instruction";
+import { OperadorTernario } from "./Instruction/OperadorTernario";
 import { Environment } from "./Symbol/Environment";
 
 const parser = require('./Grammar/Grammar');
@@ -16,11 +17,11 @@ try {
         const env = new Environment(null);
         //console.log(ast)
         //console.log(parser.Lista_errores);
-        parser.ast='nodeOriginal[label="Lista_Instrucciones"];\n'
+        parser.ast = 'nodeOriginal[label="Lista_Instrucciones"];\n'
         for (const instr of ast) {
             try {
                 instr.ast();
-                parser.ast+='nodeOriginal->node'+instr.line+'_'+instr.column+";\n";
+                parser.ast += 'nodeOriginal->node' + instr.line + '_' + instr.column + ";\n";
             } catch (error) {
                 //console.error(error);  
                 parser.Lista_errores.push(error.message);
@@ -36,8 +37,8 @@ try {
             }
         }
         //console.log(env)
-        console.log("Errores:",parser.Lista_errores);
-        console.log("Consola:",parser.consola);
+        console.log("Errores:", parser.Lista_errores);
+        console.log("Consola:", parser.consola);
         console.log("ast:\n\n", parser.ast);
     }
 }

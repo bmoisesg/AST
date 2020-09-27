@@ -3,7 +3,8 @@ import { Environment } from "../Symbol/Environment";
 import { Expression } from "../Abstract/Expression";
 import { env } from "process";
 import { Type } from "../Abstract/Retorno";
-
+import { parse } from "path";
+const parser = require('../Grammar/Grammar');
 
 export class OperadorTernario extends Instruction {
     //este es codigo de bmoisesg nunca lo compartire o comparti
@@ -35,6 +36,16 @@ export class OperadorTernario extends Instruction {
         }
     }
     public ast(){
-        
+        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Operacion ternario"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '1[label="instruccion1"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '2[label="instruccion2"];\n';
+        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
+        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
+        parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
+        this.condicon.ast("");
+        parser.ast += 'node' + this.line + '_' + (this.column) +'1->node' + this.valor1.line + '_' + (this.valor1.column)+";\n" 
+        this.valor1.ast();
+        parser.ast += 'node' + this.line + '_' + (this.column) +'2->node' + this.valor2.line + '_' + (this.valor2.column)+";\n" 
+        this.valor2.ast();
     }
 }

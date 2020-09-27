@@ -1,6 +1,6 @@
 import { Instruction } from "../Abstract/Instruction";
 import { Environment } from "../Symbol/Environment";
-
+const parser = require('../Grammar/Grammar');
 export class Statement extends Instruction{
 
     constructor(private code : Array<Instruction>, line : number, column : number){
@@ -18,6 +18,10 @@ export class Statement extends Instruction{
 
     }
     public ast(){
-        
+        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="Lista Instrucciones"];\n';
+        this.code.forEach(element => {
+            parser.ast += 'node' + this.line + '_' + (this.column) +'->node' + element.line + '_' + (element.column) +';\n' 
+            element.ast();
+        });
     }
 }

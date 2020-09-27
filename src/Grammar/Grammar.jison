@@ -241,13 +241,17 @@ for2
 
 OperadorTernario
     : Expr '?' ParaOperadorTernario ':' ParaOperadorTernario {
-            $$=new OperadorTernario($1, $3, $5 ,@1.first_line, @1.first_column );
+            $$=new OperadorTernario($1, $3, $5 ,@2.first_line, @2.first_column );
     } 
 ;
 
 ParaOperadorTernario
     :PrintSt          { $$=$1; }
     |Asignacion       { $$=$1; }
+    |   '++' ID     { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
+    |   ID  '++'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   ID  '--'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   '--' ID    { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
 ;
 
 Asignacion
