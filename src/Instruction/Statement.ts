@@ -18,9 +18,10 @@ export class Statement extends Instruction{
 
     }
     public ast(){
+        //onsole.log(this.line, "-- ", this.column);
         parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="Lista Instrucciones"];\n';
         this.code.forEach(element => {
-            parser.ast += 'node' + this.line + '_' + (this.column) +'->node' + element.line + '_' + (element.column) +';\n' 
+            parser.ast += 'node' + this.line + '_' + (this.column) +'->node' + element.line + '_' + (element.column) +' ;\n' 
             element.ast();
         });
     }

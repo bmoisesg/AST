@@ -245,7 +245,7 @@ case 69:
   this.$ = new DoWhile($$[$0-1], $$[$0-4], _$[$0-1].first_line, _$[$0-1].first_column);    
 break;
 case 70:
-  this.$ = new While($$[$0-2], $$[$0], _$[$0-4].first_line, _$[$0-2].first_column);    
+  this.$ = new While($$[$0-2], $$[$0], _$[$0-4].first_line, _$[$0-4].first_column);    
 break;
 case 71:
 

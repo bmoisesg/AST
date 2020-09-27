@@ -3,4 +3,11 @@ let constabtes=0+5;
 {
     let numero=0;
     console.log("pruebas");
+    {
+        console.log("mensaje");
+    }
+    while(5>10){
+        console.log("dentro while");
+        console.log("hola mundo"+5);
+    }
 }
