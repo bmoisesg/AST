@@ -2,8 +2,9 @@ let encabezado="==============Empezar=======";
 console.log(encabezado);
 let x=0;
 let xs: string[]=["moises","5","true","5", encabezado, 5+"hola"];
-
-{
-let x: string[]=["moises","5","true","5", encabezado, 5+"hola"];
-
-}
+xs.push("123");
+xs.push(123.2+"6");
+xs=["m","o","i",5+"s"];
+console.log(xs.length);
+let numero:number= xs.length;
+console.log(xs[3]);

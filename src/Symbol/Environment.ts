@@ -17,6 +17,15 @@ export class Environment {
     }
 
     public guardar(id: string, valor: any, type: Type, condicion: boolean): boolean {
+        for (let entry of Array.from(this.arreglos.entries())) {
+            let key = entry[0];
+            //console.log("->",key,value);
+            //console.log(key +"=="+id+"?");
+            if (key == id) {
+                //console.log("si");
+                return false
+            }
+        }
         for (let entry of Array.from(this.variables.entries())) {
             let key = entry[0];
             let value = entry[1];
@@ -129,6 +138,16 @@ export class Environment {
             //console.log("pregunta:", key,"," ,id, "condicion=",  key == id)
             if (key == id) {
                 return true// si encontro una funcion con este nombre
+            }
+        }
+        return false;
+    }
+    public getExisteIdArray(id: string): boolean {
+
+        for (let entry of Array.from(this.arreglos.entries())) {
+            let key = entry[0];
+            if (key == id) {
+                return true// si encontro un array con este nombre
             }
         }
         return false;

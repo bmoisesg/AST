@@ -427,8 +427,9 @@ Expr /*aritmeticas*/
     | Expr '||' Expr { $$ = new Relational($1, $3,RelationalOption.OR   , @2.first_line, @2.first_column); }
     | '!' Expr       { $$ = new Relational($2, $2,RelationalOption.NOT  , @1.first_line, @1.first_column); }
    
-   | ID '.' 't_length'          { $$= new ExpreArray($1,false,@1.first_line, @1.first_column); }
-   | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,@1.first_line, @1.first_column); }
+   | ID '.' 't_length'          { $$= new ExpreArray($1,false,false,null,@1.first_line, @1.first_column); }
+   | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,false,null,@1.first_line, @1.first_column); }
+   | ID '['  Expr ']'           { $$= new ExpreArray($1,true ,true ,$3  ,@1.first_line, @1.first_column); }
 ;
 
 F   : '(' Expr ')'  {  $$ = $2; }
