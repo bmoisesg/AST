@@ -1,6 +1,9 @@
 let encabezado="==============Empezar=======";
 console.log(encabezado);
+let x=0;
+let xs: string[]=["moises","5","true","5", encabezado, 5+"hola"];
 
-let x: string[]=["moises",5+5,true,5,5];
-let x2: string[]=[5];
-let x1: Array < string > = [5,5];
+{
+let x: string[]=["moises","5","true","5", encabezado, 5+"hola"];
+
+}

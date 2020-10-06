@@ -2,15 +2,18 @@ import { env } from "process"
 import { Symbol } from "./Symbol";
 import { Type } from "../Abstract/Retorno";
 import { InsFuncion } from "../Instruction/InsFuncion"
+import { Arreglo } from "../Instruction/Arreglo";
 
 export class Environment {
 
     private variables: Map<string, Symbol>;
     public funciones: Map<string, InsFuncion>;
+    public arreglos: Map<string, Arreglo>;
 
     constructor(public anterior: Environment | null) {
         this.variables = new Map();
         this.funciones = new Map();
+        this.arreglos = new Map();
     }
 
     public guardar(id: string, valor: any, type: Type, condicion: boolean): boolean {
@@ -26,6 +29,28 @@ export class Environment {
         }
         this.variables.set(id, new Symbol(valor, id, type, condicion));
         return true
+    }
+    public guardarArreglo(id: string, tmp:Arreglo): boolean {
+        for (let entry of Array.from(this.variables.entries())) {
+            let key = entry[0];
+            //console.log("->",key,value);
+            //console.log(key +"=="+id+"?");
+            if (key == id) {
+                //console.log("si");
+                return true
+            }
+        }
+        for (let entry of Array.from(this.arreglos.entries())) {
+            let key = entry[0];
+            //console.log("->",key,value);
+            //console.log(key +"=="+id+"?");
+            if (key == id) {
+                //console.log("si");
+                return true
+            }
+        }
+        this.arreglos.set(id,tmp);
+        return false
     }
     public getEntorno(): String {
         var tmp = "";
@@ -118,6 +143,32 @@ export class Environment {
             env = env.anterior;
         }
         return undefined;
+    }
+    public getArray(id: string): Arreglo | undefined {
+        let env: Environment | null = this;
+        while (env != null) {
+            if (env.arreglos.has(id)) {
+                return env.arreglos.get(id);
+            }
+            env = env.anterior;
+        }
+        return undefined;
+    }
+    public updateArray(id: string, arreglo:Array<any>) {
+        let env: Environment | null = this;
+        while (env != null) {
+            if (env.arreglos.has(id)) {
+                for (let entry of Array.from(env.arreglos.entries())) {
+                    let key = entry[0];
+                    let value = entry[1];
+                    if (key == id) {
+                        entry[1].contenido = arreglo; 
+                        return true//significa que si encontro el entorno
+                    }
+                }
+            }
+            env = env.anterior;
+        }
     }
 
     public getGlobal(): Environment {

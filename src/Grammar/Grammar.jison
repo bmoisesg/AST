@@ -20,6 +20,8 @@
     const {Ret} =require('../Instruction/Ret');
     const {GraficarTablaSimbolos} = require('../Instruction/Gr');
     const {Arreglo} = require('../Instruction/Arreglo');
+    const {AccesoArreglo} = require('../Instruction/AccesoArreglo');
+    const {ExpreArray} = require('../Expression/ExpreArray');
 
     var Lista_errores=[];
     var pila_funciones=[];
@@ -100,6 +102,9 @@ stringplantilla  [\`][^`]* [\`]
 ")"                     return ')' 
 "{"                     return '{'
 "}"                     return '}'
+"length"                return 't_length'
+"push"                  return 't_push'
+"pop"                   return 't_pop'
 "Array"                 return 't_array'
 "if"                    return 'IF'
 "else"                  return 'ELSE'
@@ -170,18 +175,28 @@ Instruction
     | CALLFUNCION          {  $$ = $1;  }
     | INCREMENTO           {  $$ = $1;  }
     | GRAFICAR         ';' {  $$ = $1;  } 
-    | GRAFICAR             {  $$ = $1;  } 
+    | GRAFICAR             {  $$ = $1;  }
+    | INSARRREGLO          {  $$ = $1;  }
     | RETORNO          ';' {  $$ = $1;  } 
-    | OperadorTernario ';'  {  $$ = $1;  }
+    | OperadorTernario ';' {  $$ = $1;  }
     | DOWHILE          ';' {  $$ = $1;  }
     | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
     //| error            '}' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
 
+
+INSARRREGLO
+    : ID '[' Expr ']' '='  Expr     ';' { $$=new AccesoArreglo($1,null,$3, $6  ,false,false, @1.first_line, @1.first_column );}
+    | ID '=' '[' ContenidoArray ']' ';' { $$=new AccesoArreglo($1,$4,null, null,false,false, @1.first_line, @1.first_column );}
+    | ID '.' 't_push' '(' Expr ')'  ';' { $$=new AccesoArreglo($1,null,null,$5 ,true ,false, @1.first_line, @1.first_column);}
+    | ID '.' 't_pop'  '(' ')'       ';' { $$=new AccesoArreglo($1,null,null,$5 ,true ,true , @1.first_line, @1.first_column);}
+;
+
 INSTARRAR
-    :'t_let' ID ':' TIPOS '[' ']' '=' '[' ContenidoArray ']'          { $$= new Arreglo($2,$9   ,@1.first_line, @1.first_column );}
-    |'t_let' ID ':' t_array '<' TIPOS '>' '=' '[' ContenidoArray ']'  { $$= new Arreglo($2,$10  ,@1.first_line, @1.first_column );}   
-    |'t_let' ID ':' TIPOS '[' ']'                             { $$= new Arreglo($2,null,@1.first_line, @1.first_column );}
+    :'t_let' ID ':' TIPOS '[' ']' '=' '[' ContenidoArray ']'          { $$= new Arreglo($2,$9  ,$4,[], @1.first_line, @1.first_column );}
+    |'t_let' ID ':' t_array '<' TIPOS '>' '=' '[' ContenidoArray ']'  { $$= new Arreglo($2,$10 ,$6,[], @1.first_line, @1.first_column );}   
+    |'t_let' ID ':' TIPOS '[' ']'                                     { $$= new Arreglo($2,null,$4,[], @1.first_line, @1.first_column );}
+    |'t_let' ID ':' t_array '<' TIPOS '>'                             { $$= new Arreglo($2,null,$6,[], @1.first_line, @1.first_column );}
 ;
 
 ContenidoArray
@@ -412,6 +427,8 @@ Expr /*aritmeticas*/
     | Expr '||' Expr { $$ = new Relational($1, $3,RelationalOption.OR   , @2.first_line, @2.first_column); }
     | '!' Expr       { $$ = new Relational($2, $2,RelationalOption.NOT  , @1.first_line, @1.first_column); }
    
+   | ID '.' 't_length'          { $$= new ExpreArray($1,false,@1.first_line, @1.first_column); }
+   | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,@1.first_line, @1.first_column); }
 ;
 
 F   : '(' Expr ')'  {  $$ = $2; }
