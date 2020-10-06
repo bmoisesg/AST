@@ -1,10 +1,15 @@
 let encabezado="==============Empezar=======";
 console.log(encabezado);
-let x=0;
 let xs: string[]=["moises","5","true","5", encabezado, 5+"hola"];
-xs.push("123");
-xs.push(123.2+"6");
-xs=["m","o","i",5+"s"];
-console.log(xs.length);
-let numero:number= xs.length;
-console.log(xs[3]);
+    xs.push("s");
+for(let x=0; x<xs.length; x++){
+    console.log("->"+xs[x]);
+    xs[x]="moises";
+  
+}
+
+for(let x=0; x<xs.length; x++){
+    console.log("->"+xs[x]);
+ //   xs[x]="moises";
+  
+}

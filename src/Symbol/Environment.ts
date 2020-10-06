@@ -39,7 +39,7 @@ export class Environment {
         this.variables.set(id, new Symbol(valor, id, type, condicion));
         return true
     }
-    public guardarArreglo(id: string, tmp:Arreglo): boolean {
+    public guardarArreglo(id: string, tmp: Arreglo): boolean {
         for (let entry of Array.from(this.variables.entries())) {
             let key = entry[0];
             //console.log("->",key,value);
@@ -58,39 +58,39 @@ export class Environment {
                 return true
             }
         }
-        this.arreglos.set(id,tmp);
+        this.arreglos.set(id, tmp);
         return false
     }
     public getEntorno(): String {
         var tmp = "";
         let env: Environment | null = this;
-        tmp+="<table border=1><td>"
+        tmp += "<table border=1><td>"
         while (env != null) {
-            tmp+="<table border=1><tr><th>Nombre</th><th>Tipo</th><th>Valor</th></tr>"
+            tmp += "<table border=1><tr><th>Nombre</th><th>Tipo</th><th>Valor</th></tr>"
             for (let entry of Array.from(env.variables.entries())) {
-                tmp+="<tr>"
+                tmp += "<tr>"
                 let key = entry[0];
-                tmp+="<td>"+key+"</td>";
+                tmp += "<td>" + key + "</td>";
                 let value = entry[1];
-                 
-                tmp+="<td>"+getTipo(value.type)+"</td>"
-                tmp+="<td>"+value.valor+"</td>"
-                tmp+="</tr>"
+
+                tmp += "<td>" + getTipo(value.type) + "</td>"
+                tmp += "<td>" + value.valor + "</td>"
+                tmp += "</tr>"
             }
             for (let entry of Array.from(env.funciones.entries())) {
-                tmp+="<tr>"
+                tmp += "<tr>"
                 let key = entry[0];
-                tmp+="<td>"+key+"</td>";
+                tmp += "<td>" + key + "</td>";
                 let value = entry[1];
-                
-                tmp+="<td>"+getTipo(4)+"</td>"
-                tmp+="<td>"+value.parametros+"</td>"
-                tmp+="</tr>"
+
+                tmp += "<td>" + getTipo(4) + "</td>"
+                tmp += "<td>" + value.parametros + "</td>"
+                tmp += "</tr>"
             }
-            tmp+="</table><br>"
+            tmp += "</table><br>"
             env = env.anterior;
         }
-        tmp+="</td></table><br>"
+        tmp += "</td></table><br>"
         return tmp;
     }
 
@@ -143,12 +143,18 @@ export class Environment {
         return false;
     }
     public getExisteIdArray(id: string): boolean {
-
-        for (let entry of Array.from(this.arreglos.entries())) {
-            let key = entry[0];
-            if (key == id) {
-                return true// si encontro un array con este nombre
+        let env: Environment | null = this;
+        while (env != null) {
+            for (let entry of Array.from(env.arreglos.entries())) {
+                let key = entry[0];
+                //console.log(key,"==",id);
+                if (key == id) {
+                    //console.log("si");
+                    return true// si encontro un array con este nombre
+                }
             }
+            env = env.anterior;
+
         }
         return false;
     }
@@ -173,7 +179,7 @@ export class Environment {
         }
         return undefined;
     }
-    public updateArray(id: string, arreglo:Array<any>) {
+    public updateArray(id: string, arreglo: Array<any>) {
         let env: Environment | null = this;
         while (env != null) {
             if (env.arreglos.has(id)) {
@@ -181,7 +187,7 @@ export class Environment {
                     let key = entry[0];
                     let value = entry[1];
                     if (key == id) {
-                        entry[1].contenido = arreglo; 
+                        entry[1].contenido = arreglo;
                         return true//significa que si encontro el entorno
                     }
                 }
@@ -200,13 +206,13 @@ export class Environment {
 }
 
 
-function getTipo(id:number):String {
+function getTipo(id: number): String {
     switch (id) {
         case 0:
             return "Numero"
-        case 1: 
+        case 1:
             return "String"
-        case 2: 
+        case 2:
             return "Boolean"
         default:
             return "void";

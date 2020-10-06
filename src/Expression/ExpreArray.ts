@@ -17,16 +17,17 @@ export class ExpreArray extends Expression {
     }
     public execute(environment: Environment): Retorno {
         let result: Retorno;
-
-        if (!environment.getExisteIdArray(this.id)) {
-            throw new Error("<tr><td>semantico</td><td>Este array '" + this.id + "' no existe en el ambito actual</td><td>" + (this.line) + "</td><td>" + (this.column + 1) + "</td></tr>");
+        var condicion =environment.getExisteIdArray(this.id)
+       // console.log(condicion);
+        if (condicion==false) {
+            throw new Error("<tr><td>semantico</td><td>Este array '" + this.id + "' no existe </td><td>" + (this.line) + "</td><td>" + (this.column + 1) + "</td></tr>");
         }
 
 
         //desde este punto si existe el array
         var arregloLocal_tmp = environment.getArray(this.id);
         var arregloLocal = environment.getArray(this.id)?.contenido as Array<any>;
-        //TODO aun falta un get dato como: name[num]
+        
         
         if(this.condicionAsignacion){
             const expresion = this.expresion.execute(environment);
