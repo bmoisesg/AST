@@ -44,7 +44,7 @@ export class Relational extends Expression {
             const result = valueIzq.value != valueDer.value;
             return { value: result, type: Type.BOOLEAN };
 
-        } else if (this.type == RelationalOption.MENOR) {
+        } else if (this.type == RelationalOption.MENOR) { 
             const result = valueIzq.value < valueDer.value;
             return { value: result, type: Type.BOOLEAN };
 

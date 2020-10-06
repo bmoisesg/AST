@@ -2,7 +2,7 @@ import { Instruction } from "../Abstract/Instruction";
 import { Expression } from "../Abstract/Expression";
 import { Environment } from "../Symbol/Environment";
 const parser = require('../Grammar/Grammar');
-export class Function extends Instruction {
+export class InsFuncion extends Instruction {
 
     constructor(
         public id: string,

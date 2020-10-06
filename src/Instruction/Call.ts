@@ -47,7 +47,7 @@ export class Call extends Instruction {
            // console.log("---------")
             let y=0;
             this.expresiones.forEach(element => {
-                const x = element.execute(newEnv);
+                const x = element.execute(environment);
                 //console.log(condition);
                 newEnv.guardar(func.parametros[y].split(",")[0], x.value, x.type,true);
                 y++;

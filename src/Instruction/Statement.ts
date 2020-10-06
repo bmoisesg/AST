@@ -1,5 +1,7 @@
 import { Instruction } from "../Abstract/Instruction";
 import { Environment } from "../Symbol/Environment";
+import { InsFuncion } from "./InsFuncion";
+
 const parser = require('../Grammar/Grammar');
 export class Statement extends Instruction{
 
@@ -9,11 +11,22 @@ export class Statement extends Instruction{
 
     public execute(env : Environment) {
         const newEnv = new Environment(env);
-        for(const instr of this.code){
-            let instruccion =instr.execute(newEnv);
-            if (instruccion =="@si"){
-                return
+        /*for(const instr of this.code){
+            if(instr instanceof InsFuncion){
+                instr.execute(env)
+                console.log(env)
             }
+        }*/
+
+        for(const instr of this.code){
+            /*if(instr instanceof InsFuncion){
+            }
+            else {*/
+                let instruccion =instr.execute(newEnv);
+                if (instruccion == "@si"){
+                    return
+                }
+            //}
         }
 
     }

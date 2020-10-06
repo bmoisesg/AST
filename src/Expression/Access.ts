@@ -12,7 +12,8 @@ export class Access extends Expression{
     public execute(environment: Environment): Retorno {
         const value = environment.getVar(this.id);
         if(value == null)
-            throw new Error("La variable no existe");
+            //throw new Error("La variable no existe");
+            throw new Error("<tr><td>semantico</td><td>La variable '" + this.id + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
         return {value : value.valor, type : value.type};
     }
     public ast(id:string){

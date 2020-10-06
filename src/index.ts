@@ -1,8 +1,6 @@
-import { parse } from "path";
-import { Instruction } from "./Abstract/Instruction";
-import { OperadorTernario } from "./Instruction/OperadorTernario";
-import { Environment } from "./Symbol/Environment";
 
+import { InsFuncion } from "./Instruction/InsFuncion";
+import { Environment } from "./Symbol/Environment";
 const parser = require('./Grammar/Grammar');
 const fs = require('fs');
 
@@ -31,15 +29,17 @@ try {
         for (const instr of ast) {
             try {
                 instr.execute(env);
+                
             } catch (error) {
                 //console.error(error);  
                 parser.Lista_errores.push(error.message);
             }
         }
         //console.log(env)
-        console.log("Errores:", parser.Lista_errores);
-        console.log("Consola:", parser.consola);
-        console.log("ast:\n\n", parser.ast);
+        console.log("Errores:\n", parser.Lista_errores);
+        console.log("Consola:\n", parser.consola);
+        console.log("Entornos:\n", parser.graficarTS);
+        //console.log("ast:\n\n", parser.ast.replace("\n",""));
     }
 }
 catch (error) {

@@ -15,15 +15,17 @@
     const {DoWhile} = require('../Instruction/Dowhile');
     const {InstFor} = require('../Instruction/InstFor');
     const {Incre} = require('../Instruction/Incre');
-    const {Function} = require('../Instruction/Function');
+    const {InsFuncion} = require('../Instruction/InsFuncion');
     const {Call} = require('../Instruction/Call');
     const {Ret} =require('../Instruction/Ret');
+    const {GraficarTablaSimbolos} = require('../Instruction/Gr');
 
     var Lista_errores=[];
     var pila_funciones=[];
     var tmp="";
     var consola="";
     var ast="";
+    var graficarTS="";
 %}
 
 %lex
@@ -109,6 +111,7 @@ stringplantilla  [\`][^`]* [\`]
 "log"                   return 'LOG'
 "function"              return 't_function'
 "return"                return 't_return'
+"graficar_ts"           return 't_graficar_ts'
 
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
@@ -138,6 +141,7 @@ Init
         exports.pila_funciones= pila_funciones;
         exports.consola= consola;
         exports.ast= ast;
+        exports.graficarTS= graficarTS;
         return $1;  }
 ;
 
@@ -151,15 +155,17 @@ Instruction
     | WhileSt              {  $$ = $1;  }
     | Statement            {  $$ = $1;  }
     | FOR                  {  $$ = $1;  }
-    | FUNCION              {  $$ = $1;  }
+    | FUNCIONN             {  $$ = $1;  }
     | PrintSt          ';' {  $$ = $1;  }
+    | PrintSt              {  $$ = $1;  }
     | Declaration1     ';' {  $$ = $1;  }
     | Declaration2     ';' {  $$ = $1;  }
     | Asignacion       ';' {  $$ = $1;  }
     | CALLFUNCION      ';' {  $$ = $1;  }
     | CALLFUNCION          {  $$ = $1;  }
     | INCREMENTO           {  $$ = $1;  }
-    
+    | GRAFICAR         ';' {  $$ = $1;  } 
+    | GRAFICAR             {  $$ = $1;  } 
     | RETORNO          ';' {  $$ = $1;  } 
     | OperadorTernario ';'  {  $$ = $1;  }
 
@@ -168,6 +174,9 @@ Instruction
     //| error            '}' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
 
+GRAFICAR
+    : t_graficar_ts '(' ')' {$$= new GraficarTablaSimbolos(@1.first_line, @1.first_column);}
+;
 RETORNO
     :'t_return'      { $$= new Ret(null,@1.first_line, @1.first_column);}
     |'t_return' Expr { $$= new Ret($2  ,@1.first_line, @1.first_column);}
@@ -193,18 +202,19 @@ ListaExpr
 ;    
 
 
-FUNCION
+FUNCIONN
     : 't_function' ID '(' ')' Statement {
-        $$ = new Function($2, $5, [], "",@1.first_line, @1.first_column);
+       
+        $$ = new InsFuncion($2, $5, [], "",@1.first_line, @1.first_column);
     }
     | 't_function' ID '(' Parametros ')' Statement {
-        $$ = new Function($2, $6, $4, "",@1.first_line, @1.first_column);
+        $$ = new InsFuncion($2, $6, $4, "",@1.first_line, @1.first_column);
     }
     |'t_function' ID '(' ')' ':' TIPOS Statement  {
-        $$ = new Function($2, $7, [], $6,@1.first_line, @1.first_column);
+        $$ = new InsFuncion($2, $7, [], $6,@1.first_line, @1.first_column);
     }
     | 't_function' ID '(' Parametros ')' ':' TIPOS  Statement {
-        $$ = new Function($2, $8, $4, $7 ,@1.first_line, @1.first_column);
+        $$ = new InsFuncion($2, $8, $4, $7 ,@1.first_line, @1.first_column);
     }
 ;
 
@@ -236,7 +246,11 @@ for1
 ;
 for2
     : Asignacion  {$$=$1;}
-    | INCREMENTO  {$$=$1;}
+    //| INCREMENTO  {$$=$1;}
+    |   '++' ID    { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
+    |   ID  '++'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   ID  '--'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
+    |   '--' ID    { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
 ;
 
 OperadorTernario

@@ -1,13 +1,16 @@
-let numero:boolean=true;
-let constabtes=0+5;
-function moises(id:string, x:number){
-    console.log("texto");
+{let let1 = 1;
+let punteo = 0;
+function moisa(){
+    console.log("hola");
 }
-function moises2(){
-    console.log("t");
-}
+moisa();
 {
-    for (let x=0; x<10;x=x+1){
-        console.log("x");
+    let x=0;
+    function metodo1(){
+        let tmp="hola";
+        console.log("si funciona");
+        graficar_ts();
     }
-}
+    console.log("valor->"+x);
+    metodo1();
+}}
