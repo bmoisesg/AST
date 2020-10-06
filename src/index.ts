@@ -10,7 +10,7 @@ try {
 
     if (true) {
 
-        const entrada = fs.readFileSync('./entrada.txt');
+        const entrada = "{"+fs.readFileSync('./entrada.txt')+"}";
         const ast = parser.parse(entrada.toString());
         const env = new Environment(null);
         //console.log(ast)

@@ -42,7 +42,7 @@ export class Call extends Instruction {
                 }
             }
 
-            const newEnv = new Environment(environment.getGlobal());
+            const newEnv = new Environment(environment);
             //declara los parametros con el valor 
            // console.log("---------")
             let y=0;
