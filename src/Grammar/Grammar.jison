@@ -19,6 +19,7 @@
     const {Call} = require('../Instruction/Call');
     const {Ret} =require('../Instruction/Ret');
     const {GraficarTablaSimbolos} = require('../Instruction/Gr');
+    const {Arreglo} = require('../Instruction/Arreglo');
 
     var Lista_errores=[];
     var pila_funciones=[];
@@ -81,6 +82,8 @@ stringplantilla  [\`][^`]* [\`]
 "."                     return '.'
 "?"                     return '?'
 ","                     return ','
+"["                     return '['
+"]"                     return ']'
 
 "<="                    return '<='
 ">="                    return '>='
@@ -97,6 +100,7 @@ stringplantilla  [\`][^`]* [\`]
 ")"                     return ')' 
 "{"                     return '{'
 "}"                     return '}'
+"Array"                 return 't_array'
 "if"                    return 'IF'
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
@@ -155,6 +159,7 @@ Instruction
     | WhileSt              {  $$ = $1;  }
     | Statement            {  $$ = $1;  }
     | FOR                  {  $$ = $1;  }
+    | INSTARRAR        ';' {  $$ = $1;  }
     | FUNCIONN             {  $$ = $1;  }
     | PrintSt          ';' {  $$ = $1;  }
     | PrintSt              {  $$ = $1;  }
@@ -168,10 +173,20 @@ Instruction
     | GRAFICAR             {  $$ = $1;  } 
     | RETORNO          ';' {  $$ = $1;  } 
     | OperadorTernario ';'  {  $$ = $1;  }
-
     | DOWHILE          ';' {  $$ = $1;  }
     | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
     //| error            '}' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
+;
+
+INSTARRAR
+    :'t_let' ID ':' TIPOS '[' ']' '=' '[' ContenidoArray ']'          { $$= new Arreglo($2,$9   ,@1.first_line, @1.first_column );}
+    |'t_let' ID ':' t_array '<' TIPOS '>' '=' '[' ContenidoArray ']'  { $$= new Arreglo($2,$10  ,@1.first_line, @1.first_column );}   
+    |'t_let' ID ':' TIPOS '[' ']'                             { $$= new Arreglo($2,null,@1.first_line, @1.first_column );}
+;
+
+ContenidoArray
+    : ContenidoArray ',' Expr  {   $1.push($3);  $$ = $1;}
+    | Expr                     { $$=[$1]; }
 ;
 
 GRAFICAR
