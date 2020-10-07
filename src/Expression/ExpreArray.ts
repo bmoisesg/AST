@@ -49,7 +49,7 @@ export class ExpreArray extends Expression {
             var enviar = arregloLocal.pop();
             environment.updateArray(this.id, arregloLocal);
             var arregloLocalComprobar = environment.getArray(this.id)?.contenido as Array<String>;
-            console.log("ahora el arreglo <" + this.id + "> tiene :", arregloLocalComprobar);
+            //console.log("ahora el arreglo <" + this.id + "> tiene :", arregloLocalComprobar);
             if (arregloLocal_tmp?.tipo=="string") result = { value: enviar, type: Type.STRING };
             else if (arregloLocal_tmp?.tipo=="number") result = { value: enviar, type: Type.NUMBER };
             else result = { value: enviar, type: Type.BOOLEAN };

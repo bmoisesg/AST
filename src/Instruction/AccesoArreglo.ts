@@ -29,7 +29,7 @@ export class AccesoArreglo extends Instruction {
             arregloLocal.pop();
             environment.updateArray(this.id, arregloLocal);
             var arregloLocalComprobar = environment.getArray(this.id)?.contenido as Array<String>;
-            console.log("ahora el arreglo <" + this.id + "> tiene :", arregloLocalComprobar);
+            //console.log("ahora el arreglo <" + this.id + "> tiene :", arregloLocalComprobar);
             return
         }
 
@@ -70,7 +70,7 @@ export class AccesoArreglo extends Instruction {
         }
         environment.updateArray(this.id, arregloLocal);
         var arregloLocalComprobar = environment.getArray(this.id)?.contenido as Array<String>;
-        console.log("ahora el arreglo <" + this.id + "> tiene :", arregloLocalComprobar);
+        //console.log("ahora el arreglo <" + this.id + "> tiene :", arregloLocalComprobar);
     }
 
     public ast() {
