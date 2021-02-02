@@ -1,15 +1,14 @@
 {
-  "name": "calculadora",
+  "name": "interprete",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "dev": "nodemon",
     "jison": "jison ./src/Grammar/Grammar.jison && mv Grammar.js ./src/Grammar/"
   },
-  "author": "",
+  "author": "MoisesGonzalezFuentes",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^14.0.27",

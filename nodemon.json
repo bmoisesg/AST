@@ -3,6 +3,6 @@
     "watch":[
         "src"
     ],
-    "ext" : "ts",
+    "ext" : "ts,txt",
     "exec" : "ts-node ./src/"
 }

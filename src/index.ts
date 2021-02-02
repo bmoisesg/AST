@@ -1,5 +1,5 @@
 
-import { InsFuncion } from "./Instruction/InsFuncion";
+import { exec } from "child_process";
 import { Environment } from "./Symbol/Environment";
 const parser = require('./Grammar/Grammar');
 const fs = require('fs');
@@ -10,38 +10,43 @@ try {
 
     if (true) {
 
-        const entrada = "{"+fs.readFileSync('./entrada.txt')+"}";
+        const entrada = fs.readFileSync('src/entrada.txt');
         const ast = parser.parse(entrada.toString());
-        const env = new Environment(null);
-        //console.log(ast)
-        //console.log(parser.Lista_errores);
+        const env = new Environment(null);                      //environment padre
+
         parser.ast = 'nodeOriginal[label="Lista_Instrucciones"];\n'
         for (const instr of ast) {
             try {
                 instr.ast();
                 parser.ast += 'nodeOriginal->node' + instr.line + '_' + instr.column + ";\n";
             } catch (error) {
-                //console.error(error);  
                 parser.Lista_errores.push(error.message);
             }
         }
 
-        for (const instr of ast) {
+        for (const instruccion of ast) {
             try {
-                instr.execute(env);
-                
+                instruccion.execute(env);
             } catch (error) {
-                //console.error(error);  
                 parser.Lista_errores.push(error.message);
             }
         }
-        //console.log(env)
-        console.log("Errores:\n", parser.Lista_errores);
-        console.log("Consola:\n", parser.consola);
-        console.log("Entornos:\n", parser.graficarTS);
-        //console.log("ast:\n\n", parser.ast.replace("\n",""));
+
+        //TODO hacerlas un singleton
+        exec('mkdir out/')
+        console.log(parser.consola);
+        createFile("out/errores.html", parser.Lista_errores)
+        createFile("out/entornos.html", parser.graficarTS)
+        createFile("out/ast.dot", "digraph G {\n" + parser.ast + "\n}")
+        exec('dot -Tpng out/ast.dot -o out/ast.png ')
     }
 }
 catch (error) {
     console.log(error);
+}
+
+function createFile(nameFile: string, data: string) {
+    fs.writeFile(nameFile, data, () => {
+        console.log('>> The file ' + nameFile + ' has been saved!');
+    });
 }
