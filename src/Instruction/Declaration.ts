@@ -48,7 +48,7 @@ export class Declaration extends Instruction {
         parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
 
         parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
-        this.value.ast("");
+        this.value.ast();
     }
 
 }

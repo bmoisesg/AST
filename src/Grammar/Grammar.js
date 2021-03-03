@@ -303,37 +303,37 @@ case 93:
     
 break;
 case 94:
- this.$ = new Arithmetic($$[$0], $$[$0], ArithmeticOption.NEGACION,  _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0], $$[$0], ArithmeticOption.NEGACION,    _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 95:
- this.$ = new Arithmetic($$[$0-1], $$[$0-1], ArithmeticOption.INCREMENTO1, $$[$0-1], _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new IncreDecre($$[$0-1], $$[$0-1], IncreDecreOption.INCREMENTO1, $$[$0-1], _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 96:
- this.$ = new Arithmetic($$[$0], $$[$0], ArithmeticOption.INCREMENTO2, $$[$0], _$[$0].first_line, _$[$0].first_column); 
+ this.$ = new IncreDecre($$[$0], $$[$0], IncreDecreOption.INCREMENTO2, $$[$0], _$[$0].first_line, _$[$0].first_column); 
 break;
 case 97:
- this.$ = new Arithmetic($$[$0-1], $$[$0-1], ArithmeticOption.DECREMENTO1, $$[$0-1], _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new IncreDecre($$[$0-1], $$[$0-1], IncreDecreOption.DECREMENTO1, $$[$0-1], _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 98:
- this.$ = new Arithmetic($$[$0], $$[$0], ArithmeticOption.DECREMENTO2, $$[$0], _$[$0].first_line, _$[$0].first_column); 
+ this.$ = new IncreDecre($$[$0], $$[$0], IncreDecreOption.DECREMENTO2, $$[$0], _$[$0].first_line, _$[$0].first_column); 
 break;
 case 99:
- this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.PLUS,  "", _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.MAS            , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 100:
- this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.MINUS, "", _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.MENOS          , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 101:
- this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.TIMES, "", _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.MULTIPLICACION , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 102:
- this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.DIV,   "", _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.DIV            , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 103:
- this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.MODULO,"", _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.MODULO         , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 104:
- this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.POT,   "", _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0-2], $$[$0], ArithmeticOption.POT            , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 105:
   this.$ = $$[$0]; 
@@ -650,7 +650,7 @@ _handle_error:
     return true;
 }};
 
-    const {Arithmetic, ArithmeticOption} = require('../Expression/Arithmetic');
+    const {Arithmetic} = require('../Expression/Arithmetic');
     const {Relational, RelationalOption} = require('../Expression/Relational');
     const {Access} = require('../Expression/Access');
     const {Literal} = require('../Expression/Literal');
@@ -672,7 +672,9 @@ _handle_error:
     const {Arreglo} = require('../Instruction/Arreglo');
     const {AccesoArreglo} = require('../Instruction/AccesoArreglo');
     const {ExpreArray} = require('../Expression/ExpreArray');
-
+    const {ArithmeticOption} = require('../Expression/ArithmeticOption');
+    const {IncreDecre} = require('../Expression/IncreDecre')
+    const {IncreDecreOption} = require('../Expression/IncreDecreOption')
     var Lista_errores=[];
     var pila_funciones=[];
     var tmp="";
@@ -1150,7 +1152,7 @@ case 67:Lista_errores.push("<tr><td>lexico</td><td>No se reconoce el caracter "+
 break;
 }
 },
-rules: [/^(?:["])/i,/^(?:[^"\\])/i,/^(?:[\\][n])/i,/^(?:[\\][t])/i,/^(?:[\\][r])/i,/^(?:[\\]["])/i,/^(?:[\\][\\])/i,/^(?:[\"])/i,/^(?:\s+)/i,/^(?:\/\/.*)/i,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:(([0-9]+)\.([0-9]+)))/i,/^(?:([0-9]+))/i,/^(?:([\'][^']*[\']))/i,/^(?:([\`][^`]*[\`]))/i,/^(?:\*\*)/i,/^(?:\+\+)/i,/^(?:--)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:;)/i,/^(?::)/i,/^(?:\.)/i,/^(?:\?)/i,/^(?:,)/i,/^(?:\[)/i,/^(?:\])/i,/^(?:<=)/i,/^(?:>=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:==)/i,/^(?:!=)/i,/^(?:\|\|)/i,/^(?:&&)/i,/^(?:!)/i,/^(?:=)/i,/^(?:\()/i,/^(?:\))/i,/^(?:\{)/i,/^(?:\})/i,/^(?:length\b)/i,/^(?:push\b)/i,/^(?:pop\b)/i,/^(?:Array\b)/i,/^(?:if\b)/i,/^(?:else\b)/i,/^(?:while\b)/i,/^(?:const\b)/i,/^(?:number\b)/i,/^(?:string\b)/i,/^(?:boolean\b)/i,/^(?:let\b)/i,/^(?:do\b)/i,/^(?:for\b)/i,/^(?:console\b)/i,/^(?:log\b)/i,/^(?:function\b)/i,/^(?:return\b)/i,/^(?:graficar_ts\b)/i,/^(?:([a-zA-Z_])[a-zA-Z0-9_ñÑ]*)/i,/^(?:$)/i,/^(?:.)/i],
+rules: [/^(?:["])/i,/^(?:[^"\\])/i,/^(?:[\\][n])/i,/^(?:[\\][t])/i,/^(?:[\\][r])/i,/^(?:[\\]["])/i,/^(?:[\\][\\])/i,/^(?:[\"])/i,/^(?:\s+)/i,/^(?:\/\/.*)/i,/^(?:[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/])/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:(([0-9]+)\.([0-9]+)))/i,/^(?:([0-9]+))/i,/^(?:([\'][^']*[\']))/i,/^(?:([\`][^`]*[\`]))/i,/^(?:\*\*)/i,/^(?:\+\+)/i,/^(?:--)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:;)/i,/^(?::)/i,/^(?:\.)/i,/^(?:\?)/i,/^(?:,)/i,/^(?:\[)/i,/^(?:\])/i,/^(?:<=)/i,/^(?:>=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:==)/i,/^(?:!=)/i,/^(?:\|\|)/i,/^(?:&&)/i,/^(?:!)/i,/^(?:=)/i,/^(?:\()/i,/^(?:\))/i,/^(?:\{)/i,/^(?:\})/i,/^(?:length\b)/i,/^(?:push\b)/i,/^(?:pop\b)/i,/^(?:Array\b)/i,/^(?:if\b)/i,/^(?:else\b)/i,/^(?:while\b)/i,/^(?:const\b)/i,/^(?:number\b)/i,/^(?:string\b)/i,/^(?:boolean\b)/i,/^(?:let\b)/i,/^(?:do\b)/i,/^(?:for\b)/i,/^(?:console\b)/i,/^(?:log\b)/i,/^(?:function\b)/i,/^(?:return\b)/i,/^(?:graficar_ts\b)/i,/^(?:([a-zA-Z_])[a-zA-Z0-9_ñÑ]*)/i,/^(?:$)/i,/^(?:.)/i],
 conditions: {"string":{"rules":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67],"inclusive":true},"INITIAL":{"rules":[0,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67],"inclusive":true}}
 });
 return lexer;

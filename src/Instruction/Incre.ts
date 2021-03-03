@@ -20,7 +20,7 @@ export class Incre extends Instruction {
         if (value == null) {
             throw new Error("<tr><td>semantico</td><td>La variable '" + this.id + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
         }
-        if (value.condicion==false){
+        if (value.edit==false){
             throw new Error("<tr><td>semantico</td><td>La variable '" + this.id + "' es const, no se puede operar </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
         }
         //console.log(value.type, this.id)
@@ -28,9 +28,9 @@ export class Incre extends Instruction {
             //error semantico
             throw new Error("<tr><td>semantico</td><td>La variable '" + this.id + "' tiene que ser de tipo numero</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
         }
-        this.tipo=="++"? value.valor++: value.valor--;
+        this.tipo=="++"? value.value++: value.value--;
         //console.log(value.valor)
-        env.actualizar(this.id, value.valor,value.type,true);
+        env.actualizar(this.id, value.value,value.type,true);
     }
     public ast(){
         if (this.tipo=="++") parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Incremento"];\n';

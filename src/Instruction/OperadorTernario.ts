@@ -42,7 +42,7 @@ export class OperadorTernario extends Instruction {
         parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
         parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
         parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
-        this.condicon.ast("");
+        this.condicon.ast();
         parser.ast += 'node' + this.line + '_' + (this.column) +'1->node' + this.valor1.line + '_' + (this.valor1.column)+";\n" 
         this.valor1.ast();
         parser.ast += 'node' + this.line + '_' + (this.column) +'2->node' + this.valor2.line + '_' + (this.valor2.column)+";\n" 

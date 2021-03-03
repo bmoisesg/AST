@@ -27,7 +27,7 @@ export class If extends Instruction{
     public ast(){
         parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n if"];\n';
         parser.ast += 'node' + this.line + '_' + (this.column) + '->'
-        this.condition.ast("");
+        this.condition.ast();
         parser.ast+='node' + this.line + '_' + (this.column)+'->node'+ this.code.line + '_' + (this.code.column) +";\n"
         this.code.ast()
         if(this.elsSt!=null){

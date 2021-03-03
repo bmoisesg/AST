@@ -64,7 +64,7 @@ export class Ret extends Instruction {
         parser.ast += 'node' + this.line + '_' + this.column + ' [label="\\<Instruccion\\> \\n Return"];\n';
         if (this.expresion != null){
             parser.ast += 'node' + this.line + '_' + this.column + "-> ";
-            this.expresion.ast("");
+            this.expresion.ast();
         }
     }
 }

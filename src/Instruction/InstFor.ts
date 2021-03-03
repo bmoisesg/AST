@@ -32,7 +32,7 @@ export class InstFor extends Instruction {
         parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.tercerArgumento.line + '_' + (this.tercerArgumento.column)+';\n'
         this.tercerArgumento.ast();
         parser.ast += 'node' + this.line + '_' + (this.column) +'->'
-        this.segundoArgumento.ast("")
+        this.segundoArgumento.ast()
         parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.code.line + '_' + (this.code.column)+';\n'
         this.code.ast()
         

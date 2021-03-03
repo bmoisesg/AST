@@ -74,7 +74,7 @@ export class Call extends Instruction {
         parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
         this.expresiones.forEach(element => {
             parser.ast += 'node' + this.line + '_' + (this.column) + "2-> ";
-            element.ast("");
+            element.ast();
         });
        
     }

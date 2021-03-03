@@ -1,4 +1,3 @@
-import { env } from "process"
 import { Symbol } from "./Symbol";
 import { Type } from "../Abstract/Retorno";
 import { InsFuncion } from "../Instruction/InsFuncion"
@@ -74,7 +73,7 @@ export class Environment {
                 let value = entry[1];
 
                 tmp += "<td>" + getTipo(value.type) + "</td>"
-                tmp += "<td>" + value.valor + "</td>"
+                tmp += "<td>" + value.value + "</td>"
                 tmp += "</tr>"
             }
             for (let entry of Array.from(env.funciones.entries())) {
@@ -103,9 +102,9 @@ export class Environment {
                     let key = entry[0];
                     let value = entry[1];
                     if (key == id) {
-                        entry[1].valor = valor;
+                        entry[1].value = valor;
                         entry[1].type = type;
-                        entry[1].condicion = condicion;
+                        entry[1].edit = condicion;
                         //console.log("supuestamente actuazlice el valor de la variable " + id + " por el valor " + entry[1].valor);
                         return true//significa que si encontro el entorno
                     }

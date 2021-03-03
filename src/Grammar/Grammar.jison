@@ -1,6 +1,6 @@
  
 %{
-    const {Arithmetic, ArithmeticOption} = require('../Expression/Arithmetic');
+    const {Arithmetic} = require('../Expression/Arithmetic');
     const {Relational, RelationalOption} = require('../Expression/Relational');
     const {Access} = require('../Expression/Access');
     const {Literal} = require('../Expression/Literal');
@@ -22,7 +22,9 @@
     const {Arreglo} = require('../Instruction/Arreglo');
     const {AccesoArreglo} = require('../Instruction/AccesoArreglo');
     const {ExpreArray} = require('../Expression/ExpreArray');
-
+    const {ArithmeticOption} = require('../Expression/ArithmeticOption');
+    const {IncreDecre} = require('../Expression/IncreDecre')
+    const {IncreDecreOption} = require('../Expression/IncreDecreOption')
     var Lista_errores=[];
     var pila_funciones=[];
     var tmp="";
@@ -399,18 +401,18 @@ PrintSt
 ;
 
 Expr /*aritmeticas*/
-    : '-'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.NEGACION,  @1.first_line, @1.first_column); }       
-    | ID  '++'               { $$ = new Arithmetic($1, $1, ArithmeticOption.INCREMENTO1, $1, @1.first_line, @1.first_column); } 
-    | '++' ID                { $$ = new Arithmetic($2, $2, ArithmeticOption.INCREMENTO2, $2, @2.first_line, @2.first_column); } 
-    | ID  '--'               { $$ = new Arithmetic($1, $1, ArithmeticOption.DECREMENTO1, $1, @1.first_line, @1.first_column); } 
-    | '--' ID                { $$ = new Arithmetic($2, $2, ArithmeticOption.DECREMENTO2, $2, @2.first_line, @2.first_column); } 
+    : '-'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.NEGACION,        @1.first_line, @1.first_column); }       
+    | ID  '++'               { $$ = new IncreDecre($1, $1, IncreDecreOption.INCREMENTO1, $1, @1.first_line, @1.first_column); } 
+    | '++' ID                { $$ = new IncreDecre($2, $2, IncreDecreOption.INCREMENTO2, $2, @2.first_line, @2.first_column); } 
+    | ID  '--'               { $$ = new IncreDecre($1, $1, IncreDecreOption.DECREMENTO1, $1, @1.first_line, @1.first_column); } 
+    | '--' ID                { $$ = new IncreDecre($2, $2, IncreDecreOption.DECREMENTO2, $2, @2.first_line, @2.first_column); } 
    
-    | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.PLUS,  "", @2.first_line, @2.first_column); }       
-    | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MINUS, "", @2.first_line, @2.first_column); }
-    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.TIMES, "", @2.first_line, @2.first_column); }       
-    | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV,   "", @2.first_line, @2.first_column); }
-    | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO,"", @2.first_line, @2.first_column); }
-    | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT,   "", @2.first_line, @2.first_column); }
+    | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MAS            , @2.first_line, @2.first_column); }       
+    | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MENOS          , @2.first_line, @2.first_column); }
+    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MULTIPLICACION , @2.first_line, @2.first_column); }       
+    | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV            , @2.first_line, @2.first_column); }
+    | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO         , @2.first_line, @2.first_column); }
+    | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT            , @2.first_line, @2.first_column); }
     
     | F  {  $$ = $1; }
     

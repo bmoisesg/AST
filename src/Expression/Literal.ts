@@ -24,7 +24,7 @@ export class Literal extends Expression {
             return { value: this.value, type: Type.error };
 
     }
-    public ast(id: string) {
+    public ast() {
         parser.ast += "node" + this.line + '_' + (this.column)+";\n"
             + "node" + this.line + '_' + (this.column) + '[label="' + this.value.toString() + '"];\n'
     }

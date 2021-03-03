@@ -26,7 +26,7 @@ export class Print extends Instruction {
         parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n console"];\n';
         if (this.value!=null){
             parser.ast+= 'node' + this.line + '_' + (this.column) +"->";
-            this.value.ast("");
+            this.value.ast();
             parser.ast+="\n"
         }
     }

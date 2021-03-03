@@ -76,15 +76,15 @@ export class Relational extends Expression {
         }
         return { value: 0, type: Type.NUMBER }
     }
-    public ast(id: string) {
+    public ast() {
         parser.ast += ' node' + (this.line) + '_' + (this.column) + ";\n"
             + 'node' + (this.line) + '_' + (this.column) + '[label="' + get(this.type) + '"];\n';
 
         parser.ast += 'node' + (this.line) + '_' + (this.column) + "->"
-        this.left.ast("");
+        this.left.ast();
         if (this.type != RelationalOption.NOT) {
             parser.ast += 'node' + (this.line) + '_' + (this.column) + "->"
-            this.right.ast("");
+            this.right.ast();
         }
     }
 }

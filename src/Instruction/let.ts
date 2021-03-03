@@ -59,7 +59,7 @@ export class Let extends Instruction {
         parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
         if (this.value != null) {
             parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
-            this.value.ast("");
+            this.value.ast();
         }
     }
 }

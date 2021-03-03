@@ -1,15 +1,13 @@
 import { Type } from "../Abstract/Retorno";
 
-export class Symbol{
-    public valor :any;
-    public id : string;
-    public type : Type;
-    public condicion :boolean;
+//guarda toda la informacion importante de una variable y despues sera almacenada en la tabla de simbolos
+export class Symbol {
+    constructor(
+        public value: any,
+        public id: string,
+        public type: Type,
+        public edit: boolean
+    ) {
 
-    constructor(valor: any, id: string, type: Type, condicion:boolean){
-        this.valor = valor;
-        this.id = id;
-        this.type = type;
-        this.condicion= condicion;
     }
 }

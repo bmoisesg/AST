@@ -28,7 +28,7 @@ export class Asignacion extends Instruction {
         }
         //revisar que sean del mismo tiempo
 
-        if (tmp2?.condicion == false) {
+        if (tmp2?.edit == false) {
             //es una const
             throw new Error("<tr><td>semantico</td><td>Asignacion incorrecta, la variable '" + this.id + "' es una const '" + tmp2?.type + "'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
         }
@@ -49,6 +49,6 @@ export class Asignacion extends Instruction {
         parser.ast += 'node' + this.line + '_' + this.column + '1 [label="' + this.id + '"];\n';
         parser.ast += 'node' + this.line + '_' + this.column + '->node' + this.line + '_' + this.column + '1;\n'
         parser.ast += 'node' + this.line + '_' + this.column + "-> ";
-        this.value.ast("");
+        this.value.ast();
     }
 }
