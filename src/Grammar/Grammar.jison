@@ -175,7 +175,7 @@ Instruction
     | PrintSt          ';' {  $$ = $1;  }
     | PrintSt              {  $$ = $1;  }
     | Declaration1     ';' {  $$ = $1;  }
-    | Declaration2     ';' {  $$ = $1;  }
+    | LET     ';' {  $$ = $1;  }
     | Asignacion       ';' {  $$ = $1;  }
     | CALLFUNCION      ';' {  $$ = $1;  }
     | CALLFUNCION          {  $$ = $1;  }
@@ -265,9 +265,9 @@ Parametros
 ;
 
 TIPOS
-    :t_boolean {$$=$1;}
-    |t_string  {$$=$1;}
-    |t_number  {$$=$1;}
+    :t_boolean { $$=$1; }
+    |t_string  { $$=$1; }
+    |t_number  { $$=$1; }
 ;
 
 FOR
@@ -277,7 +277,7 @@ FOR
 ;
 for1 
     : Declaration1   {$$=$1;} 
-    | Declaration2   {$$=$1;} 
+    | LET   {$$=$1;} 
     | Asignacion     {$$=$1;} 
 ;
 for2
@@ -317,31 +317,11 @@ INCREMENTO
     |   '--' ID  ';'  { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
 ;
 
-Declaration2
-    : 't_let' ID '=' Expr {
-        $$ = new Let($2, $4, null, @1.first_line, @1.first_column);
-    }
-    | 't_let' ID ':' 't_boolean' '='  Expr {
-        $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
-    }
-    | 't_let' ID ':' 't_string' '='  Expr {
-        $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
-    }
-    | 't_let' ID ':' 't_number' '='  Expr {
-        $$ = new Let($2, $6, $4, @1.first_line, @1.first_column);
-    }
-    | 't_let' ID ':' 't_boolean'  {
-        $$ = new Let($2, null, $4, @1.first_line, @1.first_column);
-    }
-    | 't_let' ID ':' 't_string'  {
-        $$ = new Let($2, null, $4, @1.first_line, @1.first_column);
-    }
-    | 't_let' ID ':' 't_number' {
-        $$ = new Let($2, null, $4, @1.first_line, @1.first_column);
-    }
-    | 't_let' ID  {
-        $$ = new Let($2, null, null, @1.first_line, @1.first_column);
-    }
+LET
+    : 't_let' ID           '=' Expr { $$ = new Let($2, $4,   null, @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS '=' Expr { $$ = new Let($2, $6,   $4,   @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS          { $$ = new Let($2, null, $4,   @1.first_line, @1.first_column); }
+    | 't_let' ID                    { $$ = new Let($2, null, null, @1.first_line, @1.first_column); }
 
 ;
 

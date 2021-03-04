@@ -1,3 +1,2 @@
-
-let x3:boolean=false||"s";
-let x4:boolean=false||1;
+let x3=1;
+let x32:string=1+"x";

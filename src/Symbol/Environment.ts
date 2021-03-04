@@ -14,30 +14,38 @@ export class Environment {
         this.funciones = new Map();
         this.arreglos = new Map();
     }
+    /**
+     * 
+     * @param id nombre de la variable
+     * @param valor valor de la variable
+     * @param type tipo de dato de la variable
+     * @param condicion si es editable
+     * @returns boolan si se efectuo el almacenamiento de la variable
+     */
+    public guardar(nombre: string, valor: any, type: Type, condicion: boolean): boolean {
 
-    public guardar(id: string, valor: any, type: Type, condicion: boolean): boolean {
-        for (let entry of Array.from(this.arreglos.entries())) {
-            let key = entry[0];
-            //console.log("->",key,value);
-            //console.log(key +"=="+id+"?");
-            if (key == id) {
-                //console.log("si");
-                return false
-            }
-        }
-        for (let entry of Array.from(this.variables.entries())) {
-            let key = entry[0];
-            let value = entry[1];
-            //console.log("->",key,value);
-            //console.log(key +"=="+id+"?");
-            if (key == id) {
-                //console.log("si");
-                return false
-            }
-        }
-        this.variables.set(id, new Symbol(valor, id, type, condicion));
+        //revisar que el nombre de la nueva variable se encuentre disponible
+        if (this.revisarRepetido(nombre)) return false
+
+        //agrega la variable al MAP 
+        this.variables.set(nombre, new Symbol(valor, nombre, type, condicion))
         return true
     }
+
+    public revisarRepetido(nombre: string): boolean {
+
+        //revisar en los arreglos almacenados
+        for (let entry of Array.from(this.arreglos.entries())) {
+            if (entry[0] == nombre) return true;
+        }
+        //revisar en las variables almacenadas
+        for (let entry of Array.from(this.variables.entries())) {
+            if (entry[0] == nombre) return true;
+        }
+        //no encontro el nombre repetido, osea que esta disponible
+        return false
+    }
+
     public guardarArreglo(id: string, tmp: Arreglo): boolean {
         for (let entry of Array.from(this.variables.entries())) {
             let key = entry[0];

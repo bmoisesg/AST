@@ -1,21 +1,26 @@
 digraph G {
 
-        node_2_21_;
-        node_2_21_[label="\|\|"];
-        node_2_21_->
+        node_1_1_[label="\<Instruccion\>\nDeclaracion let"];
+        node_1_1_1[label="\<Nombre\>\nx3"];
+        node_1_1_2[label="\<Tipo\>\nnull"];
+        node_1_1_->node_1_1_1
+        node_1_1_->node_1_1_2
+        node_1_1_->
+        node_1_8_;
+        node_1_8_[label="1"];
+        node_2_1_[label="\<Instruccion\>\nDeclaracion let"];
+        node_2_1_1[label="\<Nombre\>\nx32"];
+        node_2_1_2[label="\<Tipo\>\nstring"];
+        node_2_1_->node_2_1_1
+        node_2_1_->node_2_1_2
+        node_2_1_->
+        node_2_17_;
+        node_2_17_[label="+"];
+        node_2_17_->
         node_2_16_;
-        node_2_16_[label="false"];
-        node_2_21_->
-        node_2_25_;
-        node_2_25_[label="s"];
-        
-        node_3_21_;
-        node_3_21_[label="\|\|"];
-        node_3_21_->
-        node_3_16_;
-        node_3_16_[label="false"];
-        node_3_21_->
-        node_3_23_;
-        node_3_23_[label="1"];
+        node_2_16_[label="1"];
+        node_2_17_->
+        node_2_20_;
+        node_2_20_[label="x"];
         
 }

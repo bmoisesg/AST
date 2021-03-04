@@ -1,68 +1,70 @@
-import { Instruction } from "../Abstract/Instruction";
-import { Environment } from "../Symbol/Environment";
-import { Expression } from "../Abstract/Expression";
-import { env } from "process";
-import { Type } from "../Abstract/Retorno";
-import { Singleton } from "../Singleton/Singleton";
-const parser = require('../Grammar/Grammar');
+import { Instruction } from "../Abstract/Instruction"
+import { Environment } from "../Symbol/Environment"
+import { Expression } from "../Abstract/Expression"
+import { Singleton } from "../Singleton/Singleton"
+import { error } from "../tool/error"
+import { Type, get } from "../Abstract/Retorno"
+
 export class Let extends Instruction {
 
-    private id: string;
-    private value: Expression;
-    private valorSeteando: string;
-
     constructor(
-        id: string,
-        value: Expression,
-        valorSeteando: string,
-        line: number, column: number) {
-
-        super(line, column);
-        this.id = id;
-        this.value = value;
-        this.valorSeteando = valorSeteando;
+        public nombre: string,
+        public value: Expression,
+        public tipo: string,
+        line: number,
+        column: number
+    ) {
+        super(line, column)
     }
 
-    public execute(environment: Environment) {
-        if (this.value == null) {
-            //console.log("metodo cuento esta solo <let id;>");
-            environment.guardar(this.id, null, -1, true);
-        } else {
-            if (this.valorSeteando == null) {
-                const val = this.value.execute(environment);
-                let condicion = environment.guardar(this.id, val.value, val.type, true);
-                if (!condicion) {
-                    throw new Error("<tr><td>semantico</td><td>Esta variable '" + this.id + "' ya existe en el entorno actual</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-                }
-            } else {
-                //yo le estoy diciendo el tipo, tengo que validar eso, sino es un error semantico
-                const val = this.value.execute(environment);
+    public execute(env: Environment) {
 
-                if (val.type == 0 && this.valorSeteando == "number" ||
-                    val.type == 1 && this.valorSeteando == "string" ||
-                    val.type == 2 && this.valorSeteando == "boolean"
+        if (this.value == null) {
+
+            //cuando la declaracion no tiene una expression a asignar
+            const c = env.guardar(this.nombre, null, -1, true)
+            if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
+
+        } else {
+
+            //cuando la declaracion si tiene una expression a asignar
+            const expression = this.value.execute(env);
+
+            if (this.tipo == null) {
+
+                //cuando la declaracion no tiene un tipo de dato definido
+                const c = env.guardar(this.nombre, expression.value, expression.type, true)
+                if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
+
+            } else {
+
+                //cuando la declaracion si tiene un tipo de dato definido
+                if (expression.type == Type.NUMBER && this.tipo == "number" ||
+                    expression.type == Type.STRING && this.tipo == "string" ||
+                    expression.type == Type.BOOLEAN && this.tipo == "boolean"
                 ) {
-                    let condicion = environment.guardar(this.id, val.value, val.type, true);
-                    if (!condicion) {
-                        throw new Error("<tr><td>semantico</td><td>Esta variable '" + this.id + "' ya existe en el entorno actual</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-                    }
-                } else {
-                    throw new Error("<tr><td>semantico</td><td>Type '" + val.type + "' is not assignable to type '" + this.valorSeteando + "'</td><td>" + this.value.line + "</td><td>" + this.value.column + "</td></tr>");
-                }
+
+                    const c = env.guardar(this.nombre, expression.value, expression.type, true);
+                    if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
+
+                } else throw new error("Semantico", `El tipo de dato de la expresion [${get(expression.type)}] no es compatible con [${this.tipo}]`, this.line, this.column)
+
             }
         }
     }
+
     public ast() {
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Declarcion let"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="' + this.id + '"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="' + this.valorSeteando + '"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column)+ '->node' + this.line + '_' + (this.column) + '2;\n' 
-        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
+        const s = Singleton.getInstance()
+        const nombreNodo = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${nombreNodo}[label="\\<Instruccion\\>\\nDeclaracion let"];
+        ${nombreNodo}1[label="\\<Nombre\\>\\n${this.nombre}"];
+        ${nombreNodo}2[label="\\<Tipo\\>\\n${this.tipo}"];
+        ${nombreNodo}->${nombreNodo}1
+        ${nombreNodo}->${nombreNodo}2
+        `)
         if (this.value != null) {
-            parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
-            this.value.ast();
+            s.add_ast(`${nombreNodo}->${this.value.ast()}`)
         }
-        const s= Singleton.getInstance()
-        s.add_ast(this.value.ast())
     }
 }
