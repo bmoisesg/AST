@@ -9,7 +9,7 @@ export enum Type {
  * @param objeto Objeto tipo Type
  * @returns String con el nombre del tipo 
  */
-export function get(objeto: Type):string {
+export function get(objeto: Type): string {
     switch (objeto) {
         case 0:
             return "number"

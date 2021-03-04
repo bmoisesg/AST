@@ -1,5 +1,5 @@
-import { Retorno } from "./Retorno";
-import { Environment } from "../Symbol/Environment";
+import { Retorno } from "./Retorno"
+import { Environment } from "../Symbol/Environment"
 
 export abstract class Expression {
 

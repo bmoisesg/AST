@@ -9,7 +9,7 @@ export enum LogicalOption {
  * @param objeto logicaloption
  * @returns el simbolo logico que se envio y retorna como string
  */
-export function getSimbol(objeto :LogicalOption):string {
+export function getSimbol(objeto: LogicalOption): string {
     switch (objeto) {
         case 0:
             return "&&"
@@ -25,7 +25,7 @@ export function getSimbol(objeto :LogicalOption):string {
  * @param objeto logicalOption
  * @returns nombre del simbolo que se envio y retorna como string 
  */
-export function getName(objeto :LogicalOption):string {
+export function getName(objeto: LogicalOption): string {
     switch (objeto) {
         case 0:
             return "AND"

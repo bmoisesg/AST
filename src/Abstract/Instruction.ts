@@ -1,4 +1,4 @@
-import { Environment } from "../Symbol/Environment";
+import { Environment } from "../Symbol/Environment"
 
 export abstract class Instruction {
 

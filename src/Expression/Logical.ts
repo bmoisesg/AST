@@ -1,8 +1,8 @@
-import { Expression } from "../Abstract/Expression";
-import { Retorno, Type, get } from "../Abstract/Retorno";
-import { Environment } from "../Symbol/Environment";
-import { error } from "../tool/error";
-import { LogicalOption, getName, getSimbol } from "./LogicalOption";
+import { Expression } from "../Abstract/Expression"
+import { Retorno, Type, get } from "../Abstract/Retorno"
+import { Environment } from "../Symbol/Environment"
+import { error } from "../tool/error"
+import { LogicalOption, getName, getSimbol } from "./LogicalOption"
 
 export class Logical extends Expression {
 
