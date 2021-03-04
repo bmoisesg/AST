@@ -1,114 +1,65 @@
-import { Expression } from "../Abstract/Expression";
-import { Retorno, Type } from "../Abstract/Retorno";
-import { Environment } from "../Symbol/Environment";
+import { Expression } from "../Abstract/Expression"
+import { get, Retorno, Type } from "../Abstract/Retorno"
+import { Environment } from "../Symbol/Environment"
+import { error } from "../tool/error"
+import { RelationalOption, get_simbolo, getName } from "./RelationalOpcion"
 
-export enum RelationalOption {
-    IGUAL,
-    DIFERENCIACION,
-    MENOR,
-    MENORIGUAL,
-    MAYOR,
-    MAYORIGUAL,
-    AND,
-    OR,
-    NOT
-}
-const parser = require('../Grammar/Grammar');
 export class Relational extends Expression {
 
-    constructor(private left: Expression, private right: Expression, private type: RelationalOption, line: number, column: number) {
-        super(line, column);
+    constructor(
+        private left: Expression,
+        private right: Expression,
+        private type: RelationalOption,
+        line: number,
+        column: number
+    ) {
+        super(line, column)
     }
 
-    public execute(environment: Environment): Retorno {
+    public execute(env: Environment): Retorno {
 
-        const valueIzq = this.left.execute(environment);
-        if (Boolean(valueIzq.value) == false && this.type == RelationalOption.AND) {
-            //console.log("pase por el corto circuito del and")
-            const result = Boolean(false);
-            return { value: result, type: Type.BOOLEAN };
-        } else if (Boolean(valueIzq.value) == true && this.type == RelationalOption.OR) {
-            //console.log("pase por el corto circuito del or")
-            const result = Boolean(true);
-            return { value: result, type: Type.BOOLEAN };
-        }
-        const valueDer = this.right.execute(environment);
-        //parser.ast += 'node'+(this.line)+'_'+(this.column+1)+ '[label="'+get(this.type) +'"]\n'
-        //parser.ast += 'node'+(this.line)+'_'+(this.column+1)+"->node"+this.left.line+"_"+(this.left.column+1) +';\n';
-        //parser.ast += 'node'+(this.line)+'_'+(this.column+1)+"->node"+this.right.line+"_"+(this.right.column+1) +';\n';
-        if (this.type == RelationalOption.IGUAL) {
-            const result = valueIzq.value == valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
+        const valueIzq = this.left.execute(env)
+        const valueDer = this.right.execute(env)
 
-        } else if (this.type == RelationalOption.DIFERENCIACION) {
-            const result = valueIzq.value != valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
+        if (valueIzq.type == Type.STRING && valueDer.type == Type.STRING ||
+            valueIzq.type == Type.BOOLEAN && valueDer.type == Type.BOOLEAN) {
 
-        } else if (this.type == RelationalOption.MENOR) { 
-            const result = valueIzq.value < valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
-
-        } else if (this.type == RelationalOption.MENORIGUAL) {
-            const result = valueIzq.value <= valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
-
-        } else if (this.type == RelationalOption.MAYOR) {
-            const result = valueIzq.value > valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
-
-        } else if (this.type == RelationalOption.MAYORIGUAL) {
-            const result = valueIzq.value >= valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
+            switch (this.type) {
+                case RelationalOption.IGUAL:
+                    return { value: valueIzq.value == valueDer.value, type: Type.BOOLEAN }
+                case RelationalOption.DIFERENCIACION:
+                    return { value: valueIzq.value != valueDer.value, type: Type.BOOLEAN }
+            }
         }
 
-        /*logicas*/
-        else if (this.type == RelationalOption.AND) {
-            const result = valueIzq.value && valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
+        if (valueIzq.type == Type.NUMBER && valueDer.type == Type.NUMBER) {
+
+            switch (this.type) {
+                case RelationalOption.IGUAL:
+                    return { value: valueIzq.value == valueDer.value, type: Type.BOOLEAN }
+                case RelationalOption.DIFERENCIACION:
+                    return { value: valueIzq.value != valueDer.value, type: Type.BOOLEAN }
+                case RelationalOption.MENOR:
+                    return { value: valueIzq.value < valueDer.value, type: Type.BOOLEAN }
+                case RelationalOption.MENORIGUAL:
+                    return { value: valueIzq.value <= valueDer.value, type: Type.BOOLEAN }
+                case RelationalOption.MAYOR:
+                    return { value: valueIzq.value > valueDer.value, type: Type.BOOLEAN }
+                case RelationalOption.MAYORIGUAL:
+                    return { value: valueIzq.value >= valueDer.value, type: Type.BOOLEAN }
+            }
+
         }
-        else if (this.type == RelationalOption.OR) {
-            const result = valueIzq.value || valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
-        }
-        else if (this.type == RelationalOption.NOT) {
-            const result = !valueDer.value;
-            return { value: result, type: Type.BOOLEAN };
-        }
-        return { value: 0, type: Type.NUMBER }
+        throw new error("Semantico", `Error tipo de datos en operando ${getName(this.type)}, tipo [${get(valueIzq.type)}] con tipo [${get(valueDer.type)}]`, this.line, this.column)
+
     }
     public ast() {
-        parser.ast += ' node' + (this.line) + '_' + (this.column) + ";\n"
-            + 'node' + (this.line) + '_' + (this.column) + '[label="' + get(this.type) + '"];\n';
-
-        parser.ast += 'node' + (this.line) + '_' + (this.column) + "->"
-        this.left.ast();
-        if (this.type != RelationalOption.NOT) {
-            parser.ast += 'node' + (this.line) + '_' + (this.column) + "->"
-            this.right.ast();
-        }
-    }
-}
-function get(tipo: RelationalOption): string {
-    switch (tipo) {
-        case 0:
-            return "=="
-        case 1:
-            return "!="
-        case 2:
-            return "\\<"
-        case 3:
-            return "\\<="
-        case 4:
-            return "\\>"
-        case 5:
-            return "\\>="
-        case 6:
-            return "&&"
-        case 7:
-            return "\\|\\|"
-        case 8:
-            return "!"
-        default:
-            return "";
+        const nombreNodo = `node_${this.line}_${this.column}_`
+        return `
+        ${nombreNodo};
+        ${nombreNodo}[label="${get_simbolo(this.type)}"];
+        ${nombreNodo}->${this.left.ast()}
+        ${nombreNodo}->${this.right.ast()}
+        `
     }
 }

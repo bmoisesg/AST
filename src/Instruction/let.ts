@@ -3,6 +3,7 @@ import { Environment } from "../Symbol/Environment";
 import { Expression } from "../Abstract/Expression";
 import { env } from "process";
 import { Type } from "../Abstract/Retorno";
+import { Singleton } from "../Singleton/Singleton";
 const parser = require('../Grammar/Grammar');
 export class Let extends Instruction {
 
@@ -61,5 +62,7 @@ export class Let extends Instruction {
             parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
             this.value.ast();
         }
+        const s= Singleton.getInstance()
+        s.add_ast(this.value.ast())
     }
 }

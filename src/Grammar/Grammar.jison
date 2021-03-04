@@ -1,7 +1,8 @@
  
 %{
     const {Arithmetic} = require('../Expression/Arithmetic');
-    const {Relational, RelationalOption} = require('../Expression/Relational');
+    const {Relational} = require('../Expression/Relational');
+    const {RelationalOption} = require ('../Expression/RelationalOpcion')
     const {Access} = require('../Expression/Access');
     const {Literal} = require('../Expression/Literal');
     const {If} = require('../Instruction/If');
@@ -25,6 +26,9 @@
     const {ArithmeticOption} = require('../Expression/ArithmeticOption');
     const {IncreDecre} = require('../Expression/IncreDecre')
     const {IncreDecreOption} = require('../Expression/IncreDecreOption')
+    const {Type} = require('../Abstract/Retorno')
+    const {Logical} = require('../Expression/Logical')
+    const {LogicalOption} = require('../Expression/LogicalOption')
     var Lista_errores=[];
     var pila_funciones=[];
     var tmp="";
@@ -425,26 +429,23 @@ Expr /*aritmeticas*/
     | Expr '!=' Expr { $$ = new Relational($1, $3,RelationalOption.DIFERENCIACION , @2.first_line, @2.first_column); }
 
     /*logicas*/
-    | Expr '&&' Expr { $$ = new Relational($1, $3,RelationalOption.AND  , @2.first_line, @2.first_column); }
-    | Expr '||' Expr { $$ = new Relational($1, $3,RelationalOption.OR   , @2.first_line, @2.first_column); }
-    | '!' Expr       { $$ = new Relational($2, $2,RelationalOption.NOT  , @1.first_line, @1.first_column); }
+    | Expr '&&' Expr { $$ = new Logical($1, $3,LogicalOption.AND  , @2.first_line, @2.first_column); }
+    | Expr '||' Expr { $$ = new Logical($1, $3,LogicalOption.OR   , @2.first_line, @2.first_column); }
+    | '!' Expr       { $$ = new Logical($2, $2,LogicalOption.NOT  , @1.first_line, @1.first_column); }
    
-   | ID '.' 't_length'          { $$= new ExpreArray($1,false,false,null,@1.first_line, @1.first_column); }
-   | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,false,null,@1.first_line, @1.first_column); }
-   | ID '['  Expr ']'           { $$= new ExpreArray($1,true ,true ,$3  ,@1.first_line, @1.first_column); }
+    | ID '.' 't_length'          { $$= new ExpreArray($1,false,false,null,@1.first_line, @1.first_column); }
+    | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,false,null,@1.first_line, @1.first_column); }
+    | ID '['  Expr ']'           { $$= new ExpreArray($1,true ,true ,$3  ,@1.first_line, @1.first_column); }
 ;
 
 F   : '(' Expr ')'  {  $$ = $2; }
-    /*numeros*/
-    | DECIMAL       {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 0); }
-    | NUMBER        {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 1); }
-    /*strings*/
-    | STRING        {  $$ = new Literal($1.replace(/\"/g,""), @1.first_line, @1.first_column, 2); }
-    | STRINGG       {  $$ = new Literal($1.replace(/\'/g,""), @1.first_line, @1.first_column, 2); }
-    | STRINGGG      {  $$ = new Literal($1.replace(/\`/g,""), @1.first_line, @1.first_column, 2); }
-    /*boolean*/
-    | true          {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
-    | false         {  $$ = new Literal($1,                   @1.first_line, @1.first_column, 3); }
+    | DECIMAL       {  $$ = new Literal($1,                   Type.NUMBER,  @1.first_line, @1.first_column); }
+    | NUMBER        {  $$ = new Literal($1,                   Type.NUMBER,  @1.first_line, @1.first_column); }
+    | STRING        {  $$ = new Literal($1.replace(/\"/g,""), Type.STRING,  @1.first_line, @1.first_column); }
+    | STRINGG       {  $$ = new Literal($1.replace(/\'/g,""), Type.STRING,  @1.first_line, @1.first_column); }
+    | STRINGGG      {  $$ = new Literal($1.replace(/\`/g,""), Type.STRING,  @1.first_line, @1.first_column); }
+    | true          {  $$ = new Literal($1,                   Type.BOOLEAN, @1.first_line, @1.first_column); }
+    | false         {  $$ = new Literal($1,                   Type.BOOLEAN, @1.first_line, @1.first_column); }
 
     | ID            {  $$ = new Access($1,                    @1.first_line, @1.first_column);    }
 ;

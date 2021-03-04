@@ -27,5 +27,6 @@ export class Access extends Expression {
     public ast() {
         parser.ast += "node" + this.line + '_' + (this.column) + ";\n"
             + "node" + this.line + '_' + (this.column) + '[label="' + this.id + '"];\n'
+        return ""
     }
 }

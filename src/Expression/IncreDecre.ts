@@ -51,6 +51,8 @@ export class IncreDecre extends Expression {
         return result
 
     }
-    public ast() { }
+    public ast() {
+        return ""
+    }
 
 }

@@ -303,7 +303,7 @@ case 93:
     
 break;
 case 94:
- this.$ = new Arithmetic($$[$0], $$[$0], ArithmeticOption.NEGACION,    _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Arithmetic($$[$0], $$[$0], ArithmeticOption.NEGACION,        _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 95:
  this.$ = new IncreDecre($$[$0-1], $$[$0-1], IncreDecreOption.INCREMENTO1, $$[$0-1], _$[$0-1].first_line, _$[$0-1].first_column); 
@@ -357,13 +357,13 @@ case 111:
  this.$ = new Relational($$[$0-2], $$[$0],RelationalOption.DIFERENCIACION , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 112:
- this.$ = new Relational($$[$0-2], $$[$0],RelationalOption.AND  , _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Logical($$[$0-2], $$[$0],LogicalOption.AND  , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 113:
- this.$ = new Relational($$[$0-2], $$[$0],RelationalOption.OR   , _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Logical($$[$0-2], $$[$0],LogicalOption.OR   , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 114:
- this.$ = new Relational($$[$0], $$[$0],RelationalOption.NOT  , _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Logical($$[$0], $$[$0],LogicalOption.NOT  , _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 115:
  this.$= new ExpreArray($$[$0-2],false,false,null,_$[$0-2].first_line, _$[$0-2].first_column); 
@@ -377,23 +377,20 @@ break;
 case 118:
   this.$ = $$[$0-1]; 
 break;
-case 119:
-  this.$ = new Literal($$[$0],                   _$[$0].first_line, _$[$0].first_column, 0); 
-break;
-case 120:
-  this.$ = new Literal($$[$0],                   _$[$0].first_line, _$[$0].first_column, 1); 
+case 119: case 120:
+  this.$ = new Literal($$[$0],                   Type.NUMBER,  _$[$0].first_line, _$[$0].first_column); 
 break;
 case 121:
-  this.$ = new Literal($$[$0].replace(/\"/g,""), _$[$0].first_line, _$[$0].first_column, 2); 
+  this.$ = new Literal($$[$0].replace(/\"/g,""), Type.STRING,  _$[$0].first_line, _$[$0].first_column); 
 break;
 case 122:
-  this.$ = new Literal($$[$0].replace(/\'/g,""), _$[$0].first_line, _$[$0].first_column, 2); 
+  this.$ = new Literal($$[$0].replace(/\'/g,""), Type.STRING,  _$[$0].first_line, _$[$0].first_column); 
 break;
 case 123:
-  this.$ = new Literal($$[$0].replace(/\`/g,""), _$[$0].first_line, _$[$0].first_column, 2); 
+  this.$ = new Literal($$[$0].replace(/\`/g,""), Type.STRING,  _$[$0].first_line, _$[$0].first_column); 
 break;
 case 124: case 125:
-  this.$ = new Literal($$[$0],                   _$[$0].first_line, _$[$0].first_column, 3); 
+  this.$ = new Literal($$[$0],                   Type.BOOLEAN, _$[$0].first_line, _$[$0].first_column); 
 break;
 case 126:
   this.$ = new Access($$[$0],                    _$[$0].first_line, _$[$0].first_column);    
@@ -651,7 +648,8 @@ _handle_error:
 }};
 
     const {Arithmetic} = require('../Expression/Arithmetic');
-    const {Relational, RelationalOption} = require('../Expression/Relational');
+    const {Relational} = require('../Expression/Relational');
+    const {RelationalOption} = require ('../Expression/RelationalOpcion')
     const {Access} = require('../Expression/Access');
     const {Literal} = require('../Expression/Literal');
     const {If} = require('../Instruction/If');
@@ -675,6 +673,9 @@ _handle_error:
     const {ArithmeticOption} = require('../Expression/ArithmeticOption');
     const {IncreDecre} = require('../Expression/IncreDecre')
     const {IncreDecreOption} = require('../Expression/IncreDecreOption')
+    const {Type} = require('../Abstract/Retorno')
+    const {Logical} = require('../Expression/Logical')
+    const {LogicalOption} = require('../Expression/LogicalOption')
     var Lista_errores=[];
     var pila_funciones=[];
     var tmp="";

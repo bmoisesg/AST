@@ -1,1 +1,3 @@
-let x4:number=10+"test";    
+
+let x3:boolean=false||"s";
+let x4:boolean=false||1;

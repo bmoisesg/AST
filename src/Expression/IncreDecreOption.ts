@@ -9,7 +9,10 @@ export function getname(objeto: IncreDecreOption): string {
         case 0:
         case 1:
             return "incremento"
-        default:
+        case 2:
+        case 3:
             return "decremetno"
+        default:
+            return ""
     }
 }

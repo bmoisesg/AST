@@ -28,7 +28,7 @@ export function get_simbolo(objeto: ArithmeticOption): string {
         case 5:
             return "**"
         default:
-            return "";
+            return ""
     }
 }
 /**
@@ -52,6 +52,6 @@ export function getName(objeto: ArithmeticOption): string {
         case 5:
             return "potencia"
         default:
-            return "";
+            return ""
     }
 }

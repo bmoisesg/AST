@@ -1,11 +1,9 @@
 import { Expression } from "../Abstract/Expression"
 import { Retorno, Type, get } from "../Abstract/Retorno"
-import { Singleton } from "../Singleton/Singleton"
 import { Environment } from "../Symbol/Environment"
 import { error } from "../tool/error"
 import { ArithmeticOption, get_simbolo, getName } from "./ArithmeticOption"
 
-const parser = require('../Grammar/Grammar')
 export class Arithmetic extends Expression {
 
     constructor(
@@ -71,13 +69,12 @@ export class Arithmetic extends Expression {
 
     public ast() {
 
-        const s = Singleton.getInstance();
-        const name_nodo=`node${this.line}_${this.column}_`
-        s.add_ast(`
+        const name_nodo = `node_${this.line}_${this.column}_`
+        return `
         ${name_nodo};
         ${name_nodo}[label="${get_simbolo(this.type)}"];
-        ${name_nodo}->${this.left.ast()};
-        ${name_nodo}->${this.right.ast()};
-        `)
+        ${name_nodo}->${this.left.ast()}
+        ${name_nodo}->${this.right.ast()}
+        `
     }
 }
