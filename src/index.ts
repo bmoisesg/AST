@@ -41,7 +41,7 @@ try {
         console.log(parser.consola);
         createFile("out/errores.html", s.get_error())
         createFile("out/entornos.html", parser.graficarTS)
-        createFile("out/ast.dot", "digraph G {\n" + s.get_ast() + "\n}")
+        createFile("out/ast.dot", "digraph G {\nnode[shape=box];" + s.get_ast() + "\n}")
         exec('dot -Tpng out/ast.dot -o out/ast.png ')
         //s.descomponer({nombre: "maria lorena diaz",edad: "1"})
     }

@@ -15,7 +15,7 @@ export class Incre extends Instruction {
 
     public execute(env: Environment) {
         //console.log("---------------metodo incremento ->"+this.id, " con "+this.tipo);
-        const value = env.getVar(this.id);
+        const value = env.get_variable(this.id);
         
         if (value == null) {
             throw new Error("<tr><td>semantico</td><td>La variable '" + this.id + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
@@ -30,7 +30,7 @@ export class Incre extends Instruction {
         }
         this.tipo=="++"? value.value++: value.value--;
         //console.log(value.valor)
-        env.actualizar(this.id, value.value,value.type,true);
+        env.actualizar_variable(this.id, value.value);
     }
     public ast(){
         if (this.tipo=="++") parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Incremento"];\n';

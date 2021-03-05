@@ -32,6 +32,11 @@ export class Environment {
         return true
     }
 
+    /**
+     * 
+     * @param nombre nombre de la variable que se quiere declarar
+     * @returns si encontro el nombre en las variables almacenadas
+     */
     public revisarRepetido(nombre: string): boolean {
 
         //revisar en los arreglos almacenados
@@ -101,35 +106,37 @@ export class Environment {
         return tmp;
     }
 
-    public actualizar(id: string, valor: any, type: Type, condicion: boolean): boolean {
+    /**
+     * 
+     * @param nombre Nombre de la variable que se quiere actualizar
+     * @param valor Valor que se actualizara
+     */
+    public actualizar_variable(nombre: string, valor: any) {
+
         let env: Environment | null = this;
 
         while (env != null) {
-            if (env.variables.has(id)) {
+            if (env.variables.has(nombre)) {
                 for (let entry of Array.from(env.variables.entries())) {
-                    let key = entry[0];
-                    let value = entry[1];
-                    if (key == id) {
+                    if (entry[0] == nombre) {
                         entry[1].value = valor;
-                        entry[1].type = type;
-                        entry[1].edit = condicion;
-                        //console.log("supuestamente actuazlice el valor de la variable " + id + " por el valor " + entry[1].valor);
-                        return true//significa que si encontro el entorno
+                        return
                     }
                 }
             }
             env = env.anterior;
         }
-        return false;
     }
 
-
-    public getVar(id: string): Symbol | undefined | null {
+    /**
+     * 
+     * @param nombre buscar el nombre de la variable en todos los entornos 
+     * @returns Un objeto [Symbol] que tiene la informacion de la variable
+     */
+    public get_variable(nombre: string): Symbol | undefined | null {
         let env: Environment | null = this;
         while (env != null) {
-            if (env.variables.has(id)) {
-                return env.variables.get(id);
-            }
+            if (env.variables.has(nombre)) return env.variables.get(nombre);
             env = env.anterior;
         }
         return null;

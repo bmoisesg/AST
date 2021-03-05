@@ -115,7 +115,7 @@ stringplantilla  [\`][^`]* [\`]
 "if"                    return 'IF'
 "else"                  return 'ELSE'
 "while"                 return 'WHILE'
-"const"                 return 'const'
+"const"                 return 't_const'
 "number"                return 't_number'
 "string"                return 't_string'
 "boolean"               return 't_boolean'
@@ -174,9 +174,9 @@ Instruction
     | FUNCIONN             {  $$ = $1;  }
     | PrintSt          ';' {  $$ = $1;  }
     | PrintSt              {  $$ = $1;  }
-    | Declaration1     ';' {  $$ = $1;  }
-    | LET     ';' {  $$ = $1;  }
-    | Asignacion       ';' {  $$ = $1;  }
+    | CONST            ';' {  $$ = $1;  }
+    | LET              ';' {  $$ = $1;  }
+    | ASIGNACION       ';' {  $$ = $1;  }
     | CALLFUNCION      ';' {  $$ = $1;  }
     | CALLFUNCION          {  $$ = $1;  }
     | INCREMENTO           {  $$ = $1;  }
@@ -276,7 +276,7 @@ FOR
     }
 ;
 for1 
-    : Declaration1   {$$=$1;} 
+    : CONST   {$$=$1;} 
     | LET   {$$=$1;} 
     | Asignacion     {$$=$1;} 
 ;
@@ -304,12 +304,6 @@ ParaOperadorTernario
     |   '--' ID    { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
 ;
 
-Asignacion
-    : ID '=' Expr { 
-          $$ = new Asignacion($1, $3, @1.first_line, @1.first_column);
-    }
-;
-
 INCREMENTO
     :   '++' ID  ';'  { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
     |   ID  '++' ';'  { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
@@ -317,28 +311,24 @@ INCREMENTO
     |   '--' ID  ';'  { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
 ;
 
-LET
-    : 't_let' ID           '=' Expr { $$ = new Let($2, $4,   null, @1.first_line, @1.first_column); }
-    | 't_let' ID ':' TIPOS '=' Expr { $$ = new Let($2, $6,   $4,   @1.first_line, @1.first_column); }
-    | 't_let' ID ':' TIPOS          { $$ = new Let($2, null, $4,   @1.first_line, @1.first_column); }
-    | 't_let' ID                    { $$ = new Let($2, null, null, @1.first_line, @1.first_column); }
+/*------------------------  Declaracion de variables (let y const)  -----------------------  */
 
+LET
+    : 't_let' ID           '=' Expr { $$ = new Let($2, $4  , null, @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS '=' Expr { $$ = new Let($2, $6  , $4  , @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS          { $$ = new Let($2, null, $4  , @1.first_line, @1.first_column); }
+    | 't_let' ID                    { $$ = new Let($2, null, null, @1.first_line, @1.first_column); }
 ;
 
-Declaration1 
-    : 'const' ID '=' Expr {
-        $$ = new Declaration($2, $4, null, @1.first_line, @1.first_column);
-    }
-    | 'const' ID ':' 't_boolean' '='  Expr {
-        $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
-    }
-    | 'const' ID ':' 't_string' '='  Expr {
-        $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
-    }
-    | 'const' ID ':' 't_number' '='  Expr {
-        $$ = new Declaration($2, $6, $4, @1.first_line, @1.first_column);
-    }
+CONST
+    : 't_const' ID           '=' Expr { $$ = new Declaration($2, $4, null, @1.first_line, @1.first_column); }
+    | 't_const' ID ':' TIPOS '=' Expr { $$ = new Declaration($2, $6, $4  , @1.first_line, @1.first_column); }
+;
 
+/*------------------------------    Asignacion de variables  ------------------------------  */
+
+ASIGNACION
+    : ID '=' Expr { $$ = new Asignacion($1, $3, @1.first_line, @1.first_column);  }
 ;
 
 IfSt : 'IF' '(' Expr ')' Statement ElseSt{
@@ -384,7 +374,9 @@ PrintSt
     }
 ;
 
-Expr /*aritmeticas*/
+/*--------------------------------   Expresion ----------------------------------------*/
+
+Expr 
     : '-'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.NEGACION,        @1.first_line, @1.first_column); }       
     | ID  '++'               { $$ = new IncreDecre($1, $1, IncreDecreOption.INCREMENTO1, $1, @1.first_line, @1.first_column); } 
     | '++' ID                { $$ = new IncreDecre($2, $2, IncreDecreOption.INCREMENTO2, $2, @2.first_line, @2.first_column); } 
@@ -398,32 +390,31 @@ Expr /*aritmeticas*/
     | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO         , @2.first_line, @2.first_column); }
     | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT            , @2.first_line, @2.first_column); }
     
-    | F  {  $$ = $1; }
     
-    /*relacionales*/
-    | Expr '<'  Expr { $$ = new Relational($1, $3,RelationalOption.MENOR,           @2.first_line, @2.first_column); }
-    | Expr '<=' Expr { $$ = new Relational($1, $3,RelationalOption.MENORIGUAL,      @2.first_line, @2.first_column); }
-    | Expr '>'  Expr { $$ = new Relational($1, $3,RelationalOption.MAYOR,           @2.first_line, @2.first_column); }
-    | Expr '>=' Expr { $$ = new Relational($1, $3,RelationalOption.MAYORIGUAL,      @2.first_line, @2.first_column); }
-    | Expr '==' Expr { $$ = new Relational($1, $3,RelationalOption.IGUAL ,          @2.first_line, @2.first_column); }
-    | Expr '!=' Expr { $$ = new Relational($1, $3,RelationalOption.DIFERENCIACION , @2.first_line, @2.first_column); }
+    | Expr '<'  Expr { $$ = new Relational($1, $3, RelationalOption.MENOR          , @2.first_line, @2.first_column); }
+    | Expr '<=' Expr { $$ = new Relational($1, $3, RelationalOption.MENORIGUAL     , @2.first_line, @2.first_column); }
+    | Expr '>'  Expr { $$ = new Relational($1, $3, RelationalOption.MAYOR          , @2.first_line, @2.first_column); }
+    | Expr '>=' Expr { $$ = new Relational($1, $3, RelationalOption.MAYORIGUAL     , @2.first_line, @2.first_column); }
+    | Expr '==' Expr { $$ = new Relational($1, $3, RelationalOption.IGUAL          , @2.first_line, @2.first_column); }
+    | Expr '!=' Expr { $$ = new Relational($1, $3, RelationalOption.DIFERENCIACION , @2.first_line, @2.first_column); }
 
-    /*logicas*/
     | Expr '&&' Expr { $$ = new Logical($1, $3,LogicalOption.AND  , @2.first_line, @2.first_column); }
     | Expr '||' Expr { $$ = new Logical($1, $3,LogicalOption.OR   , @2.first_line, @2.first_column); }
     | '!' Expr       { $$ = new Logical($2, $2,LogicalOption.NOT  , @1.first_line, @1.first_column); }
    
+    | F  {  $$ = $1; }
     | ID '.' 't_length'          { $$= new ExpreArray($1,false,false,null,@1.first_line, @1.first_column); }
     | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,false,null,@1.first_line, @1.first_column); }
     | ID '['  Expr ']'           { $$= new ExpreArray($1,true ,true ,$3  ,@1.first_line, @1.first_column); }
 ;
 
-F   : '(' Expr ')'  {  $$ = $2; }
-    | DECIMAL       {  $$ = new Literal($1,                   Type.NUMBER,  @1.first_line, @1.first_column); }
-    | NUMBER        {  $$ = new Literal($1,                   Type.NUMBER,  @1.first_line, @1.first_column); }
-    | STRING        {  $$ = new Literal($1.replace(/\"/g,""), Type.STRING,  @1.first_line, @1.first_column); }
-    | STRINGG       {  $$ = new Literal($1.replace(/\'/g,""), Type.STRING,  @1.first_line, @1.first_column); }
-    | STRINGGG      {  $$ = new Literal($1.replace(/\`/g,""), Type.STRING,  @1.first_line, @1.first_column); }
+F   
+    : '(' Expr ')'  {  $$ = $2;                                                                              } 
+    | DECIMAL       {  $$ = new Literal($1,                   Type.NUMBER , @1.first_line, @1.first_column); }
+    | NUMBER        {  $$ = new Literal($1,                   Type.NUMBER , @1.first_line, @1.first_column); }
+    | STRING        {  $$ = new Literal($1.replace(/\"/g,""), Type.STRING , @1.first_line, @1.first_column); }
+    | STRINGG       {  $$ = new Literal($1.replace(/\'/g,""), Type.STRING , @1.first_line, @1.first_column); }
+    | STRINGGG      {  $$ = new Literal($1.replace(/\`/g,""), Type.STRING , @1.first_line, @1.first_column); }
     | true          {  $$ = new Literal($1,                   Type.BOOLEAN, @1.first_line, @1.first_column); }
     | false         {  $$ = new Literal($1,                   Type.BOOLEAN, @1.first_line, @1.first_column); }
 

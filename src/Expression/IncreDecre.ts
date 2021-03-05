@@ -19,7 +19,7 @@ export class IncreDecre extends Expression {
         let result: Retorno
 
 
-        const variable = env.getVar(this.nombrevariable);
+        const variable = env.get_variable(this.nombrevariable);
         //validar que exista
         if (variable == null) {
             throw new Error("<tr><td>semantico</td><td>La variable '" + this.nombrevariable + "' no existe </td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
@@ -47,7 +47,7 @@ export class IncreDecre extends Expression {
         }
 
         //actualiza 
-        env.actualizar(this.nombrevariable, variable.value, variable.type, true);
+        env.actualizar_variable(this.nombrevariable, variable.value);
         return result
 
     }

@@ -1,5 +1,5 @@
 digraph G {
-
+node[shape=box];
         node_1_1_[label="\<Instruccion\>\nDeclaracion let"];
         node_1_1_1[label="\<Nombre\>\nx3"];
         node_1_1_2[label="\<Tipo\>\nnull"];
@@ -8,19 +8,40 @@ digraph G {
         node_1_1_->
         node_1_8_;
         node_1_8_[label="1"];
-        node_2_1_[label="\<Instruccion\>\nDeclaracion let"];
+        node_2_1_[label="\<Instruccion\>\nDeclaracion const"];
         node_2_1_1[label="\<Nombre\>\nx32"];
-        node_2_1_2[label="\<Tipo\>\nstring"];
+        node_2_1_2[label="\<Tipo\>\nnumber"];
         node_2_1_->node_2_1_1
         node_2_1_->node_2_1_2
         node_2_1_->
-        node_2_17_;
-        node_2_17_[label="+"];
-        node_2_17_->
-        node_2_16_;
-        node_2_16_[label="1"];
-        node_2_17_->
-        node_2_20_;
-        node_2_20_[label="x"];
+        node_2_18_;
+        node_2_18_[label="1"];
+        node_3_1_[label="\<Instruccion\>\nAsignacion"];
+        node_3_1_1[label="\<Nombre\>\nx3"];
+        node_3_1_->node_3_1_1;
+        node_3_1_->
+        node_3_7_;
+        node_3_7_[label="-"];
+        node_3_7_->
+        node_3_5_;
+        node_3_5_[label="+"];
+        node_3_5_->
+        node_3_4_;
+        node_3_4_[label="2"];
+        node_3_5_->
+        node_3_6_;
+        node_3_6_[label="9"];
+        
+        node_3_7_->
+        node_3_9_;
+        node_3_9_[label="*"];
+        node_3_9_->
+        node_3_8_;
+        node_3_8_[label="9"];
+        node_3_9_->
+        node_3_10_;
+        node_3_10_[label="8"];
+        
+        
         
 }

@@ -28,7 +28,7 @@ export class Let extends Instruction {
         } else {
 
             //cuando la declaracion si tiene una expression a asignar
-            const expression = this.value.execute(env);
+            const expression = this.value.execute(env)
 
             if (this.tipo == null) {
 
@@ -44,7 +44,7 @@ export class Let extends Instruction {
                     expression.type == Type.BOOLEAN && this.tipo == "boolean"
                 ) {
 
-                    const c = env.guardar(this.nombre, expression.value, expression.type, true);
+                    const c = env.guardar(this.nombre, expression.value, expression.type, true)
                     if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
 
                 } else throw new error("Semantico", `El tipo de dato de la expresion [${get(expression.type)}] no es compatible con [${this.tipo}]`, this.line, this.column)

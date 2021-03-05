@@ -11,7 +11,7 @@ export class Access extends Expression {
     }
 
     public execute(environment: Environment): Retorno {
-        const value = environment.getVar(this.id);
+        const value = environment.get_variable(this.id);
         if (value == null) {
             const tmp = environment.getArray(this.id);
             //console.log("-> ",tmp?.contenido);

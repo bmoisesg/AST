@@ -1,2 +1,3 @@
 let x3=1;
-let x32:string=1+"x";
+const x32:number=1;
+x3=2+9-9*8;

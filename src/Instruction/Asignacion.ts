@@ -1,54 +1,45 @@
-
-import { Instruction } from "../Abstract/Instruction";
-import { Environment } from "../Symbol/Environment";
-import { Expression } from "../Abstract/Expression";
-import { env } from "process";
-import { toNamespacedPath } from "path";
-const parser = require('../Grammar/Grammar');
+import { Instruction } from "../Abstract/Instruction"
+import { Environment } from "../Symbol/Environment"
+import { Expression } from "../Abstract/Expression"
+import { error } from "../tool/error"
+import { get } from "../Abstract/Retorno"
+import { Singleton } from "../Singleton/Singleton"
 
 export class Asignacion extends Instruction {
 
-    private id: string;
-    private value: Expression;
-
-    constructor(id: string, value: Expression, line: number, column: number) {
-        super(line, column);
-        this.id = id;
-        this.value = value;
+    constructor(
+        public nombre: string,
+        public value: Expression,
+        line: number,
+        column: number
+    ) {
+        super(line, column)
     }
 
-    public execute(environment: Environment) {
-        const val = this.value.execute(environment);
-        //revisar que exita la variable en el entorno
+    public execute(env: Environment) {
 
-        var tmp2 = environment.getVar(this.id);
-        if (tmp2 == null || tmp2 == undefined) {
-            //no encontre la variable
-            throw new Error("<tr><td>semantico</td><td>No encontre esta variable '" + this.id + "' en el entorno para poder asignar</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-        }
-        //revisar que sean del mismo tiempo
+        const expresion = this.value.execute(env)
 
-        if (tmp2?.edit == false) {
-            //es una const
-            throw new Error("<tr><td>semantico</td><td>Asignacion incorrecta, la variable '" + this.id + "' es una const '" + tmp2?.type + "'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-        }
-        if (tmp2?.type != val.type) {
-            if (tmp2.type == -1) {
-                environment.actualizar(this.id, val.value, val.type, true);
-                return;
-            } else {
-                throw new Error("<tr><td>semantico</td><td>Asignacion incorrecta, la variable '" + this.id + "' es del tipo '" + tmp2?.type + "'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-            }
-        }
+        var variable = env.get_variable(this.nombre)
+        //validar que todo este bien antes de actualizar la variable
+        if (variable == null || variable == undefined) throw new error("Semantico", `No encontre una variable con este nombre '${this.nombre}'`, this.line, this.column)
+        if (!variable?.edit) throw new error("Semantico", `Asignacion incorrecta, la variable con nombre '${this.nombre}' es una const y no puede cambiar valor`, this.line, this.column)
+        if (variable?.type != expresion.type) throw new error("Semantico", `Asignacion incorrecta, la variable con nombre '${this.nombre}' es de tipo [${get(variable?.type)}] y se le esta tratando de asignar un tipo [${get(expresion.type)}]`, this.line, this.column)
 
-        var condi = environment.actualizar(this.id, val.value, val.type, true);
-        //console.log(condi);
+        env.actualizar_variable(this.nombre, expresion.value)
+
     }
-    public ast(){
-        parser.ast += 'node' + this.line + '_' + this.column + ' [label="\\<Instruccion\\> \\n Asignacion"];\n';
-        parser.ast += 'node' + this.line + '_' + this.column + '1 [label="' + this.id + '"];\n';
-        parser.ast += 'node' + this.line + '_' + this.column + '->node' + this.line + '_' + this.column + '1;\n'
-        parser.ast += 'node' + this.line + '_' + this.column + "-> ";
-        this.value.ast();
+
+    public ast() {
+
+        const s = Singleton.getInstance()
+        const nombre_nodo =`node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${nombre_nodo}[label="\\<Instruccion\\>\\nAsignacion"];
+        ${nombre_nodo}1[label="\\<Nombre\\>\\n${this.nombre}"];
+        ${nombre_nodo}->${nombre_nodo}1;
+        ${nombre_nodo}->${this.value.ast()}
+        `)
+
     }
 }
