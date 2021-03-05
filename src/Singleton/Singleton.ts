@@ -3,6 +3,8 @@ export class Singleton {
     private static instance: Singleton
     private error: string = ""
     private ast: string = ""
+    private consola: string = ""
+    
     private constructor() { }
 
     public static getInstance(): Singleton {
@@ -29,7 +31,10 @@ export class Singleton {
             "</tr>"
     }
 
-
+    /**
+     * 
+     * @returns un string con el codigo con el formato html para reportar
+     */
     public get_error() {
         return `
         <table border=1  border=1 style="width: 75%;margin: 0 auto;" cellpadding ="5">
@@ -41,14 +46,17 @@ export class Singleton {
             </tr>${this.error}
         </table>`
     }
-    public descomponer(objeto: any) {
-        console.log(objeto.nombre)
-        console.log(objeto.edad)
-    }
+
     public add_ast(data : string){
         this.ast+= data
     }
     public get_ast(): string{
         return this.ast
+    }
+    public add_consola(data : string){
+        this.consola+= data
+    }
+    public get_consola(): string{
+        return this.consola
     }
 }

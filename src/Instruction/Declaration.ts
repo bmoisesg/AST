@@ -23,7 +23,7 @@ export class Declaration extends Instruction {
         if (this.tipo == null) {
 
             //cuando la declaracion no tiene un tipo de dato definido
-            const c = env.guardar(this.nombre, expression.value, expression.type, false)
+            const c = env.guardar_variable(this.nombre, expression.value, expression.type, false)
             if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
 
         } else {
@@ -34,7 +34,7 @@ export class Declaration extends Instruction {
                 expression.type == Type.BOOLEAN && this.tipo == "boolean"
             ) {
 
-                const c = env.guardar(this.nombre, expression.value, expression.type, false)
+                const c = env.guardar_variable(this.nombre, expression.value, expression.type, false)
                 if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
 
             } else throw new error("Semantico", `El tipo de dato de la expresion [${get(expression.type)}] no es compatible con [${this.tipo}]`, this.line, this.column)

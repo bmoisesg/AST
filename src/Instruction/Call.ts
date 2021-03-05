@@ -49,7 +49,7 @@ export class Call extends Instruction {
             this.expresiones.forEach(element => {
                 const x = element.execute(environment);
                 //console.log(condition);
-                newEnv.guardar(func.parametros[y].split(",")[0], x.value, x.type,true);
+                newEnv.guardar_variable(func.parametros[y].split(",")[0], x.value, x.type,true);
                 y++;
             });
 

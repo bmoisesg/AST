@@ -20,28 +20,24 @@ node[shape=box];
         node_3_1_1[label="\<Nombre\>\nx3"];
         node_3_1_->node_3_1_1;
         node_3_1_->
-        node_3_7_;
-        node_3_7_[label="-"];
-        node_3_7_->
-        node_3_5_;
-        node_3_5_[label="+"];
-        node_3_5_->
         node_3_4_;
         node_3_4_[label="2"];
-        node_3_5_->
-        node_3_6_;
-        node_3_6_[label="9"];
         
-        node_3_7_->
-        node_3_9_;
-        node_3_9_[label="*"];
-        node_3_9_->
-        node_3_8_;
-        node_3_8_[label="9"];
-        node_3_9_->
-        node_3_10_;
-        node_3_10_[label="8"];
+        node_5_1_[label="\<Instruccion\>\nconsole"];node_5_1_->
+        /**/node_5_15_1;
+        node_5_15_1[label="{x3}"];
+        node_5_15_[label="--"];
+        node_5_15_1->node_5_15_;
         
+        node_6_1_[label="\<Instruccion\>\nconsole"];node_6_1_->
+        node_6_15_;
+        node_6_15_[label="+"];
+        node_6_15_->
+        node_6_13_;
+        node_6_13_[label="{x3}"];
         
+        node_6_15_->
+        node_6_16_;
+        node_6_16_[label="1"];
         
 }

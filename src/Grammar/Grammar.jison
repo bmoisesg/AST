@@ -122,8 +122,7 @@ stringplantilla  [\`][^`]* [\`]
 "let"                   return 't_let'
 "do"                    return 't_do'
 "for"                   return 't_for'
-"console"               return 'CONSOLE'
-"log"                   return 'LOG'
+"console.log"           return 't_console'
 "function"              return 't_function'
 "return"                return 't_return'
 "graficar_ts"           return 't_graficar_ts'
@@ -364,24 +363,21 @@ Statement
         $$ = new Statement(new Array(), @1.first_line, @1.first_column);
     }
 ;
+/*---------------------------------  imprimir  -------------------------------------------*/
 
 PrintSt 
-    : 'CONSOLE' '.' 'LOG' '(' Expr ')'  {
-        $$ = new Print($5, @1.first_line, @1.first_column);
-    }
-    |'CONSOLE' '.' 'LOG' '('  ')'  {
-        $$ = new Print(null, @1.first_line, @1.first_column);
-    }
+    : 't_console' '(' Expr ')'  { $$ = new Print($3  , @1.first_line, @1.first_column); }
+    | 't_console' '('      ')'  { $$ = new Print(null, @1.first_line, @1.first_column); }
 ;
 
-/*--------------------------------   Expresion ----------------------------------------*/
+/*--------------------------------   Expresion -------------------------------------------*/
 
 Expr 
     : '-'  Expr %prec UMENOS { $$ = new Arithmetic($2, $2, ArithmeticOption.NEGACION,        @1.first_line, @1.first_column); }       
-    | ID  '++'               { $$ = new IncreDecre($1, $1, IncreDecreOption.INCREMENTO1, $1, @1.first_line, @1.first_column); } 
-    | '++' ID                { $$ = new IncreDecre($2, $2, IncreDecreOption.INCREMENTO2, $2, @2.first_line, @2.first_column); } 
-    | ID  '--'               { $$ = new IncreDecre($1, $1, IncreDecreOption.DECREMENTO1, $1, @1.first_line, @1.first_column); } 
-    | '--' ID                { $$ = new IncreDecre($2, $2, IncreDecreOption.DECREMENTO2, $2, @2.first_line, @2.first_column); } 
+    | ID  '++'               { $$ = new IncreDecre(IncreDecreOption.INCREMENTO1, $1, @1.first_line, @1.first_column); } 
+    | '++' ID                { $$ = new IncreDecre(IncreDecreOption.INCREMENTO2, $2, @2.first_line, @2.first_column); } 
+    | ID  '--'               { $$ = new IncreDecre(IncreDecreOption.DECREMENTO1, $1, @1.first_line, @1.first_column); } 
+    | '--' ID                { $$ = new IncreDecre(IncreDecreOption.DECREMENTO2, $2, @2.first_line, @2.first_column); } 
    
     | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MAS            , @2.first_line, @2.first_column); }       
     | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MENOS          , @2.first_line, @2.first_column); }
@@ -409,7 +405,7 @@ Expr
 ;
 
 F   
-    : '(' Expr ')'  {  $$ = $2;                                                                              } 
+    : '(' Expr ')'  {  $$ = $2; } 
     | DECIMAL       {  $$ = new Literal($1,                   Type.NUMBER , @1.first_line, @1.first_column); }
     | NUMBER        {  $$ = new Literal($1,                   Type.NUMBER , @1.first_line, @1.first_column); }
     | STRING        {  $$ = new Literal($1.replace(/\"/g,""), Type.STRING , @1.first_line, @1.first_column); }
@@ -418,5 +414,5 @@ F
     | true          {  $$ = new Literal($1,                   Type.BOOLEAN, @1.first_line, @1.first_column); }
     | false         {  $$ = new Literal($1,                   Type.BOOLEAN, @1.first_line, @1.first_column); }
 
-    | ID            {  $$ = new Access($1,                    @1.first_line, @1.first_column);    }
+    | ID            {  $$ = new Access($1,@1.first_line, @1.first_column);  }
 ;

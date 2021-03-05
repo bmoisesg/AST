@@ -38,7 +38,7 @@ try {
 
         //TODO hacerlas un singleton
         exec('mkdir out/')
-        console.log(parser.consola);
+        console.log(s.get_consola());
         createFile("out/errores.html", s.get_error())
         createFile("out/entornos.html", parser.graficarTS)
         createFile("out/ast.dot", "digraph G {\nnode[shape=box];" + s.get_ast() + "\n}")

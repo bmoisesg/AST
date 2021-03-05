@@ -14,15 +14,16 @@ export class Environment {
         this.funciones = new Map();
         this.arreglos = new Map();
     }
+
     /**
-     * 
+     * Metodo para guardar una VARIABLE en la tabla de simbolos
      * @param id nombre de la variable
      * @param valor valor de la variable
      * @param type tipo de dato de la variable
      * @param condicion si es editable
      * @returns boolan si se efectuo el almacenamiento de la variable
      */
-    public guardar(nombre: string, valor: any, type: Type, condicion: boolean): boolean {
+    public guardar_variable(nombre: string, valor: any, type: Type, condicion: boolean): boolean {
 
         //revisar que el nombre de la nueva variable se encuentre disponible
         if (this.revisarRepetido(nombre)) return false
@@ -30,6 +31,42 @@ export class Environment {
         //agrega la variable al MAP 
         this.variables.set(nombre, new Symbol(valor, nombre, type, condicion))
         return true
+    }
+
+    /**
+     * Metodo para actualizar una VARIABLE almacenada en la tabla de simbolos con un nombre 
+     * @param nombre Nombre de la variable que se quiere actualizar
+     * @param valor Valor con el que se actualizara
+     */
+     public actualizar_variable(nombre: string, valor: any) {
+
+        let env: Environment | null = this;
+
+        while (env != null) {
+            if (env.variables.has(nombre)) {
+                for (let entry of Array.from(env.variables.entries())) {
+                    if (entry[0] == nombre) {
+                        entry[1].value = valor;
+                        return
+                    }
+                }
+            }
+            env = env.anterior;
+        }
+    }
+
+    /**
+     * Metodo para retornar una VARIABLE como [Symbol]  
+     * @param nombre buscar el nombre de la variable en todos los entornos 
+     * @returns Un objeto [Symbol] que tiene la informacion de la variable
+     */
+    public get_variable(nombre: string): Symbol | undefined | null {
+        let env: Environment | null = this;
+        while (env != null) {
+            if (env.variables.has(nombre)) return env.variables.get(nombre);
+            env = env.anterior;
+        }
+        return null;
     }
 
     /**
@@ -106,41 +143,6 @@ export class Environment {
         return tmp;
     }
 
-    /**
-     * 
-     * @param nombre Nombre de la variable que se quiere actualizar
-     * @param valor Valor que se actualizara
-     */
-    public actualizar_variable(nombre: string, valor: any) {
-
-        let env: Environment | null = this;
-
-        while (env != null) {
-            if (env.variables.has(nombre)) {
-                for (let entry of Array.from(env.variables.entries())) {
-                    if (entry[0] == nombre) {
-                        entry[1].value = valor;
-                        return
-                    }
-                }
-            }
-            env = env.anterior;
-        }
-    }
-
-    /**
-     * 
-     * @param nombre buscar el nombre de la variable en todos los entornos 
-     * @returns Un objeto [Symbol] que tiene la informacion de la variable
-     */
-    public get_variable(nombre: string): Symbol | undefined | null {
-        let env: Environment | null = this;
-        while (env != null) {
-            if (env.variables.has(nombre)) return env.variables.get(nombre);
-            env = env.anterior;
-        }
-        return null;
-    }
 
     public guardarFuncion(id: string, funcion: InsFuncion) {
         this.funciones.set(id, funcion);
