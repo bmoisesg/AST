@@ -1,43 +1,51 @@
-import { Instruction } from "../Abstract/Instruction";
-import { Environment } from "../Symbol/Environment";
-import { InsFuncion } from "./InsFuncion";
+import { Instruction } from "../Abstract/Instruction"
+import { Singleton } from "../Singleton/Singleton"
+import { Environment } from "../Symbol/Environment"
+import { InsFuncion } from "./InsFuncion"
 
-const parser = require('../Grammar/Grammar');
 export class Statement extends Instruction {
 
-    constructor(private code: Array<Instruction>, line: number, column: number) {
-        super(line, column);
+    constructor(
+        private code: Array<Instruction>,
+        line: number,
+        column: number
+    ) {
+        super(line, column)
     }
 
     public execute(env: Environment) {
-        const newEnv = new Environment(env);
-        for (const instr of this.code) {
-            if (instr instanceof InsFuncion) {
-                //console.log("->",instr);
-                instr.execute(newEnv)
-                //console.log(env)
+
+        const newEnv = new Environment(env)
+
+        //recorrer primero las instrucciones buscando funciones
+        for (const x of this.code) {
+            if (x instanceof InsFuncion) {
+                x.execute(newEnv)
             }
         }
 
-        for (const instr of this.code) {
-           
-            if (instr instanceof InsFuncion) {
-            }
+        //recorrer las instrucciones restantes
+        for (const x of this.code) {
+            if (x instanceof InsFuncion) { }
             else {
-                let instruccion = instr.execute(newEnv);
-                if (instruccion == "@si") {
-                    return
-                }
+                const instruccion = x.execute(newEnv)
+                if (instruccion == "@si") return
             }
         }
 
     }
+    
     public ast() {
-        //onsole.log(this.line, "-- ", this.column);
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="Lista Instrucciones"];\n';
-        this.code.forEach(element => {
-            parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + element.line + '_' + (element.column) + ' ;\n'
-            element.ast();
-        });
+
+        const s = Singleton.getInstance()
+        const name_node = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${name_node}[label="Lista Instrucciones"];        
+        `)
+        this.code.forEach(x => {
+            s.add_ast(`${name_node}->node_${x.line}_${x.column}_;`)
+            x.ast()
+        })
+
     }
 }

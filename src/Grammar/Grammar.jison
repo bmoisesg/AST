@@ -112,8 +112,8 @@ stringplantilla  [\`][^`]* [\`]
 "push"                  return 't_push'
 "pop"                   return 't_pop'
 "Array"                 return 't_array'
-"if"                    return 'IF'
-"else"                  return 'ELSE'
+"if"                    return 't_if'
+"else"                  return 't_else'
 "while"                 return 'WHILE'
 "const"                 return 't_const'
 "number"                return 't_number'
@@ -167,7 +167,7 @@ Instructions
 Instruction
     : IfSt                 {  $$ = $1;  }
     | WhileSt              {  $$ = $1;  }
-    | Statement            {  $$ = $1;  }
+    | BLOQUE            {  $$ = $1;  }
     | FOR                  {  $$ = $1;  }
     | INSTARRAR        ';' {  $$ = $1;  }
     | FUNCIONN             {  $$ = $1;  }
@@ -238,17 +238,17 @@ ListaExpr
 
 
 FUNCIONN
-    : 't_function' ID '(' ')' Statement {
+    : 't_function' ID '(' ')' BLOQUE {
        
         $$ = new InsFuncion($2, $5, [], "",@1.first_line, @1.first_column);
     }
-    | 't_function' ID '(' Parametros ')' Statement {
+    | 't_function' ID '(' Parametros ')' BLOQUE {
         $$ = new InsFuncion($2, $6, $4, "",@1.first_line, @1.first_column);
     }
-    |'t_function' ID '(' ')' ':' TIPOS Statement  {
+    |'t_function' ID '(' ')' ':' TIPOS BLOQUE  {
         $$ = new InsFuncion($2, $7, [], $6,@1.first_line, @1.first_column);
     }
-    | 't_function' ID '(' Parametros ')' ':' TIPOS  Statement {
+    | 't_function' ID '(' Parametros ')' ':' TIPOS  BLOQUE {
         $$ = new InsFuncion($2, $8, $4, $7 ,@1.first_line, @1.first_column);
     }
 ;
@@ -270,7 +270,7 @@ TIPOS
 ;
 
 FOR
-    : 't_for' '(' for1 ';' Expr ';' for2 ')' Statement{
+    : 't_for' '(' for1 ';' Expr ';' for2 ')' BLOQUE{
             $$=new InstFor($3, $5, $7 , $9, @1.first_line, @1.first_column );
     }
 ;
@@ -330,39 +330,33 @@ ASIGNACION
     : ID '=' Expr { $$ = new Asignacion($1, $3, @1.first_line, @1.first_column);  }
 ;
 
-IfSt : 'IF' '(' Expr ')' Statement ElseSt{
-      $$ = new If($3, $5, $6, @1.first_line, @1.first_column);  }
+/*---------------------------------   condicionantes    ---------------------------------*/
+
+IfSt : 
+    't_if' '(' Expr ')' BLOQUE ElseSt { $$ = new If($3, $5, $6, @1.first_line, @1.first_column);  }
 ;
 
 ElseSt
-    : 'ELSE' Statement {
-        $$ = $2;
-    }
-    | 'ELSE' IfSt {
-        $$ = $2;
-    }
-    | /* epsilon */
-    {
-        $$ = null;
-    }
+    : 't_else' BLOQUE { $$ = $2;   }
+    | 't_else' IfSt   { $$ = $2;   }
+    |                 { $$ = null; }
 ;
 
 DOWHILE
-    : 't_do' Statement 'WHILE' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @1.first_line, @1.first_column);    }
+    : 't_do' BLOQUE 'WHILE' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @1.first_line, @1.first_column);    }
 ;
 
 WhileSt
-    : 'WHILE' '(' Expr ')' Statement {  $$ = new While($3, $5, @1.first_line, @1.first_column);    }
+    : 'WHILE' '(' Expr ')' BLOQUE {  $$ = new While($3, $5, @1.first_line, @1.first_column);    }
 ;
 
-Statement
-    : '{' Instructions '}' {
-        $$ = new Statement($2, @1.first_line, @1.first_column);
-    }
-    | '{' '}' {
-        $$ = new Statement(new Array(), @1.first_line, @1.first_column);
-    }
+/*--------------------------------- bloque de instrucciones ---------------------------------*/
+
+BLOQUE
+    : '{' Instructions '}' { $$ = new Statement($2         , @1.first_line, @1.first_column); }
+    | '{'              '}' { $$ = new Statement(new Array(), @1.first_line, @1.first_column); }
 ;
+
 /*---------------------------------  imprimir  -------------------------------------------*/
 
 PrintSt 

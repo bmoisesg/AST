@@ -1,43 +1,80 @@
 digraph G {
 node[shape=box];
-        node_1_1_[label="\<Instruccion\>\nDeclaracion let"];
-        node_1_1_1[label="\<Nombre\>\nx3"];
-        node_1_1_2[label="\<Tipo\>\nnull"];
-        node_1_1_->node_1_1_1
-        node_1_1_->node_1_1_2
-        node_1_1_->
-        node_1_8_;
-        node_1_8_[label="1"];
-        node_2_1_[label="\<Instruccion\>\nDeclaracion const"];
-        node_2_1_1[label="\<Nombre\>\nx32"];
-        node_2_1_2[label="\<Tipo\>\nnumber"];
+        node_1_1_[label="Lista Instrucciones"];        
+        node_1_1_->node_2_1_;
+        node_2_1_[label="\<Instruccion\>\nDeclaracion let"];
+        node_2_1_1[label="\<Nombre\>\nx3"];
+        node_2_1_2[label="\<Tipo\>\nnull"];
         node_2_1_->node_2_1_1
         node_2_1_->node_2_1_2
         node_2_1_->
-        node_2_18_;
-        node_2_18_[label="1"];
-        node_3_1_[label="\<Instruccion\>\nAsignacion"];
-        node_3_1_1[label="\<Nombre\>\nx3"];
-        node_3_1_->node_3_1_1;
+        node_2_8_;
+        node_2_8_[label="1"];node_1_1_->node_3_1_;
+        node_3_1_[label="\<Instruccion\>\nDeclaracion const"];
+        node_3_1_1[label="\<Nombre\>\nx32"];
+        node_3_1_2[label="\<Tipo\>\nnumber"];
+        node_3_1_->node_3_1_1
+        node_3_1_->node_3_1_2
         node_3_1_->
-        node_3_4_;
-        node_3_4_[label="2"];
-        
-        node_5_1_[label="\<Instruccion\>\nconsole"];node_5_1_->
-        /**/node_5_15_1;
-        node_5_15_1[label="{x3}"];
-        node_5_15_[label="--"];
-        node_5_15_1->node_5_15_;
-        
+        node_3_18_;
+        node_3_18_[label="1"];node_1_1_->node_4_1_;
+        node_4_1_[label="\<Instruccion\>\nAsignacion"];
+        node_4_1_1[label="\<Nombre\>\nx3"];
+        node_4_1_->node_4_1_1;
+        node_4_1_->
+        node_4_4_;
+        node_4_4_[label="2"];
+        node_1_1_->node_6_1_;
         node_6_1_[label="\<Instruccion\>\nconsole"];node_6_1_->
-        node_6_15_;
-        node_6_15_[label="+"];
-        node_6_15_->
-        node_6_13_;
-        node_6_13_[label="{x3}"];
+        /**/node_6_15_1;
+        node_6_15_1[label="{x3}"];
+        node_6_15_[label="--"];
+        node_6_15_1->node_6_15_;
+        node_1_1_->node_7_1_;
+        node_7_1_[label="\<Instruccion\>\nconsole"];node_7_1_->
+        node_7_15_;
+        node_7_15_[label="+"];
+        node_7_15_->
+        node_7_13_;
+        node_7_13_[label="{x3}"];
         
-        node_6_15_->
-        node_6_16_;
-        node_6_16_[label="1"];
+        node_7_15_->
+        node_7_16_;
+        node_7_16_[label="1"];
         
+        node_10_1_[label="\<Instruccion\>\nif"];
+        node_10_1_1[label="\<True\>"];
+        node_10_1_2[label="\<Else\>"];
+        node_10_1_->node_10_1_1;
+        node_10_1_->node_10_1_2;
+        node_10_1_1->node_10_9_;
+        node_10_9_[label="Lista Instrucciones"];        
+        node_10_9_->node_11_5_;
+        node_11_5_[label="\<Instruccion\>\nconsole"];node_11_5_->
+        node_11_25_;
+        node_11_25_[label="correto"];node_10_9_->node_12_5_;
+        node_12_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_12_5_1[label="\<Nombre\>\nnumeroo_"];
+        node_12_5_2[label="\<Tipo\>\nstring"];
+        node_12_5_->node_12_5_1
+        node_12_5_->node_12_5_2
+        node_12_5_->
+        node_12_27_;
+        node_12_27_[label="s"];node_10_1_2->node_13_7_
+        node_13_7_[label="\<Instruccion\>\nif"];
+        node_13_7_1[label="\<True\>"];
+        node_13_7_2[label="\<Else\>"];
+        node_13_7_->node_13_7_1;
+        node_13_7_->node_13_7_2;
+        node_13_7_1->node_13_15_;
+        node_13_15_[label="Lista Instrucciones"];        
+        node_13_15_->node_14_5_;
+        node_14_5_[label="\<Instruccion\>\nconsole"];node_14_5_->
+        node_14_19_;
+        node_14_19_[label="s"];node_13_7_2->node_15_6_
+        node_15_6_[label="Lista Instrucciones"];        
+        node_15_6_->node_16_5_;
+        node_16_5_[label="\<Instruccion\>\nconsole"];node_16_5_->
+        node_16_23_;
+        node_16_23_[label="false"];
 }

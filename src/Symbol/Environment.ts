@@ -212,13 +212,6 @@ export class Environment {
         }
     }
 
-    public getGlobal(): Environment {
-        let env: Environment | null = this;
-        while (env?.anterior != null) {
-            env = env.anterior;
-        }
-        return env;
-    }
 }
 
 
