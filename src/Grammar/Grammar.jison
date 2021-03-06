@@ -165,26 +165,26 @@ Instructions
 ;
 
 Instruction
-    : IfSt                 {  $$ = $1;  }
-    | WhileSt              {  $$ = $1;  }
-    | BLOQUE            {  $$ = $1;  }
-    | FOR                  {  $$ = $1;  }
-    | INSTARRAR        ';' {  $$ = $1;  }
-    | FUNCIONN             {  $$ = $1;  }
-    | PrintSt          ';' {  $$ = $1;  }
-    | PrintSt              {  $$ = $1;  }
+    : BLOQUE               {  $$ = $1;  }
     | CONST            ';' {  $$ = $1;  }
     | LET              ';' {  $$ = $1;  }
     | ASIGNACION       ';' {  $$ = $1;  }
+    | INCREDECRE       ';' {  $$ = $1;  }
+    | PRINT_ST         ';' {  $$ = $1;  }
+    | IF_ST                {  $$ = $1;  }
+    | WHILE_ST             {  $$ = $1;  }
+    | DOWHILE          ';' {  $$ = $1;  }
+    | OP_TERNARIO      ';' {  $$ = $1;  }
+
+    | FOR                  {  $$ = $1;  }
+    | INSTARRAR        ';' {  $$ = $1;  }
+    | FUNCIONN             {  $$ = $1;  }
     | CALLFUNCION      ';' {  $$ = $1;  }
     | CALLFUNCION          {  $$ = $1;  }
-    | INCREMENTO           {  $$ = $1;  }
     | GRAFICAR         ';' {  $$ = $1;  } 
     | GRAFICAR             {  $$ = $1;  }
     | INSARRREGLO          {  $$ = $1;  }
     | RETORNO          ';' {  $$ = $1;  } 
-    | OperadorTernario ';' {  $$ = $1;  }
-    | DOWHILE          ';' {  $$ = $1;  }
     | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
     //| error            '}' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
@@ -281,33 +281,27 @@ for1
 ;
 for2
     : Asignacion  {$$=$1;}
-    //| INCREMENTO  {$$=$1;}
-    |   '++' ID    { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
-    |   ID  '++'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   ID  '--'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   '--' ID    { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
+   ;
+
+/* ---------------------- Operador ternario como instruccion ---------------------- */
+
+OP_TERNARIO
+    : '(' Expr  ')' '?' OP_TERNARIO_ST ':' OP_TERNARIO_ST { $$=new OperadorTernario($2, $5, $7 ,@4.first_line, @4.first_column ); } 
 ;
 
-OperadorTernario
-    : Expr '?' ParaOperadorTernario ':' ParaOperadorTernario {
-            $$=new OperadorTernario($1, $3, $5 ,@2.first_line, @2.first_column );
-    } 
+OP_TERNARIO_ST
+    : PRINT_ST   { $$=$1; }
+    | ASIGNACION { $$=$1; }
+    | INCREDECRE { $$=$1; }
 ;
 
-ParaOperadorTernario
-    :PrintSt          { $$=$1; }
-    |Asignacion       { $$=$1; }
-    |   '++' ID     { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
-    |   ID  '++'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   ID  '--'   { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   '--' ID    { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
-;
+/* ---------------------- incremento y decremento como instruction ---------------------- */
 
-INCREMENTO
-    :   '++' ID  ';'  { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
-    |   ID  '++' ';'  { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   ID  '--' ';'  { $$= new Incre($2,$1,@1.first_line,@1.first_column);}
-    |   '--' ID  ';'  { $$= new Incre($1,$2,@2.first_line,@2.first_column);}
+INCREDECRE
+    :   '++' ID   { $$= new Incre($1,$2,@2.first_line,@2.first_column); }
+    |   ID  '++'  { $$= new Incre($2,$1,@1.first_line,@1.first_column); }
+    |   ID  '--'  { $$= new Incre($2,$1,@1.first_line,@1.first_column); }
+    |   '--' ID   { $$= new Incre($1,$2,@2.first_line,@2.first_column); }
 ;
 
 /*------------------------  Declaracion de variables (let y const)  -----------------------  */
@@ -332,13 +326,13 @@ ASIGNACION
 
 /*---------------------------------   condicionantes    ---------------------------------*/
 
-IfSt : 
-    't_if' '(' Expr ')' BLOQUE ElseSt { $$ = new If($3, $5, $6, @1.first_line, @1.first_column);  }
+IF_ST : 
+    't_if' '(' Expr ')' BLOQUE ELSE_ST { $$ = new If($3, $5, $6, @1.first_line, @1.first_column);  }
 ;
 
-ElseSt
+ELSE_ST
     : 't_else' BLOQUE { $$ = $2;   }
-    | 't_else' IfSt   { $$ = $2;   }
+    | 't_else' IF_ST  { $$ = $2;   }
     |                 { $$ = null; }
 ;
 /* --------------------------------- ciclos --------------------------------- */
@@ -347,7 +341,7 @@ DOWHILE
     : 't_do' BLOQUE 't_while' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @1.first_line, @1.first_column);    }
 ;
 
-WhileSt
+WHILE_ST
     : 't_while' '(' Expr ')' BLOQUE { $$ = new While($3, $5, @1.first_line, @1.first_column);    }
 ;
 
@@ -360,7 +354,7 @@ BLOQUE
 
 /*---------------------------------  imprimir  -------------------------------------------*/
 
-PrintSt 
+PRINT_ST 
     : 't_console' '(' Expr ')'  { $$ = new Print($3  , @1.first_line, @1.first_column); }
     | 't_console' '('      ')'  { $$ = new Print(null, @1.first_line, @1.first_column); }
 ;

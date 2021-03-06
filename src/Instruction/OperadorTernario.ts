@@ -1,51 +1,46 @@
-import { Instruction } from "../Abstract/Instruction";
-import { Environment } from "../Symbol/Environment";
-import { Expression } from "../Abstract/Expression";
-import { env } from "process";
-import { Type } from "../Abstract/Retorno";
-import { parse } from "path";
-const parser = require('../Grammar/Grammar');
+import { Instruction } from "../Abstract/Instruction"
+import { Environment } from "../Symbol/Environment"
+import { Expression } from "../Abstract/Expression"
+import { get, Type } from "../Abstract/Retorno"
+import { error } from "../tool/error"
+import { Singleton } from "../Singleton/Singleton"
 
 export class OperadorTernario extends Instruction {
-    //este es codigo de bmoisesg nunca lo compartire o comparti
 
-    private condicon: Expression;
-    private valor1: Instruction;
-    private valor2: Instruction;
-
-    constructor(condicion: Expression, valor1: Instruction, valor2: Instruction, line: number, column: number) {
-        super(line, column);
-
-        this.condicon = condicion;
-        this.valor1 = valor1;
-        this.valor2 = valor2;
+    constructor(
+        private condicion: Expression,
+        private valor1: Instruction,
+        private valor2: Instruction,
+        line: number,
+        column: number
+    ) {
+        super(line, column)
     }
 
-    public execute(environment: Environment) {
-        const condition = this.condicon.execute(environment);
-        //console.log("->",condition, condition.type);
-        if (condition.type != Type.BOOLEAN) {
-            //console.log("entre");
-            throw new Error("<tr><td>semantico</td><td>La expresion del ternario no es una condiicon 'boolean' en el entorno para poder asignar</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-        }
+    public execute(env: Environment) {
+        const condition = this.condicion.execute(env);
 
-        if (condition.value) {
-            this.valor1.execute(environment);
-        } else {
-            this.valor2.execute(environment);
-        }
+        if (condition.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion ternaria tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${get(condition.type)}}]]`, this.line, this.column)
+
+        if (condition.value) this.valor1.execute(env)
+        else this.valor2.execute(env)
+
     }
-    public ast(){
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Operacion ternario"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '1[label="instruccion1"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '2[label="instruccion2"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
-        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
-        parser.ast += 'node' + this.line + '_' + (this.column) + "-> ";
-        this.condicon.ast();
-        parser.ast += 'node' + this.line + '_' + (this.column) +'1->node' + this.valor1.line + '_' + (this.valor1.column)+";\n" 
+
+    public ast() {
+        const s= Singleton.getInstance()
+        const name_nodo = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${name_nodo} [label="\\<Instruccion\\>\\n Operador ternario"];
+        ${name_nodo}1[label="\\<Instruccion verdadera\\>"];
+        ${name_nodo}2[label="\\<Instruccion falsa\\>"];
+        ${name_nodo}->${name_nodo}1;
+        ${name_nodo}->${name_nodo}2;
+        ${name_nodo}->${this.condicion.ast()}
+        ${name_nodo}1->node_${this.valor1.line}_${this.valor1.column}_;
+        ${name_nodo}2->node_${this.valor2.line}_${this.valor2.column}_;
+        `)
         this.valor1.ast();
-        parser.ast += 'node' + this.line + '_' + (this.column) +'2->node' + this.valor2.line + '_' + (this.valor2.column)+";\n" 
         this.valor2.ast();
     }
 }

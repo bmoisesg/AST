@@ -1,7 +1,7 @@
 {
     let x=5;
-    do{
-        console.log(x);
-        x=++x;
-    }while(x<10);
+    x++;
+    ++x;
+    console.log(x);
+    (5>=5) ? console.log("maria"): x=10;
 }

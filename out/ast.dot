@@ -10,36 +10,44 @@ node[shape=box];
         node_2_5_->
         node_2_11_;
         node_2_11_[label="5"];node_1_1_->node_3_5_;
-        node_3_5_[label="\<Instruccion\>\ndo while"];
-        node_3_5_1[label="\<Condicion\>"];
+        node_3_5_[label="\<Instruccion\>\nIncremento"];
+        node_3_5_1[label="{x}"];
         node_3_5_->node_3_5_1;
-        node_3_5_1->
-        node_6_13_;
-        node_6_13_[label="\<"];
-        node_6_13_->
-        node_6_12_;
-        node_6_12_[label="{x}"];
+        node_1_1_->node_4_7_;
+        node_4_7_[label="\<Instruccion\>\nIncremento"];
+        node_4_7_1[label="{x}"];
+        node_4_7_->node_4_7_1;
+        node_1_1_->node_5_5_;
+        node_5_5_[label="\<Instruccion\>\nconsole"];node_5_5_->
+        node_5_17_;
+        node_5_17_[label="{x}"];
+        node_1_1_->node_6_12_;
+        node_6_12_ [label="\<Instruccion\>\n Operador ternario"];
+        node_6_12_1[label="\<Instruccion verdadera\>"];
+        node_6_12_2[label="\<Instruccion falsa\>"];
+        node_6_12_->node_6_12_1;
+        node_6_12_->node_6_12_2;
+        node_6_12_->
+        node_6_7_;
+        node_6_7_[label="\>="];
+        node_6_7_->
+        node_6_6_;
+        node_6_6_[label="5"];
+        node_6_7_->
+        node_6_9_;
+        node_6_9_[label="5"];
         
-        node_6_13_->
-        node_6_14_;
-        node_6_14_[label="10"];
+        node_6_12_1->node_6_14_;
+        node_6_12_2->node_6_36_;
         
-        node_3_5_->node_3_7_;        
-        
-        node_3_7_[label="Lista Instrucciones"];        
-        node_3_7_->node_4_9_;
-        node_4_9_[label="\<Instruccion\>\nconsole"];node_4_9_->
-        node_4_21_;
-        node_4_21_[label="{x}"];
-        node_3_7_->node_5_9_;
-        node_5_9_[label="\<Instruccion\>\nAsignacion"];
-        node_5_9_1[label="\<Nombre\>\nx"];
-        node_5_9_->node_5_9_1;
-        node_5_9_->
-        /**/node_5_13_1;
-        node_5_13_1[label="{x}"];
-        node_5_13_[label="++"];
-        node_5_13_1->node_5_13_;
-        
+        node_6_14_[label="\<Instruccion\>\nconsole"];node_6_14_->
+        node_6_32_;
+        node_6_32_[label="\"maria\""];
+        node_6_36_[label="\<Instruccion\>\nAsignacion"];
+        node_6_36_1[label="\<Nombre\>\nx"];
+        node_6_36_->node_6_36_1;
+        node_6_36_->
+        node_6_38_;
+        node_6_38_[label="10"];
         
 }
