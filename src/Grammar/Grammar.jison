@@ -114,7 +114,7 @@ stringplantilla  [\`][^`]* [\`]
 "Array"                 return 't_array'
 "if"                    return 't_if'
 "else"                  return 't_else'
-"while"                 return 'WHILE'
+"while"                 return 't_while'
 "const"                 return 't_const'
 "number"                return 't_number'
 "string"                return 't_string'
@@ -341,13 +341,14 @@ ElseSt
     | 't_else' IfSt   { $$ = $2;   }
     |                 { $$ = null; }
 ;
+/* --------------------------------- ciclos --------------------------------- */
 
 DOWHILE
-    : 't_do' BLOQUE 'WHILE' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @1.first_line, @1.first_column);    }
+    : 't_do' BLOQUE 't_while' '(' Expr ')'  {  $$ = new DoWhile($5, $2, @1.first_line, @1.first_column);    }
 ;
 
 WhileSt
-    : 'WHILE' '(' Expr ')' BLOQUE {  $$ = new While($3, $5, @1.first_line, @1.first_column);    }
+    : 't_while' '(' Expr ')' BLOQUE { $$ = new While($3, $5, @1.first_line, @1.first_column);    }
 ;
 
 /*--------------------------------- bloque de instrucciones ---------------------------------*/

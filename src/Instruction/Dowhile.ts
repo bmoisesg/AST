@@ -1,35 +1,43 @@
-import { Instruction } from "../Abstract/Instruction";
-import { Expression } from "../Abstract/Expression";
-import { Environment } from "../Symbol/Environment";
-import { Type } from "../Abstract/Retorno";
-const parser = require('../Grammar/Grammar');
-export class DoWhile extends Instruction{
+import { Instruction } from "../Abstract/Instruction"
+import { Expression } from "../Abstract/Expression"
+import { Environment } from "../Symbol/Environment"
+import { get, Type } from "../Abstract/Retorno"
+import { Singleton } from "../Singleton/Singleton"
+import { error } from "../tool/error"
 
-    constructor(private condition : Expression, private code : Instruction, line : number, column : number){
-        super(line, column);
+export class DoWhile extends Instruction {
+
+    constructor(
+        private condicion: Expression,
+        private code: Instruction,
+        line: number,
+        column: number
+    ) {
+        super(line, column)
     }
 
-    public execute(env : Environment) {
-        let condition = this.condition.execute(env);
-        if(condition.type != Type.BOOLEAN){
-            throw new Error("<tr><td>semantico</td><td>La expresion del dowhile no es una condicion 'boolean'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-        }
+    public execute(env: Environment) {
 
-        do {
-            this.code.execute(env);
-            condition = this.condition.execute(env);
-            if(condition.type != Type.BOOLEAN){
-                throw new Error("<tr><td>semantico</td><td>La expresion del dowhile no es una condiicon 'boolean'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
-            }
+        let c = this.condicion.execute(env)
+        if (c.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion do while tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${get(c.type)}]`, this.line, this.column)
+
+        while (c.value) {
+            this.code.execute(env)
+            c = this.condicion.execute(env)
+            if (c.type != Type.BOOLEAN) throw new error("Semantico", `La condición de la instruccion do while tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${get(c.type)}]`, this.line, this.column)
         }
-        while  (condition.value == true)
     }
-    public ast(){
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n do while"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '->'
-        this.condition.ast();
-        parser.ast+='node' + this.line + '_' + (this.column)+'->node'+ this.code.line + '_' + (this.code.column) +";\n"
+    public ast() {
+        const s = Singleton.getInstance()
+        const name_node = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${name_node}[label="\\<Instruccion\\>\\ndo while"];
+        ${name_node}1[label="\\<Condicion\\>"];
+        ${name_node}->${name_node}1;
+        ${name_node}1->${this.condicion.ast()}
+        ${name_node}->node_${this.code.line}_${this.code.column}_;        
+        `)
         this.code.ast()
-       
+
     }
 }
