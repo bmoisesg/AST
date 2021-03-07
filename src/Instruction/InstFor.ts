@@ -1,40 +1,54 @@
-import { Instruction } from "../Abstract/Instruction";
-import { Expression } from "../Abstract/Expression";
-import { Environment } from "../Symbol/Environment";
-import { Type } from "../Abstract/Retorno";
-const parser = require('../Grammar/Grammar');
+import { Instruction } from "../Abstract/Instruction"
+import { Expression } from "../Abstract/Expression"
+import { Environment } from "../Symbol/Environment"
+import { Singleton } from "../Singleton/Singleton"
+import { get, Type } from "../Abstract/Retorno"
+import { error } from "../tool/error"
+
 export class InstFor extends Instruction {
 
     constructor(
-        private primerArgumento: Instruction,
-        private segundoArgumento: Expression,
-        private tercerArgumento : Instruction,
+        private declaracion: Instruction,
+        private condicion_seguir: Expression,
+        private iterador: Instruction,
         private code: Instruction,
-        line: number, column: number) {
-        super(line, column);
+        line: number,
+        column: number
+    ) {
+        super(line, column)
     }
 
     public execute(env: Environment) {
-        const newEnv = new Environment(env);
-        this.primerArgumento.execute(newEnv);//hace la declaracion 
-        let condicion = this.segundoArgumento.execute(newEnv);
-        for (let x=0; condicion.value ;x++){
-            this.code.execute(newEnv);
-            this.tercerArgumento.execute(newEnv);
-            condicion = this.segundoArgumento.execute(newEnv);
-           // console.log(condicion)
-        }   
+
+        //crear un nuevo entorno para ejecutar solo la variable del for 
+        const newEnv = new Environment(env)
+        //ejecuta la declacion o podria ser una asignacion
+        this.declaracion.execute(newEnv)
+        let condicion = this.condicion_seguir.execute(newEnv)
+        //verificar que la expresion sea de tipo boolean
+        if (condicion.type != Type.BOOLEAN) throw new error("Semantico", `La instruccion for necesita una expresion booleana para ejecutarse y se reconocio el typo [${get(condicion.type)}] en la expresion`, this.line, this.column)
+        while (condicion.value) {
+            this.code.execute(newEnv)
+            this.iterador.execute(newEnv)
+            //ejecutar la condicion otra vez para saber si seguir o salir 
+            condicion = this.condicion_seguir.execute(newEnv)
+        }
     }
-    public ast(){
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n for"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.primerArgumento.line + '_' + (this.primerArgumento.column)+';\n'
-        this.primerArgumento.ast();
-        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.tercerArgumento.line + '_' + (this.tercerArgumento.column)+';\n'
-        this.tercerArgumento.ast();
-        parser.ast += 'node' + this.line + '_' + (this.column) +'->'
-        this.segundoArgumento.ast()
-        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.code.line + '_' + (this.code.column)+';\n'
+
+    public ast() {
+
+        const s = Singleton.getInstance()
+        const name_node = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${name_node}[label="\\<Instruccion\\>\\nFor"];
+        ${name_node}->node_${this.declaracion.line}_${this.declaracion.column}_;
+        ${name_node}->node_${this.iterador.line}_${this.iterador.column}_;
+        ${name_node}->node_${this.code.line}_${this.code.column}_;
+        ${name_node}->${this.condicion_seguir.ast()}
+        `)
+        this.declaracion.ast();
+        this.iterador.ast();
         this.code.ast()
-        
+
     }
 }

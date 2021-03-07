@@ -4,4 +4,8 @@
     ++x;
     console.log(x);
     (5>=5) ? console.log("maria"): x=10;
+
+    for(let x=0; x<10; x++){
+        console.log(x+"-");
+    }
 }

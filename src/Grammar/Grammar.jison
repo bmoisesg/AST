@@ -269,20 +269,6 @@ TIPOS
     |t_number  { $$=$1; }
 ;
 
-FOR
-    : 't_for' '(' for1 ';' Expr ';' for2 ')' BLOQUE{
-            $$=new InstFor($3, $5, $7 , $9, @1.first_line, @1.first_column );
-    }
-;
-for1 
-    : CONST   {$$=$1;} 
-    | LET   {$$=$1;} 
-    | Asignacion     {$$=$1;} 
-;
-for2
-    : Asignacion  {$$=$1;}
-   ;
-
 /* ---------------------- Operador ternario como instruccion ---------------------- */
 
 OP_TERNARIO
@@ -344,6 +330,21 @@ DOWHILE
 WHILE_ST
     : 't_while' '(' Expr ')' BLOQUE { $$ = new While($3, $5, @1.first_line, @1.first_column);    }
 ;
+
+FOR
+    : 't_for' '(' FOR_DECLA ';' Expr ';' FOR_ITERADOR ')' BLOQUE { $$=new InstFor($3, $5, $7 , $9, @1.first_line, @1.first_column );   }
+;
+
+FOR_DECLA 
+    : LET        { $$=$1; } 
+    | ASIGNACION { $$=$1; } 
+;
+
+FOR_ITERADOR
+    : ASIGNACION  { $$=$1; }
+    | INCREDECRE  { $$=$1; }
+   ;
+
 
 /*--------------------------------- bloque de instrucciones ---------------------------------*/
 

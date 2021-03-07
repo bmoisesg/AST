@@ -49,5 +49,46 @@ node[shape=box];
         node_6_36_->
         node_6_38_;
         node_6_38_[label="10"];
+        node_1_1_->node_8_5_;
+        node_8_5_[label="\<Instruccion\>\nFor"];
+        node_8_5_->node_8_9_;
+        node_8_5_->node_8_24_;
+        node_8_5_->node_8_28_;
+        node_8_5_->
+        node_8_19_;
+        node_8_19_[label="\<"];
+        node_8_19_->
+        node_8_18_;
+        node_8_18_[label="{x}"];
+        
+        node_8_19_->
+        node_8_20_;
+        node_8_20_[label="10"];
+        
+        
+        node_8_9_[label="\<Instruccion\>\nDeclaracion let"];
+        node_8_9_1[label="\<Nombre\>\nx"];
+        node_8_9_2[label="\<Tipo\>\nnull"];
+        node_8_9_->node_8_9_1
+        node_8_9_->node_8_9_2
+        node_8_9_->
+        node_8_15_;
+        node_8_15_[label="0"];
+        node_8_24_[label="\<Instruccion\>\nIncremento"];
+        node_8_24_1[label="{x}"];
+        node_8_24_->node_8_24_1;
+        
+        node_8_28_[label="Lista Instrucciones"];        
+        node_8_28_->node_9_9_;
+        node_9_9_[label="\<Instruccion\>\nconsole"];node_9_9_->
+        node_9_22_;
+        node_9_22_[label="+"];
+        node_9_22_->
+        node_9_21_;
+        node_9_21_[label="{x}"];
+        
+        node_9_22_->
+        node_9_25_;
+        node_9_25_[label="\"-\""];
         
 }
