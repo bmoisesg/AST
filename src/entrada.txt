@@ -1,11 +1,6 @@
 {
-    let x=5;
-    x++;
-    ++x;
-    console.log(x);
-    (5>=5) ? console.log("maria"): x=10;
-
-    for(let x=0; x<10; x++){
-        console.log(x+"-");
-    }
+    let x:string[]= ["ho","3","4"];
+    let x1:number[]=[1,3];
+    let x3:number[]=[];
+    
 }

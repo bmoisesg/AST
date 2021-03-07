@@ -1,10 +1,12 @@
+import { Instruction } from "../Abstract/Instruction"
 
 export class Singleton {
     private static instance: Singleton
     private error: string = ""
     private ast: string = ""
     private consola: string = ""
-    
+    private pila: Instruction[] = []
+
     private constructor() { }
 
     public static getInstance(): Singleton {
@@ -47,16 +49,22 @@ export class Singleton {
         </table>`
     }
 
-    public add_ast(data : string){
-        this.ast+= data
+    public add_ast(data: string) {
+        this.ast += data
     }
-    public get_ast(): string{
+    public get_ast(): string {
         return this.ast
     }
-    public add_consola(data : string){
-        this.consola+= data
+    public add_consola(data: string) {
+        this.consola += data
     }
-    public get_consola(): string{
+    public get_consola(): string {
         return this.consola
+    }
+    /**
+     * add_pila
+     */
+    public add_pila(data:Instruction) {
+        this.pila.push(data)
     }
 }

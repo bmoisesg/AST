@@ -1,60 +1,71 @@
-import { Instruction } from "../Abstract/Instruction";
-import { Expression } from "../Abstract/Expression";
-import { Environment } from "../Symbol/Environment";
-const parser = require('../Grammar/Grammar');
+import { Instruction } from "../Abstract/Instruction"
+import { Singleton } from "../Singleton/Singleton";
+import { Environment } from "../Symbol/Environment"
+import { error } from "../tool/error";
+
 export class InsFuncion extends Instruction {
 
     constructor(
-        public id: string,
-        public statment: Instruction,
+        public name: string,
+        public bloque: Instruction,
         public parametros: Array<string>,
-        public retorno:string,
+        public tipo: string,
         line: number,
-        column: number) {
-        super(line, column);
+        column: number
+    ) {
+        super(line, column)
     }
 
-    public execute(environment: Environment) {
-        //revisar que no exista un id repetido
-        let condicion=environment.getExisteIdFuncion(this.id); 
-        //console.log(this.id);
-        if(condicion){
-            //error semantico
-            throw new Error("<tr><td>semantico</td><td>La funcion  '" + this.id + "' ya existe </td><td>" + (this.line) + "</td><td>" + (this.column+1) + "</td></tr>");
-        }
-        //revisar que los parametros no se repitan
-        let arraySplit:string[]=[]
+    public execute(env: Environment) {
+
+        let c = env.revisarRepetido(this.name)
+
+        if (c) throw new error("Semantico", `La funcion que se quiere guardar ya tiene el nombre '${this.name}' registrado como funcion, variable o array `, this.line, this.column)
+
+        //revisar que el nombre de los parametros no se repitan, para eso los metere todos los nombres de los parametros en un array
+        let array_parametro: string[] = []
         this.parametros.forEach(x => {
-            let tmp= x.split(",")
-            arraySplit.push(tmp[0])
+            let tmp = x.split(",")
+            array_parametro.push(tmp[0])//almaceno el nombre del parametro
         });
-        //acabo de llenar el array con el nombre de todos los parametros, ahora tengo que revisar que no se repitan
-        condicion=false
-        var i=0
-        arraySplit.forEach(x => {
-            //console.log(x,arraySplit.indexOf(x));
-            if(i!=arraySplit.indexOf(x)&& arraySplit.indexOf(x)>=0){
-                throw new Error("<tr><td>semantico</td><td>La funcion  '" + this.id + "' tiene un parametro repetido '"+x+"' </td><td>" + this.line + "</td><td>" + (this.column+1) + "</td></tr>");
+
+
+        var i = 0
+        array_parametro.forEach(x => {
+            if (i != array_parametro.indexOf(x) //que no sea el mismo, porque ira a buscar el nombre a todo el array
+                && array_parametro.indexOf(x) >= 0
+            ) {
+                throw new error("Semantico", `La funcion  '${this.name}' tiene un parametro repetido llamado '${x}'`, this.line, this.column)
             }
-            i++;
-        });
-        //console.log("--\n");
-        environment.guardarFuncion(this.id, this);
+            i++
+        })
+
+        //todo esta listo para guardarla en la tabla de simbolos
+        env.guardar_funcion(this.name, this)
     }
-    public ast(){
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n funcion"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '1[label="'+this.id+'"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '2[label="parametros"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.line + '_' + (this.column)+"1;\n"
-        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.line + '_' + (this.column)+"2;\n"
-        this.statment.ast();
+
+    public ast() {
         
-        parser.ast += 'node' + this.line + '_' + (this.column) +'->node'+ this.statment.line + '_' + (this.statment.column)+';\n'
-        var x=0;
-        this.parametros.forEach(element => {
-            parser.ast += 'node' + this.line + '_' + (this.column) + '_'+x+' [label="'+element+'"];\n';
-            parser.ast += 'node' + this.line + '_' + (this.column) +'2->node' + this.line + '_' + (this.column) + '_'+x+";\n"
-            x++;
-        });
+        const s= Singleton.getInstance()
+        const nombre_nodo=`node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${nombre_nodo} [label="\\<Instruccion\\>\\nFuncion"];
+        ${nombre_nodo}1[label="\\<Nombre\\>\\n${this.name}"];
+        ${nombre_nodo}2[label="\\<Parametros\\>"];
+        ${nombre_nodo}->${nombre_nodo}1;
+        ${nombre_nodo}->${nombre_nodo}2;
+        ${nombre_nodo}->node_${this.bloque.line}_${this.bloque.column}_;
+        `)
+        this.bloque.ast();
+        
+        let tmp = 5 //empiezo desde 5 porque ya esta ocupado 1 y 2
+        this.parametros.forEach(x => {
+            s.add_ast(`
+            ${nombre_nodo}${tmp}[label="\\<Nombre,Tipo\\>\\n${x}"];
+            ${nombre_nodo}2->${nombre_nodo}${tmp};
+            `)
+            tmp++
+        })
     }
+
 }

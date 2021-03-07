@@ -108,10 +108,11 @@ stringplantilla  [\`][^`]* [\`]
 ")"                     return ')' 
 "{"                     return '{'
 "}"                     return '}'
+"void"                  return 't_void'
 "length"                return 't_length'
 "push"                  return 't_push'
 "pop"                   return 't_pop'
-"Array"                 return 't_array'
+"array"                 return 't_array'
 "if"                    return 't_if'
 "else"                  return 't_else'
 "while"                 return 't_while'
@@ -173,100 +174,77 @@ Instruction
     | PRINT_ST         ';' {  $$ = $1;  }
     | IF_ST                {  $$ = $1;  }
     | WHILE_ST             {  $$ = $1;  }
+    | FOR                  {  $$ = $1;  }
     | DOWHILE          ';' {  $$ = $1;  }
     | OP_TERNARIO      ';' {  $$ = $1;  }
-
-    | FOR                  {  $$ = $1;  }
-    | INSTARRAR        ';' {  $$ = $1;  }
-    | FUNCIONN             {  $$ = $1;  }
+    | FUNCION              {  $$ = $1;  }
     | CALLFUNCION      ';' {  $$ = $1;  }
-    | CALLFUNCION          {  $$ = $1;  }
-    | GRAFICAR         ';' {  $$ = $1;  } 
-    | GRAFICAR             {  $$ = $1;  }
+
+    | ARRAY_DECLARACION ';' {  $$ = $1;  }
     | INSARRREGLO          {  $$ = $1;  }
+    
     | RETORNO          ';' {  $$ = $1;  } 
+    
+    | GRAFICAR_TS      ';' {  $$ = $1;  } 
     | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
-    //| error            '}' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
 
+/* --------------------------------------- array instruccion --------------------------------------- */
+
+ARRAY_DECLARACION
+    :'t_let' ID ':' TIPOS '[' ']'  '=' '[' CALLFUNCION_PARAMETROS ']'  { $$= new Arreglo($2, $9  , $4, [], @1.first_line, @1.first_column ); }
+    |'t_let' ID ':' TIPOS '[' ']'                                      { $$= new Arreglo($2, []  , $4, [], @1.first_line, @1.first_column ); }
+    |'t_let' ID ':' TIPOS '[' ']'  '=' '['                        ']'  { $$= new Arreglo($2, []  , $4, [], @1.first_line, @1.first_column ); }
+;
 
 INSARRREGLO
     : ID '[' Expr ']' '='  Expr     ';' { $$=new AccesoArreglo($1,null,$3, $6  ,false,false, @1.first_line, @1.first_column );}
-    | ID '=' '[' ContenidoArray ']' ';' { $$=new AccesoArreglo($1,$4,null, null,false,false, @1.first_line, @1.first_column );}
+    | ID '=' '[' CALLFUNCION_PARAMETROS ']' ';' { $$=new AccesoArreglo($1,$4,null, null,false,false, @1.first_line, @1.first_column );}
     | ID '.' 't_push' '(' Expr ')'  ';' { $$=new AccesoArreglo($1,null,null,$5 ,true ,false, @1.first_line, @1.first_column);}
     | ID '.' 't_pop'  '(' ')'       ';' { $$=new AccesoArreglo($1,null,null,$5 ,true ,true , @1.first_line, @1.first_column);}
 ;
 
-INSTARRAR
-    :'t_let' ID ':' TIPOS '[' ']' '=' '[' ContenidoArray ']'          { $$= new Arreglo($2,$9  ,$4,[], @1.first_line, @1.first_column );}
-    |'t_let' ID ':' t_array '<' TIPOS '>' '=' '[' ContenidoArray ']'  { $$= new Arreglo($2,$10 ,$6,[], @1.first_line, @1.first_column );}   
-    |'t_let' ID ':' TIPOS '[' ']'                                     { $$= new Arreglo($2,null,$4,[], @1.first_line, @1.first_column );}
-    |'t_let' ID ':' t_array '<' TIPOS '>'                             { $$= new Arreglo($2,null,$6,[], @1.first_line, @1.first_column );}
+/*--------------------------------------- graficar tabla de simbolos --------------------------------------- */
+
+GRAFICAR_TS
+    : 't_graficar_ts' '(' ')' { $$= new GraficarTablaSimbolos(@1.first_line, @1.first_column); }
 ;
 
-ContenidoArray
-    : ContenidoArray ',' Expr  {   $1.push($3);  $$ = $1;}
-    | Expr                     { $$=[$1]; }
+/* --------------------------------------- funcion   -------------------------------------  */
+
+FUNCION
+    : 't_function' ID '('            ')'              BLOQUE { $$ = new InsFuncion($2, $5, [], "void", @1.first_line, @1.first_column); }
+    | 't_function' ID '(' PARAMETROS ')'              BLOQUE { $$ = new InsFuncion($2, $6, $4, "void", @1.first_line, @1.first_column); }
+    | 't_function' ID '('            ')' ':' 't_void' BLOQUE { $$ = new InsFuncion($2, $5, [], "void", @1.first_line, @1.first_column); }
+    | 't_function' ID '(' PARAMETROS ')' ':' 't_void' BLOQUE { $$ = new InsFuncion($2, $6, $4, "void", @1.first_line, @1.first_column); }
+    | 't_function' ID '('            ')' ':' TIPOS    BLOQUE { $$ = new InsFuncion($2, $7, [], $6    , @1.first_line, @1.first_column); }
+    | 't_function' ID '(' PARAMETROS ')' ':' TIPOS    BLOQUE { $$ = new InsFuncion($2, $8, $4, $7    , @1.first_line, @1.first_column); } 
 ;
 
-GRAFICAR
-    : t_graficar_ts '(' ')' {$$= new GraficarTablaSimbolos(@1.first_line, @1.first_column);}
-;
-RETORNO
-    :'t_return'      { $$= new Ret(null,@1.first_line, @1.first_column);}
-    |'t_return' Expr { $$= new Ret($2  ,@1.first_line, @1.first_column);}
-;
-
-CALLFUNCION
-    : ID '(' ')' {
-        $$ = new Call($1, [], @1.first_line, @1.first_column);
-    }
-    | ID '(' ListaExpr ')' {
-        $$ = new Call($1, $3, @1.first_line, @1.first_column);
-    }
-;
-
-ListaExpr 
-    : ListaExpr ',' Expr{
-        $1.push($3);
-        $$ = $1;
-    }
-    | Expr{
-        $$ = [$1];
-    }
-;    
-
-
-FUNCIONN
-    : 't_function' ID '(' ')' BLOQUE {
-       
-        $$ = new InsFuncion($2, $5, [], "",@1.first_line, @1.first_column);
-    }
-    | 't_function' ID '(' Parametros ')' BLOQUE {
-        $$ = new InsFuncion($2, $6, $4, "",@1.first_line, @1.first_column);
-    }
-    |'t_function' ID '(' ')' ':' TIPOS BLOQUE  {
-        $$ = new InsFuncion($2, $7, [], $6,@1.first_line, @1.first_column);
-    }
-    | 't_function' ID '(' Parametros ')' ':' TIPOS  BLOQUE {
-        $$ = new InsFuncion($2, $8, $4, $7 ,@1.first_line, @1.first_column);
-    }
-;
-
-Parametros
-    : Parametros ',' ID ':' TIPOS {
-        $1.push($3+","+$5);
-        $$ = $1;
-    }
-    | ID ':' TIPOS{
-        $$ = [$1+","+$3];
-    }
+PARAMETROS
+    : PARAMETROS ',' ID ':' TIPOS  { $1.push($3+","+$5); $$ = $1;  }
+    |                ID ':' TIPOS  { $$ = [$1+","+$3];             }
 ;
 
 TIPOS
-    :t_boolean { $$=$1; }
-    |t_string  { $$=$1; }
-    |t_number  { $$=$1; }
+    : t_boolean { $$=$1; }
+    | t_string  { $$=$1; }
+    | t_number  { $$=$1; }
+;
+
+CALLFUNCION
+    : ID '('                        ')' { $$ = new Call($1, [], @1.first_line, @1.first_column);  }
+    | ID '(' CALLFUNCION_PARAMETROS ')' { $$ = new Call($1, $3, @1.first_line, @1.first_column);  }
+;
+
+CALLFUNCION_PARAMETROS 
+    : CALLFUNCION_PARAMETROS ',' Expr  {    $1.push($3);    $$ = $1;   }
+    |                            Expr  {    $$ = [$1];                 }
+;    
+
+RETORNO
+    : 't_return'      { $$= new Ret(null, @1.first_line, @1.first_column); }
+    | 't_return' Expr { $$= new Ret($2  , @1.first_line, @1.first_column); }
 ;
 
 /* ---------------------- Operador ternario como instruccion ---------------------- */

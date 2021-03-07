@@ -1,81 +1,79 @@
-import { Instruction } from "../Abstract/Instruction";
-import { Environment } from "../Symbol/Environment";
-import { Expression } from "../Abstract/Expression";
-const parser = require('../Grammar/Grammar');
+import { Instruction } from "../Abstract/Instruction"
+import { Environment } from "../Symbol/Environment"
+import { Expression } from "../Abstract/Expression"
+import { error } from "../tool/error"
+import { get, Type } from "../Abstract/Retorno"
+import { Singleton } from "../Singleton/Singleton"
+
 export class Call extends Instruction {
 
     constructor(
         private id: string,
         private expresiones: Array<Expression>,
         line: number,
-        column: number) {
-        super(line, column);
+        column: number
+    ) {
+        super(line, column)
     }
 
-    public execute(environment: Environment) {
-        const func = environment.getFuncion(this.id);
-        if (func != undefined) {
-            //console.log("encontre la funcion", this.id);
+    public execute(env: Environment) {
 
-            //verificar que los parametros esten correctos
-            let arrayTipos: number[]=[];
-            this.expresiones.forEach(element => {
-                const expre=element.execute(environment);
-                arrayTipos.push(expre.type);
-            });
-            //console.log(arrayTipos)
-            
-            if (arrayTipos.length!=func.parametros.length){
-                throw new Error("<tr><td>semantico</td><td>No enconte la funcion  '" + this.id + "' con todos estos parametros</td><td>" + (this.line) + "</td><td>" + (this.column+1) + "</td></tr>");
-            }
-            for (let i = 0; i < func.parametros.length; i++) {
-                const element = func.parametros[i].split(",")[1];
+        const func = env.get_funcion(this.id)
+        if (func == null) throw new error("Semantico", `No enconte la funcion con el nombre '${this.id}'`, this.line, this.column)
 
-                if (
-                    element== "number"  && arrayTipos[i]==0 ||
-                    element== "string"  && arrayTipos[i]==1 ||
-                    element== "boolean" && arrayTipos[i]==2    
-                ){
+        //verificar que el numero de parametros ingresados sea el mismo numero de parametros en la funcion almacenada
+        if (this.expresiones.length != func.parametros.length) throw new error("Semantico", `No enconte la funcion con nombre '${this.id}' con todos estos parametros`, this.line, this.column)
 
-                }else{
-                    throw new Error("<tr><td>semantico</td><td>Error de parametro no se esperba un tipo '"+arrayTipos[i]+ "' en la posicion "+(i+1)+" de la funcion</td><td>" + (this.line) + "</td><td>" + (this.column+1) + "</td></tr>"); 
-                }
-            }
+        //ejecuto cada uno de las expresiones que vienen como parametros y los almaceno los tipos en un array
+        let array: number[] = []
+        this.expresiones.forEach(x => {
+            const expre = x.execute(env)
+            array.push(expre.type)
+        })
 
-            const newEnv = new Environment(environment);
-            //declara los parametros con el valor 
-           // console.log("---------")
-            let y=0;
-            this.expresiones.forEach(element => {
-                const x = element.execute(environment);
-                //console.log(condition);
-                newEnv.guardar_variable(func.parametros[y].split(",")[0], x.value, x.type,true);
-                y++;
-            });
-
-            for (let i = 0; i < this.expresiones.length; i++) {
-                const value = this.expresiones[i].execute(environment);
-                // newEnv.guardar(func.parametros[i], value.value, value.type);
-            }
-            const parser = require('../Grammar/Grammar');
-            parser.pila_funciones.push(func);
-            func.statment.execute(newEnv);
-
-
-        }else{
-            throw new Error("<tr><td>semantico</td><td>No enconte la funcion  '" + this.id + "' </td><td>" + (this.line) + "</td><td>" + (this.column+1) + "</td></tr>");
+        //recorre cada uno de los parametros de la funcion y verificar que sean del mismo tipo
+        for (let i = 0; i < func.parametros.length; i++) {
+            const element = func.parametros[i].split(",")[1]
+            if (
+                element == "number" && array[i] == Type.NUMBER ||
+                element == "string" && array[i] == Type.STRING ||
+                element == "boolean" && array[i] == Type.BOOLEAN
+            ) {
+                //significa que son del mismo tipo
+            } else throw new error("Semantico", `Error de parametros, no se esperaba un tipo [${get(array[i])}] en la posicion ${i + 1} de los parametros de la funcion`, this.line, this.column)
         }
-    }
-    public ast(){
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Llamada funcion"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '1 [label="' + this.id + '"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '2 [label="Parametros"];\n';
-        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '2;\n'
-        parser.ast += 'node' + this.line + '_' + (this.column) + '->node' + this.line + '_' + (this.column) + '1;\n'
+
+        //en este punto, la funcion esta lista para invocar la funcion
+        const newEnv = new Environment(env)
+        let y = 0
         this.expresiones.forEach(element => {
-            parser.ast += 'node' + this.line + '_' + (this.column) + "2-> ";
-            element.ast();
-        });
-       
+            const x = element.execute(env)
+            newEnv.guardar_variable(func.parametros[y].split(",")[0], x.value, x.type, true) //guardar cada uno de los parametros en la tabla de simbolos
+            y++
+        })
+
+        const s= Singleton.getInstance()
+        s.add_pila(this)
+
+        //invocar la funcion
+        func.bloque.execute(newEnv)
+
+    }
+
+    public ast() {
+        const s= Singleton.getInstance()
+        const nombre_nodo=`node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${nombre_nodo} [label="\\<Instruccion\\>\\nLlamada funcion"];
+        ${nombre_nodo}1 [label="{${this.id}}"];
+        ${nombre_nodo}2 [label="<\\Parametros\\>"];
+        ${nombre_nodo}->${nombre_nodo}2;
+        ${nombre_nodo}->${nombre_nodo}1;
+        `)
+        this.expresiones.forEach(element => {
+            s.add_ast(`
+            ${nombre_nodo}2->${element.ast()}
+            `)
+        })
     }
 }

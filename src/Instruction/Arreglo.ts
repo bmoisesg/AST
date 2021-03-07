@@ -1,6 +1,8 @@
-import { Expression } from "../Abstract/Expression";
+import { Expression } from "../Abstract/Expression"
 import { Instruction } from "../Abstract/Instruction"
-import { Environment } from "../Symbol/Environment";
+import { Singleton } from "../Singleton/Singleton"
+import { Environment } from "../Symbol/Environment"
+import { error } from "../tool/error"
 
 export class Arreglo extends Instruction {
 
@@ -9,39 +11,57 @@ export class Arreglo extends Instruction {
         public id: string,
         public arrayExpresiones: Array<Expression>,
         public tipo: string,
-        public contenido: Array<any>,
+        public contenido: Array<any>,   //EL OBJETO que guarda los elementos del array
         line: number,
-        column: number) {
-        super(line, column);
+        column: number
+    ) {
+        super(line, column)
 
     }
-    public execute(environment: Environment) {
-        //console.log(this.tipo);
-        var condicion= false;
-        this.arrayExpresiones?.forEach(element => {
-            const tmp = element.execute(environment);
-            if (tmp.type!=metodo1(this.tipo)){
-                throw new Error("<tr><td>semantico</td><td>Tipo no validao, el contenido de este array tiene que ser ["+this.tipo+"]</td><td>" + (this.line) + "</td><td>" + (this.column+1) + "</td></tr>");
-            }
-            this.contenido.push(tmp.value)
-        });
-        if (environment.guardarArreglo(this.id, this)){
-            throw new Error("<tr><td>semantico</td><td>Este nombre ["+this.id+"] ya existe en este ambito</td><td>" + (this.line) + "</td><td>" + (this.column+1) + "</td></tr>");
-        };
+    public execute(env: Environment) {
+
+        this.arrayExpresiones.forEach(element => {
+            const expre = element.execute(env);
+            if (expre.type != get_num(this.tipo)) throw new error("Semantico", `Tipo no valido, el contenido de este array tiene que ser tipo [${this.tipo}] `, this.line, this.column)
+            this.contenido.push(expre.value)
+        })
+        if (!env.guardar_arreglo(this.id, this)) throw new error("Semantico", `Este nombre {${this.id}} ya existe en este ambito`, this.line, this.column)
     }
 
     public ast() {
-
+        const s= Singleton.getInstance()
+        const name_node = `node_${this.line}_${this.column}_`
+        s.add_ast(`
+        ${name_node}[label="\\<Instruccion\\>\\nArray Declaracion"];
+        ${name_node}1[label="\\<Nombre\\>\\n{${this.id}}"];
+        ${name_node}2[label="\\<Tipo\\>\\n${this.tipo}"];
+        ${name_node}3[label="\\<Contenido\\>"];
+        ${name_node}->${name_node}1;
+        ${name_node}->${name_node}2;
+        ${name_node}->${name_node}3;
+        `)
+        this.arrayExpresiones.forEach(element => {
+            s.add_ast(`
+            ${name_node}3->${element.ast()}
+            `)
+        })
     }
+
 }
-function metodo1(id:string):number {
+
+/**
+ * Retorna un numero segun el tipo
+ * @param id 
+ * @returns 
+ */
+function get_num(id: string): number {
     switch (id) {
         case "number":
             return 0
         case "string":
             return 1
         case "boolean":
-            return 2 
+            return 2
         default:
             return 0
     }

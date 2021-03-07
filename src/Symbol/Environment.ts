@@ -1,13 +1,13 @@
-import { Symbol } from "./Symbol";
-import { Type } from "../Abstract/Retorno";
+import { Symbol } from "./Symbol"
+import { Type } from "../Abstract/Retorno"
 import { InsFuncion } from "../Instruction/InsFuncion"
-import { Arreglo } from "../Instruction/Arreglo";
+import { Arreglo } from "../Instruction/Arreglo"
 
 export class Environment {
 
-    private variables: Map<string, Symbol>;
-    public funciones: Map<string, InsFuncion>;
-    public arreglos: Map<string, Arreglo>;
+    private variables: Map<string, Symbol>
+    public funciones: Map<string, InsFuncion>
+    public arreglos: Map<string, Arreglo>
 
     constructor(public anterior: Environment | null) {
         this.variables = new Map();
@@ -38,7 +38,7 @@ export class Environment {
      * @param nombre Nombre de la variable que se quiere actualizar
      * @param valor Valor con el que se actualizara
      */
-     public actualizar_variable(nombre: string, valor: any) {
+    public actualizar_variable(nombre: string, valor: any) {
 
         let env: Environment | null = this;
 
@@ -71,8 +71,8 @@ export class Environment {
 
     /**
      * 
-     * @param nombre nombre de la variable que se quiere declarar
-     * @returns si encontro el nombre en las variables almacenadas
+     * @param nombre nombre de la variable,arreglo o funcion que se quiere declarar
+     * @returns si encontro el nombre en la tabla de simbolos retorna un true
      */
     public revisarRepetido(nombre: string): boolean {
 
@@ -84,32 +84,50 @@ export class Environment {
         for (let entry of Array.from(this.variables.entries())) {
             if (entry[0] == nombre) return true;
         }
-        //no encontro el nombre repetido, osea que esta disponible
+        //revisar en las funciones almacenadas
+        for (let entry of Array.from(this.funciones.entries())) {
+            if (entry[0] == nombre) return true;
+        }
+        //no encontro el nombre , osea que esta disponible para usar
         return false
     }
 
-    public guardarArreglo(id: string, tmp: Arreglo): boolean {
-        for (let entry of Array.from(this.variables.entries())) {
-            let key = entry[0];
-            //console.log("->",key,value);
-            //console.log(key +"=="+id+"?");
-            if (key == id) {
-                //console.log("si");
-                return true
-            }
-        }
-        for (let entry of Array.from(this.arreglos.entries())) {
-            let key = entry[0];
-            //console.log("->",key,value);
-            //console.log(key +"=="+id+"?");
-            if (key == id) {
-                //console.log("si");
-                return true
-            }
-        }
-        this.arreglos.set(id, tmp);
-        return false
+    /**
+     * Guardar la funcion en la tabla de simbolos, literalmente se guardar la instruccion "Instfuncion"
+     * @param id Nombre de la funcion con la que se guardara
+     * @param funcion clase tipo "InsFunccion"
+     */
+    public guardar_funcion(id: string, funcion: InsFuncion) {
+        this.funciones.set(id, funcion)
     }
+
+    /**
+     * Retorna la clase INSFUNCION para ejecutarla
+     * @param id nombre de la funcion con la qu ese guardo en la tabla de simbolos
+     * @returns Clase INSFUNCION
+     */
+    public get_funcion(id: string): InsFuncion | undefined | null {
+        let env: Environment | null = this
+        while (env != null) {
+            if (env.funciones.has(id)) return env.funciones.get(id)
+            env = env.anterior
+        }
+        return env
+    }
+
+    /**
+     * Guardar un arreglo en la tabla de simbolos
+     * @param id nombre con el que se quiere guardar
+     * @param tmp objeto
+     * @returns boolean si se pudo guardar en la tabla de simbolos
+     */
+    public guardar_arreglo(id: string, tmp: Arreglo): boolean {
+        
+        if(this.revisarRepetido(id)) return false
+        this.arreglos.set(id, tmp)
+        return true
+    }
+
     public getEntorno(): String {
         var tmp = "";
         let env: Environment | null = this;
@@ -142,22 +160,6 @@ export class Environment {
         tmp += "</td></table><br>"
         return tmp;
     }
-
-
-    public guardarFuncion(id: string, funcion: InsFuncion) {
-        this.funciones.set(id, funcion);
-    }
-    public getExisteIdFuncion(id: string): boolean {
-
-        for (let entry of Array.from(this.funciones.entries())) {
-            let key = entry[0];
-            //console.log("pregunta:", key,"," ,id, "condicion=",  key == id)
-            if (key == id) {
-                return true// si encontro una funcion con este nombre
-            }
-        }
-        return false;
-    }
     public getExisteIdArray(id: string): boolean {
         let env: Environment | null = this;
         while (env != null) {
@@ -173,17 +175,6 @@ export class Environment {
 
         }
         return false;
-    }
-
-    public getFuncion(id: string): InsFuncion | undefined {
-        let env: Environment | null = this;
-        while (env != null) {
-            if (env.funciones.has(id)) {
-                return env.funciones.get(id);
-            }
-            env = env.anterior;
-        }
-        return undefined;
     }
     public getArray(id: string): Arreglo | undefined {
         let env: Environment | null = this;

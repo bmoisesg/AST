@@ -2,93 +2,48 @@ digraph G {
 node[shape=box];
         node_1_1_[label="Lista Instrucciones"];        
         node_1_1_->node_2_5_;
-        node_2_5_[label="\<Instruccion\>\nDeclaracion let"];
-        node_2_5_1[label="\<Nombre\>\nx"];
-        node_2_5_2[label="\<Tipo\>\nnull"];
-        node_2_5_->node_2_5_1
-        node_2_5_->node_2_5_2
-        node_2_5_->
-        node_2_11_;
-        node_2_11_[label="5"];node_1_1_->node_3_5_;
-        node_3_5_[label="\<Instruccion\>\nIncremento"];
-        node_3_5_1[label="{x}"];
+        node_2_5_[label="\<Instruccion\>\nArray Declaracion"];
+        node_2_5_1[label="\<Nombre\>\n{x}"];
+        node_2_5_2[label="\<Tipo\>\nstring"];
+        node_2_5_3[label="\<Contenido\>"];
+        node_2_5_->node_2_5_1;
+        node_2_5_->node_2_5_2;
+        node_2_5_->node_2_5_3;
+        
+            node_2_5_3->
+        node_2_25_;
+        node_2_25_[label="\"ho\""];
+            
+            node_2_5_3->
+        node_2_29_;
+        node_2_29_[label="\"3\""];
+            
+            node_2_5_3->
+        node_2_33_;
+        node_2_33_[label="\"4\""];
+            node_1_1_->node_3_5_;
+        node_3_5_[label="\<Instruccion\>\nArray Declaracion"];
+        node_3_5_1[label="\<Nombre\>\n{x1}"];
+        node_3_5_2[label="\<Tipo\>\nnumber"];
+        node_3_5_3[label="\<Contenido\>"];
         node_3_5_->node_3_5_1;
-        node_1_1_->node_4_7_;
-        node_4_7_[label="\<Instruccion\>\nIncremento"];
-        node_4_7_1[label="{x}"];
-        node_4_7_->node_4_7_1;
-        node_1_1_->node_5_5_;
-        node_5_5_[label="\<Instruccion\>\nconsole"];node_5_5_->
-        node_5_17_;
-        node_5_17_[label="{x}"];
-        node_1_1_->node_6_12_;
-        node_6_12_ [label="\<Instruccion\>\n Operador ternario"];
-        node_6_12_1[label="\<Instruccion verdadera\>"];
-        node_6_12_2[label="\<Instruccion falsa\>"];
-        node_6_12_->node_6_12_1;
-        node_6_12_->node_6_12_2;
-        node_6_12_->
-        node_6_7_;
-        node_6_7_[label="\>="];
-        node_6_7_->
-        node_6_6_;
-        node_6_6_[label="5"];
-        node_6_7_->
-        node_6_9_;
-        node_6_9_[label="5"];
+        node_3_5_->node_3_5_2;
+        node_3_5_->node_3_5_3;
         
-        node_6_12_1->node_6_14_;
-        node_6_12_2->node_6_36_;
-        
-        node_6_14_[label="\<Instruccion\>\nconsole"];node_6_14_->
-        node_6_32_;
-        node_6_32_[label="\"maria\""];
-        node_6_36_[label="\<Instruccion\>\nAsignacion"];
-        node_6_36_1[label="\<Nombre\>\nx"];
-        node_6_36_->node_6_36_1;
-        node_6_36_->
-        node_6_38_;
-        node_6_38_[label="10"];
-        node_1_1_->node_8_5_;
-        node_8_5_[label="\<Instruccion\>\nFor"];
-        node_8_5_->node_8_9_;
-        node_8_5_->node_8_24_;
-        node_8_5_->node_8_28_;
-        node_8_5_->
-        node_8_19_;
-        node_8_19_[label="\<"];
-        node_8_19_->
-        node_8_18_;
-        node_8_18_[label="{x}"];
-        
-        node_8_19_->
-        node_8_20_;
-        node_8_20_[label="10"];
-        
-        
-        node_8_9_[label="\<Instruccion\>\nDeclaracion let"];
-        node_8_9_1[label="\<Nombre\>\nx"];
-        node_8_9_2[label="\<Tipo\>\nnull"];
-        node_8_9_->node_8_9_1
-        node_8_9_->node_8_9_2
-        node_8_9_->
-        node_8_15_;
-        node_8_15_[label="0"];
-        node_8_24_[label="\<Instruccion\>\nIncremento"];
-        node_8_24_1[label="{x}"];
-        node_8_24_->node_8_24_1;
-        
-        node_8_28_[label="Lista Instrucciones"];        
-        node_8_28_->node_9_9_;
-        node_9_9_[label="\<Instruccion\>\nconsole"];node_9_9_->
-        node_9_22_;
-        node_9_22_[label="+"];
-        node_9_22_->
-        node_9_21_;
-        node_9_21_[label="{x}"];
-        
-        node_9_22_->
-        node_9_25_;
-        node_9_25_[label="\"-\""];
+            node_3_5_3->
+        node_3_22_;
+        node_3_22_[label="1"];
+            
+            node_3_5_3->
+        node_3_24_;
+        node_3_24_[label="3"];
+            node_1_1_->node_4_5_;
+        node_4_5_[label="\<Instruccion\>\nArray Declaracion"];
+        node_4_5_1[label="\<Nombre\>\n{x3}"];
+        node_4_5_2[label="\<Tipo\>\nnumber"];
+        node_4_5_3[label="\<Contenido\>"];
+        node_4_5_->node_4_5_1;
+        node_4_5_->node_4_5_2;
+        node_4_5_->node_4_5_3;
         
 }
