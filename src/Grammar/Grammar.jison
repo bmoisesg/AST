@@ -21,7 +21,7 @@
     const {Ret} =require('../Instruction/Ret');
     const {GraficarTablaSimbolos} = require('../Instruction/Gr');
     const {Arreglo} = require('../Instruction/Arreglo');
-    const {AccesoArreglo} = require('../Instruction/AccesoArreglo');
+    const {ArregloAsignacion} = require('../Instruction/ArregloAsignacion');
     const {ExpreArray} = require('../Expression/ExpreArray');
     const {ArithmeticOption} = require('../Expression/ArithmeticOption');
     const {IncreDecre} = require('../Expression/IncreDecre')
@@ -29,6 +29,7 @@
     const {Type} = require('../Abstract/Retorno')
     const {Logical} = require('../Expression/Logical')
     const {LogicalOption} = require('../Expression/LogicalOption')
+    const {ArregloAcciones} = require('../Instruction/ArregloAcciones')
     var Lista_errores=[];
     var pila_funciones=[];
     var tmp="";
@@ -166,22 +167,22 @@ Instructions
 ;
 
 Instruction
-    : BLOQUE               {  $$ = $1;  }
-    | CONST            ';' {  $$ = $1;  }
-    | LET              ';' {  $$ = $1;  }
-    | ASIGNACION       ';' {  $$ = $1;  }
-    | INCREDECRE       ';' {  $$ = $1;  }
-    | PRINT_ST         ';' {  $$ = $1;  }
-    | IF_ST                {  $$ = $1;  }
-    | WHILE_ST             {  $$ = $1;  }
-    | FOR                  {  $$ = $1;  }
-    | DOWHILE          ';' {  $$ = $1;  }
-    | OP_TERNARIO      ';' {  $$ = $1;  }
-    | FUNCION              {  $$ = $1;  }
-    | CALLFUNCION      ';' {  $$ = $1;  }
-
+    : BLOQUE                {  $$ = $1;  }
+    | CONST             ';' {  $$ = $1;  }
+    | LET               ';' {  $$ = $1;  }
+    | ASIGNACION        ';' {  $$ = $1;  }
+    | INCREDECRE        ';' {  $$ = $1;  }
+    | PRINT_ST          ';' {  $$ = $1;  }
+    | IF_ST                 {  $$ = $1;  }
+    | WHILE_ST              {  $$ = $1;  }
+    | FOR                   {  $$ = $1;  }
+    | DOWHILE           ';' {  $$ = $1;  }
+    | OP_TERNARIO       ';' {  $$ = $1;  }
+    | FUNCION               {  $$ = $1;  }
+    | CALLFUNCION       ';' {  $$ = $1;  }
     | ARRAY_DECLARACION ';' {  $$ = $1;  }
-    | INSARRREGLO          {  $$ = $1;  }
+    | ARRAY_MANEJO      ';' {  $$ = $1;  }
+
     
     | RETORNO          ';' {  $$ = $1;  } 
     
@@ -197,11 +198,11 @@ ARRAY_DECLARACION
     |'t_let' ID ':' TIPOS '[' ']'  '=' '['                        ']'  { $$= new Arreglo($2, []  , $4, [], @1.first_line, @1.first_column ); }
 ;
 
-INSARRREGLO
-    : ID '[' Expr ']' '='  Expr     ';' { $$=new AccesoArreglo($1,null,$3, $6  ,false,false, @1.first_line, @1.first_column );}
-    | ID '=' '[' CALLFUNCION_PARAMETROS ']' ';' { $$=new AccesoArreglo($1,$4,null, null,false,false, @1.first_line, @1.first_column );}
-    | ID '.' 't_push' '(' Expr ')'  ';' { $$=new AccesoArreglo($1,null,null,$5 ,true ,false, @1.first_line, @1.first_column);}
-    | ID '.' 't_pop'  '(' ')'       ';' { $$=new AccesoArreglo($1,null,null,$5 ,true ,true , @1.first_line, @1.first_column);}
+ARRAY_MANEJO
+    : ID '.' 't_push' '(' Expr ')'                        { $$=new ArregloAcciones($1, $5  , true ,false, @1.first_line, @1.first_column); }
+    | ID '.' 't_pop'  '(' ')'                             { $$=new ArregloAcciones($1, null, false,true , @1.first_line, @1.first_column); }
+    //| ID              '=' '[' CALLFUNCION_PARAMETROS ']'  { $$=new ArregloAsignacion($1, $4  , null, null, false, false, @1.first_line, @1.first_column); }
+    //1 ID '[' Expr ']' '='  Expr                           { $$=new ArregloAsignacion($1, null, $3  , $6  , false, false, @1.first_line, @1.first_column); }
 ;
 
 /*--------------------------------------- graficar tabla de simbolos --------------------------------------- */

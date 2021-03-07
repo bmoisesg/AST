@@ -2,5 +2,11 @@
     let x:string[]= ["ho","3","4"];
     let x1:number[]=[1,3];
     let x3:number[]=[];
-    
-}
+    console.log(x);
+    x.pop();
+    console.log(x);
+    x.pop();
+    console.log(x);
+    x.push(1+"m");
+    console.log(x);
+}   

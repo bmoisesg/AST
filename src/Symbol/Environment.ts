@@ -122,10 +122,42 @@ export class Environment {
      * @returns boolean si se pudo guardar en la tabla de simbolos
      */
     public guardar_arreglo(id: string, tmp: Arreglo): boolean {
-        
-        if(this.revisarRepetido(id)) return false
+
+        if (this.revisarRepetido(id)) return false
         this.arreglos.set(id, tmp)
         return true
+    }
+
+    /**
+      * Busca un array en la tabla de simbolos y la retorna
+      * @param nombre Nombre del array que se esta buscando
+      * @returns 
+      */
+    public get_array(nombre: string): Arreglo | undefined {
+        let env: Environment | null = this
+        while (env != null) {
+            if (env.arreglos.has(nombre)) return env.arreglos.get(nombre)
+            env = env.anterior
+        }
+        return undefined
+    }
+
+    /**
+     * Actualizar el array en la tabla de simbolos
+     * @param id Nombre del array con el que se guardara en la tabla de simbolos
+     * @param arreglo Objeto el cual se guardara
+     */
+    public update_array(id: string, arreglo: Array<any>) {
+        let env: Environment | null = this;
+        while (env != null) {
+            if (env.arreglos.has(id)) {
+                for (let entry of Array.from(env.arreglos.entries())) {
+                    if (entry[0] == id) entry[1].contenido = arreglo
+                    return
+                }
+            }
+            env = env.anterior;
+        }
     }
 
     public getEntorno(): String {
@@ -160,53 +192,12 @@ export class Environment {
         tmp += "</td></table><br>"
         return tmp;
     }
-    public getExisteIdArray(id: string): boolean {
-        let env: Environment | null = this;
-        while (env != null) {
-            for (let entry of Array.from(env.arreglos.entries())) {
-                let key = entry[0];
-                //console.log(key,"==",id);
-                if (key == id) {
-                    //console.log("si");
-                    return true// si encontro un array con este nombre
-                }
-            }
-            env = env.anterior;
 
-        }
-        return false;
-    }
-    public getArray(id: string): Arreglo | undefined {
-        let env: Environment | null = this;
-        while (env != null) {
-            if (env.arreglos.has(id)) {
-                return env.arreglos.get(id);
-            }
-            env = env.anterior;
-        }
-        return undefined;
-    }
-    public updateArray(id: string, arreglo: Array<any>) {
-        let env: Environment | null = this;
-        while (env != null) {
-            if (env.arreglos.has(id)) {
-                for (let entry of Array.from(env.arreglos.entries())) {
-                    let key = entry[0];
-                    let value = entry[1];
-                    if (key == id) {
-                        entry[1].contenido = arreglo;
-                        return true//significa que si encontro el entorno
-                    }
-                }
-            }
-            env = env.anterior;
-        }
-    }
 
 }
 
 
-function getTipo(id: number): String {
+export function getTipo(id: number): String {
     switch (id) {
         case 0:
             return "Numero"

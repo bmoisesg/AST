@@ -45,5 +45,39 @@ node[shape=box];
         node_4_5_->node_4_5_1;
         node_4_5_->node_4_5_2;
         node_4_5_->node_4_5_3;
+        node_1_1_->node_5_5_;
+        node_5_5_[label="\<Instruccion\>\nconsole"];node_5_5_->
+        node_5_17_;
+        node_5_17_[label="{x}"];
+        node_1_1_->node_6_5_;
+        node_6_5_[label="\<Instruccion\> \n pop"];
+        node_1_1_->node_7_5_;
+        node_7_5_[label="\<Instruccion\>\nconsole"];node_7_5_->
+        node_7_17_;
+        node_7_17_[label="{x}"];
+        node_1_1_->node_8_5_;
+        node_8_5_[label="\<Instruccion\> \n pop"];
+        node_1_1_->node_9_5_;
+        node_9_5_[label="\<Instruccion\>\nconsole"];node_9_5_->
+        node_9_17_;
+        node_9_17_[label="{x}"];
+        node_1_1_->node_10_5_;
+        node_10_5_[label="\<Instruccion\> \n push"];
+        
+            node_10_5_[label="\<Instruccion\> \n push"];
+            node_10_5_->
+        node_10_13_;
+        node_10_13_[label="+"];
+        node_10_13_->
+        node_10_12_;
+        node_10_12_[label="1"];
+        node_10_13_->
+        node_10_16_;
+        node_10_16_[label="\"m\""];
+        
+            node_1_1_->node_11_5_;
+        node_11_5_[label="\<Instruccion\>\nconsole"];node_11_5_->
+        node_11_17_;
+        node_11_17_[label="{x}"];
         
 }

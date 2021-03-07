@@ -21,7 +21,7 @@ export class Access extends Expression {
 
         if (value == null) {
             //verificar si es un array
-            const tmp = environment.getArray(this.id)
+            const tmp = environment.get_array(this.id)
             if (tmp != null) return { value: tmp.contenido, type: Type.STRING }
             throw new error("Semantico", `Variable '${this.id}' no encontrada `, this.line, this.column)
         }

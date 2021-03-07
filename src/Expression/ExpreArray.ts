@@ -14,7 +14,9 @@ export class ExpreArray extends Expression {
         super(line, column);
     }
     public execute(environment: Environment): Retorno {
-        let result: Retorno;
+        let result: Retorno
+        return { type: 0, value: 0 }
+        /*
         var condicion = environment.getExisteIdArray(this.id)
         // console.log(condicion);
         if (condicion == false) {
@@ -56,7 +58,7 @@ export class ExpreArray extends Expression {
             //legth
             result = { value: arregloLocal.length, type: Type.NUMBER };
             return result;
-        }
+        }*/
 
     }
     public ast() {

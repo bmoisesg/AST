@@ -54,7 +54,7 @@ export class Arreglo extends Instruction {
  * @param id 
  * @returns 
  */
-function get_num(id: string): number {
+export function get_num(id: string): number {
     switch (id) {
         case "number":
             return 0
