@@ -79,5 +79,9 @@ node[shape=box];
         node_11_5_[label="\<Instruccion\>\nconsole"];node_11_5_->
         node_11_17_;
         node_11_17_[label="{x}"];
+        node_1_1_->node_12_5_;node_1_1_->node_13_5_;node_1_1_->node_14_5_;node_1_1_->node_15_5_;
+        node_15_5_[label="\<Instruccion\>\nconsole"];node_15_5_->
+        node_15_17_;
+        node_15_17_[label="{x}"];
         
 }

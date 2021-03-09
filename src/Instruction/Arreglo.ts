@@ -6,6 +6,7 @@ import { error } from "../tool/error"
 
 export class Arreglo extends Instruction {
 
+    public tam: number
 
     constructor(
         public id: string,
@@ -16,6 +17,7 @@ export class Arreglo extends Instruction {
         column: number
     ) {
         super(line, column)
+        this.tam = -1
 
     }
     public execute(env: Environment) {
@@ -26,10 +28,11 @@ export class Arreglo extends Instruction {
             this.contenido.push(expre.value)
         })
         if (!env.guardar_arreglo(this.id, this)) throw new error("Semantico", `Este nombre {${this.id}} ya existe en este ambito`, this.line, this.column)
+        this.tam = this.arrayExpresiones.length
     }
 
     public ast() {
-        const s= Singleton.getInstance()
+        const s = Singleton.getInstance()
         const name_node = `node_${this.line}_${this.column}_`
         s.add_ast(`
         ${name_node}[label="\\<Instruccion\\>\\nArray Declaracion"];

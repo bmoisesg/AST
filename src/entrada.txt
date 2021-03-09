@@ -9,4 +9,8 @@
     console.log(x);
     x.push(1+"m");
     console.log(x);
+    x[0]="5";
+    x[1]="5";
+    x[2]="1";
+    console.log(x);
 }   

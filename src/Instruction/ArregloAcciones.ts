@@ -30,7 +30,7 @@ export class ArregloAcciones extends Instruction {
         if (this.pop) {
             array.pop()
         } else {
-            const tmp = this.expre.execute(env);
+            const tmp = this.expre.execute(env)
             if (tmp.type != get_num(objeto.tipo)) throw new error("Semantico", `La expresion tiene que ser del mismo tipo que el array, el array '${this.nombre}' es tipo [${objeto.tipo}] y se detecto el tipo [${get(tmp.type)}]`, this.line, this.column)
             array.push(tmp.value)
         }
@@ -44,11 +44,11 @@ export class ArregloAcciones extends Instruction {
         s.add_ast(`
         ${name_node}[label="\\<Instruccion\\> \\n ${name}"];
         `)
-        if(this.push){
+        if (this.push) {
             s.add_ast(`
             ${name_node}[label="\\<Instruccion\\> \\n ${name}"];
             ${name_node}->${this.expre.ast()}
-            `)  
+            `)
         }
     }
 }

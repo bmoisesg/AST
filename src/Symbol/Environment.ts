@@ -152,8 +152,10 @@ export class Environment {
         while (env != null) {
             if (env.arreglos.has(id)) {
                 for (let entry of Array.from(env.arreglos.entries())) {
-                    if (entry[0] == id) entry[1].contenido = arreglo
-                    return
+                    if (entry[0] == id) {
+                        entry[1].contenido = arreglo
+                        return
+                    }
                 }
             }
             env = env.anterior;

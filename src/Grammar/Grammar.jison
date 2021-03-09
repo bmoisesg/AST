@@ -201,8 +201,8 @@ ARRAY_DECLARACION
 ARRAY_MANEJO
     : ID '.' 't_push' '(' Expr ')'                        { $$=new ArregloAcciones($1, $5  , true ,false, @1.first_line, @1.first_column); }
     | ID '.' 't_pop'  '(' ')'                             { $$=new ArregloAcciones($1, null, false,true , @1.first_line, @1.first_column); }
-    //| ID              '=' '[' CALLFUNCION_PARAMETROS ']'  { $$=new ArregloAsignacion($1, $4  , null, null, false, false, @1.first_line, @1.first_column); }
-    //1 ID '[' Expr ']' '='  Expr                           { $$=new ArregloAsignacion($1, null, $3  , $6  , false, false, @1.first_line, @1.first_column); }
+    | ID              '=' '[' CALLFUNCION_PARAMETROS ']'  { $$=new ArregloAsignacion($1, $4  , null, null, @1.first_line, @1.first_column); }
+    | ID '[' Expr ']' '='  Expr                           { $$=new ArregloAsignacion($1, null, $3  , $6  , @1.first_line, @1.first_column); }
 ;
 
 /*--------------------------------------- graficar tabla de simbolos --------------------------------------- */
