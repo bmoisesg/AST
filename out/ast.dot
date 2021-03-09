@@ -79,9 +79,55 @@ node[shape=box];
         node_11_5_[label="\<Instruccion\>\nconsole"];node_11_5_->
         node_11_17_;
         node_11_17_[label="{x}"];
-        node_1_1_->node_12_5_;node_1_1_->node_13_5_;node_1_1_->node_14_5_;node_1_1_->node_15_5_;
+        node_1_1_->node_12_5_;
+            node_12_5_[label="\<Instruccion\>\nArray asignacion"];
+            node_12_5_1[label="\<Index\>"];
+            node_12_5_2[label="\<Asignar\>"];
+            node_12_5_->node_12_5_1;
+            node_12_5_->node_12_5_2;
+            node_12_5_1->
+        node_12_7_;
+        node_12_7_[label="0"];
+            node_12_5_2->
+        node_12_12_;
+        node_12_12_[label="\"5\""];
+            node_1_1_->node_13_5_;
+            node_13_5_[label="\<Instruccion\>\nArray asignacion"];
+            node_13_5_1[label="\<Index\>"];
+            node_13_5_2[label="\<Asignar\>"];
+            node_13_5_->node_13_5_1;
+            node_13_5_->node_13_5_2;
+            node_13_5_1->
+        node_13_7_;
+        node_13_7_[label="1"];
+            node_13_5_2->
+        node_13_12_;
+        node_13_12_[label="\"5\""];
+            node_1_1_->node_14_5_;
+            node_14_5_[label="\<Instruccion\>\nArray asignacion"];
+            node_14_5_1[label="\<Index\>"];
+            node_14_5_2[label="\<Asignar\>"];
+            node_14_5_->node_14_5_1;
+            node_14_5_->node_14_5_2;
+            node_14_5_1->
+        node_14_7_;
+        node_14_7_[label="2"];
+            node_14_5_2->
+        node_14_12_;
+        node_14_12_[label="\"1\""];
+            node_1_1_->node_15_5_;
         node_15_5_[label="\<Instruccion\>\nconsole"];node_15_5_->
         node_15_17_;
         node_15_17_[label="{x}"];
+        node_1_1_->node_16_5_;
+            node_16_5_[label="\<Instruccion\>\nArray asignacion"];
+            
+                node_16_5_->
+        node_16_10_;
+        node_16_10_[label="\",\""];
+                node_1_1_->node_17_5_;
+        node_17_5_[label="\<Instruccion\>\nconsole"];node_17_5_->
+        node_17_17_;
+        node_17_17_[label="{x}"];
         
 }

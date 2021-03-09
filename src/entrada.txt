@@ -13,4 +13,6 @@
     x[1]="5";
     x[2]="1";
     console.log(x);
+    x=[","];
+    console.log(x);
 }   

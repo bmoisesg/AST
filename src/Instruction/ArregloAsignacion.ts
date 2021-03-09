@@ -1,6 +1,7 @@
 import { Expression } from "../Abstract/Expression"
 import { Instruction } from "../Abstract/Instruction"
 import { get, Type } from "../Abstract/Retorno"
+import { Singleton } from "../Singleton/Singleton"
 import { Environment } from "../Symbol/Environment"
 import { error } from "../tool/error"
 import { get_num } from "./Arreglo"
@@ -21,7 +22,6 @@ export class ArregloAsignacion extends Instruction {
 
         let objeto = env.get_array(this.nombre)
         if (objeto == undefined) throw new error("Semantico", `Este array '${this.nombre}' no se pudo encontrar`, this.line, this.column)
-        let num = objeto.tam
         var array = objeto.contenido as Array<any>
 
         if (this.array == null) {
@@ -44,10 +44,32 @@ export class ArregloAsignacion extends Instruction {
             })
             array = tmp
         }
-        env.update_array(this.nombre, array )
+        env.update_array(this.nombre, array)
     }
 
     public ast() {
+        const s = Singleton.getInstance()
+        const name_node = `node_${this.line}_${this.column}_`
+        if (this.array == null) {
+            s.add_ast(`
+            ${name_node}[label="\\<Instruccion\\>\\nArray asignacion"];
+            ${name_node}1[label="\\<Index\\>"];
+            ${name_node}2[label="\\<Asignar\\>"];
+            ${name_node}->${name_node}1;
+            ${name_node}->${name_node}2;
+            ${name_node}1->${this.expresionIndex.ast()}
+            ${name_node}2->${this.expresionAsignar.ast()}
+            `)
+        } else {
+            s.add_ast(`
+            ${name_node}[label="\\<Instruccion\\>\\nArray asignacion"];
+            `)
+            this.array.forEach(element => {
+                s.add_ast(`
+                ${name_node}->${element.ast()}
+                `)
+            });
+        }
 
     }
 }

@@ -207,6 +207,7 @@ ARRAY_MANEJO
 
 /*--------------------------------------- graficar tabla de simbolos --------------------------------------- */
 
+//TODO clase graficar tabla simbolos
 GRAFICAR_TS
     : 't_graficar_ts' '(' ')' { $$= new GraficarTablaSimbolos(@1.first_line, @1.first_column); }
 ;
@@ -243,6 +244,7 @@ CALLFUNCION_PARAMETROS
     |                            Expr  {    $$ = [$1];                 }
 ;    
 
+//TODO clase retorno
 RETORNO
     : 't_return'      { $$= new Ret(null, @1.first_line, @1.first_column); }
     | 't_return' Expr { $$= new Ret($2  , @1.first_line, @1.first_column); }
@@ -368,6 +370,7 @@ Expr
     | '!' Expr       { $$ = new Logical($2, $2,LogicalOption.NOT  , @1.first_line, @1.first_column); }
    
     | F  {  $$ = $1; }
+    //TODO expresiones con array
     | ID '.' 't_length'          { $$= new ExpreArray($1,false,false,null,@1.first_line, @1.first_column); }
     | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,false,null,@1.first_line, @1.first_column); }
     | ID '['  Expr ']'           { $$= new ExpreArray($1,true ,true ,$3  ,@1.first_line, @1.first_column); }
