@@ -31,3 +31,5 @@
         graficar_ts();
     }
 }   
+
+let variable=2021;

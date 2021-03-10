@@ -5,34 +5,31 @@ const parser = require('./Grammar/Grammar');
 const fs = require('fs');
 
 try {
-
-    console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     
     if (true) {
         
         const entrada = fs.readFileSync('src/entrada.txt');
         const ast = parser.parse(entrada.toString());
-        const env = new Environment(null);                      //environment padre
+        const env = new Environment(null);                     
         const s= Singleton.getInstance();
 
-        parser.ast = 'nodeOriginal[label="Lista_Instrucciones"];\n'
+        s.add_ast(`nodeOriginal[label="<\\Lista_Instrucciones\\>"];`)
 
-        //este recorrido lo que hcaer
+        //generar el ast primero
         for (const instr of ast) {
             try {
                 instr.ast();
-                parser.ast += 'nodeOriginal->node' + instr.line + '_' + instr.column + ";\n";
+                s.add_ast(`nodeOriginal->node_${instr.line}_${instr.column}_;`)
             } catch (error) {
-                parser.Lista_errores.push(error.message);
             }
         }
 
+        //recorrer las instrucciones y ejecutarlas
         for (const instruccion of ast) {
             try {
                 instruccion.execute(env);
             } catch (error) {
                 s.add_error(error)
-                
             }
         }
 
@@ -51,5 +48,5 @@ catch (error) {
 function createFile(nameFile: string, data: string) {
     fs.writeFile(nameFile, data, () => {
         console.log('>> The file ' + nameFile + ' has been saved!');
-    });
+    })
 }

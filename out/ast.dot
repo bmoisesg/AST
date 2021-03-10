@@ -1,5 +1,5 @@
 digraph G {
-node[shape=box];
+node[shape=box];nodeOriginal[label="<\Lista_Instrucciones\>"];
         node_1_1_[label="Lista Instrucciones"];        
         node_1_1_->node_2_5_;
         node_2_5_[label="\<Instruccion\>\nDeclaracion let"];
@@ -201,5 +201,13 @@ node[shape=box];
         node_30_9_->node_30_9_2
         node_30_9_->
         node_30_17_;
-        node_30_17_[label="3"];node_28_5_->node_31_9_;node_31_9_[label="\<Instruccion\>\nGraficar_TS"];
+        node_30_17_[label="3"];node_28_5_->node_31_9_;node_31_9_[label="\<Instruccion\>\nGraficar_TS"];nodeOriginal->node_1_1_;
+        node_35_1_[label="\<Instruccion\>\nDeclaracion let"];
+        node_35_1_1[label="\<Nombre\>\nvariable"];
+        node_35_1_2[label="\<Tipo\>\nnull"];
+        node_35_1_->node_35_1_1
+        node_35_1_->node_35_1_2
+        node_35_1_->
+        node_35_14_;
+        node_35_14_[label="2021"];nodeOriginal->node_35_1_;
 }

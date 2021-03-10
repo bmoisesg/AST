@@ -30,12 +30,6 @@
     const {Logical} = require('../Expression/Logical')
     const {LogicalOption} = require('../Expression/LogicalOption')
     const {ArregloAcciones} = require('../Instruction/ArregloAcciones')
-    var Lista_errores=[];
-    var pila_funciones=[];
-    var tmp="";
-    var consola="";
-    var ast="";
-    var graficarTS="";
 %}
 
 %lex
@@ -132,6 +126,7 @@ stringplantilla  [\`][^`]* [\`]
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
 .      {Lista_errores.push("<tr><td>lexico</td><td>No se reconoce el caracter "+yytext + '</td><td>' + (yylineno+1) +'</td><td>'+(yylloc.first_column+1)+'</td></tr>');	}
+
 /lex
 
 %left '||'
@@ -142,18 +137,14 @@ stringplantilla  [\`][^`]* [\`]
 %left '*' '/'
 %left '**' '%' 
 
-
 %right '!'
-%right AUX1
-%right AUX2
 
 %start Init
 
 %%
 
 Init    
-    : Instructions EOF  {
-        return $1;  }
+    : Instructions EOF  {  return $1;  }
 ;
 
 Instructions
