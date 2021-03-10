@@ -153,11 +153,6 @@ stringplantilla  [\`][^`]* [\`]
 
 Init    
     : Instructions EOF  {
-        exports.Lista_errores= Lista_errores;
-        exports.pila_funciones= pila_funciones;
-        exports.consola= consola;
-        exports.ast= ast;
-        exports.graficarTS= graficarTS;
         return $1;  }
 ;
 
@@ -182,11 +177,11 @@ Instruction
     | CALLFUNCION       ';' {  $$ = $1;  }
     | ARRAY_DECLARACION ';' {  $$ = $1;  }
     | ARRAY_MANEJO      ';' {  $$ = $1;  }
+    | GRAFICAR_TS       ';' {  $$ = $1;  } 
 
     
     | RETORNO          ';' {  $$ = $1;  } 
     
-    | GRAFICAR_TS      ';' {  $$ = $1;  } 
     | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
 ;
 
@@ -207,7 +202,6 @@ ARRAY_MANEJO
 
 /*--------------------------------------- graficar tabla de simbolos --------------------------------------- */
 
-//TODO clase graficar tabla simbolos
 GRAFICAR_TS
     : 't_graficar_ts' '(' ')' { $$= new GraficarTablaSimbolos(@1.first_line, @1.first_column); }
 ;

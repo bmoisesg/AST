@@ -4,6 +4,7 @@ export class Singleton {
     private static instance: Singleton
     private error: string = ""
     private ast: string = ""
+    private entorno: string = ""
     private consola: string = ""
     private pila: Instruction[] = []
 
@@ -39,12 +40,12 @@ export class Singleton {
      */
     public get_error() {
         return `
-        <table border=1  border=1 style="width: 75%;margin: 0 auto;" cellpadding ="5">
+        <table border=1 style="width: 75%;margin: 0 auto;" cellpadding ="5">
             <tr>
-                <td>Tipo</td>
-                <td>Descipcion</td>
-                <td>Linea</td>
-                <td>Columna</td>
+                <th>Tipo error</th>
+                <th>Descripcion</th>
+                <th>Linea</th>
+                <th>Columna</th>
             </tr>${this.error}
         </table>`
     }
@@ -66,5 +67,11 @@ export class Singleton {
      */
     public add_pila(data:Instruction) {
         this.pila.push(data)
+    }
+    public add_entorno(data:string){
+        this.entorno+=data
+    }
+    public get_entorno():string{
+        return this.entorno
     }
 }

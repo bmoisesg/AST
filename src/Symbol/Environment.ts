@@ -161,21 +161,32 @@ export class Environment {
             env = env.anterior;
         }
     }
-
-    public getEntorno(): String {
+    /**
+     * Crear el reporte para la tabla de simbolos
+     * @returns string que contiene una tabla html de los entornos en ese momento
+     */
+    public getEntorno(): string {
         var tmp = "";
         let env: Environment | null = this;
-        tmp += "<table border=1><td>"
+        tmp += "<table border=1 style=\"width: 75%;margin: 0 auto;\" cellpadding =\"5\"><td>"
         while (env != null) {
-            tmp += "<table border=1><tr><th>Nombre</th><th>Tipo</th><th>Valor</th></tr>"
+            tmp += "<table border=1 style=\"width: 75%;margin: 0 auto;\" cellpadding =\"5\"><tr><th>Nombre</th><th>Tipo</th><th>Valor</th></tr>"
             for (let entry of Array.from(env.variables.entries())) {
                 tmp += "<tr>"
                 let key = entry[0];
                 tmp += "<td>" + key + "</td>";
                 let value = entry[1];
-
                 tmp += "<td>" + getTipo(value.type) + "</td>"
                 tmp += "<td>" + value.value + "</td>"
+                tmp += "</tr>"
+            }
+            for (let entry of Array.from(env.arreglos.entries())) {
+                tmp += "<tr>"
+                let key = entry[0];
+                tmp += "<td>" + key + "</td>";
+                let value = entry[1];
+                tmp += "<td>" + value.tipo + "</td>"
+                tmp += "<td>[" + value.contenido + "]</td>"
                 tmp += "</tr>"
             }
             for (let entry of Array.from(env.funciones.entries())) {
@@ -183,7 +194,6 @@ export class Environment {
                 let key = entry[0];
                 tmp += "<td>" + key + "</td>";
                 let value = entry[1];
-
                 tmp += "<td>" + getTipo(4) + "</td>"
                 tmp += "<td>" + value.parametros + "</td>"
                 tmp += "</tr>"

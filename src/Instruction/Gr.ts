@@ -1,6 +1,6 @@
 import { Instruction } from "../Abstract/Instruction";
+import { Singleton } from "../Singleton/Singleton";
 import { Environment } from "../Symbol/Environment";
-const parser = require('../Grammar/Grammar');
 
 export class GraficarTablaSimbolos extends Instruction {
 
@@ -10,11 +10,13 @@ export class GraficarTablaSimbolos extends Instruction {
         super(line, column);
     }
 
-    public execute(environment: Environment) {
-        parser.graficarTS += environment.getEntorno();
+    public execute(env: Environment) {
+        const s = Singleton.getInstance()
+        s.add_entorno(env.getEntorno())
     }
 
-    public ast(){
-        parser.ast += 'node' + this.line + '_' + (this.column) + ' [label="\\<Instruccion\\> \\n Graficar_TS"];\n';
+    public ast() {
+        const s = Singleton.getInstance()
+        s.add_ast(`node_${this.line}_${this.column}_[label="\\<Instruccion\\>\\nGraficar_TS"];`)
     }
 }
