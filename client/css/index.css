@@ -1,0 +1,47 @@
+body {
+  
+}
+
+.button_mas{
+    background-color: #22556e;
+    color: wheat;
+
+}
+
+.button_cerrar {
+    background-color: #cc2f24;
+    font-size: 8px;
+    border-radius: 9px;
+}
+
+#pestanas {
+    float: top;
+    font-size: 2ex;
+}
+
+#pestanas ul {
+    margin-left: -40px;
+}
+
+#pestanas li {
+    list-style-type: none;
+    float: left;
+    background: #22556e;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border: 2px solid #3b7ea0;
+    border-bottom: white;
+    padding: 3px 15px 3px 15px;
+    
+}
+
+#pestanas a:link {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+#contenidopestanas {
+    clear: both;
+    border-radius: 1px;
+    width: 1000px;
+}

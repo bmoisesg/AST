@@ -1,35 +1,16 @@
-{
-    let var=3;
-    let var2="name";
-    let var3=false;
-    let x:string[]= ["ho","3","4"];
-    let x1:number[]=[1,3];
-    let x3:number[]=[11,22];
-    console.log(x);
-    x.pop();
-    console.log(x);
-    x.pop();
-    console.log(x);
-    x.push(1+"m");
-    console.log(x);
-    x[0]="5";
-    x[1]="5";
-    console.log(x);
-    x=[","];
-    var=1996;
-    
 
-    function get(){
-        console.log(x);
-
-    }
-    
-    get();
-    {
-        let x:string[]= ["ho","3","4"];
-        let var=3;
-        graficar_ts();
-    }
-}   
-
-let variable=2021;
+    let numero: string="Hola";
+    let nombre: string ="usac";
+    let anio : number= 2021;
+    let lista: string[]=["c","o","m","p","i"];
+    console.log(lista);
+    let x:string= lista[1];
+    console.log(lista[0]);
+    console.log(lista[1]);
+    console.log(lista[2]);
+    console.log(lista[3]);
+    console.log(lista[4]);
+    console.log(lista.pop());
+    console.log(lista.length);
+    let y:number=12;
+    graficar_ts();

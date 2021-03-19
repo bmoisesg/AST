@@ -1,33 +1,31 @@
 digraph G {
 node[shape=box];nodeOriginal[label="<\Lista_Instrucciones\>"];
-        node_1_1_[label="Lista Instrucciones"];        
-        node_1_1_->node_2_5_;
         node_2_5_[label="\<Instruccion\>\nDeclaracion let"];
-        node_2_5_1[label="\<Nombre\>\nvar"];
-        node_2_5_2[label="\<Tipo\>\nnull"];
+        node_2_5_1[label="\<Nombre\>\nnumero"];
+        node_2_5_2[label="\<Tipo\>\nstring"];
         node_2_5_->node_2_5_1
         node_2_5_->node_2_5_2
         node_2_5_->
-        node_2_13_;
-        node_2_13_[label="3"];node_1_1_->node_3_5_;
+        node_2_29_;
+        node_2_29_[label="\"Hola\""];nodeOriginal->node_2_5_;
         node_3_5_[label="\<Instruccion\>\nDeclaracion let"];
-        node_3_5_1[label="\<Nombre\>\nvar2"];
-        node_3_5_2[label="\<Tipo\>\nnull"];
+        node_3_5_1[label="\<Nombre\>\nnombre"];
+        node_3_5_2[label="\<Tipo\>\nstring"];
         node_3_5_->node_3_5_1
         node_3_5_->node_3_5_2
         node_3_5_->
-        node_3_19_;
-        node_3_19_[label="\"name\""];node_1_1_->node_4_5_;
+        node_3_30_;
+        node_3_30_[label="\"usac\""];nodeOriginal->node_3_5_;
         node_4_5_[label="\<Instruccion\>\nDeclaracion let"];
-        node_4_5_1[label="\<Nombre\>\nvar3"];
-        node_4_5_2[label="\<Tipo\>\nnull"];
+        node_4_5_1[label="\<Nombre\>\nanio"];
+        node_4_5_2[label="\<Tipo\>\nnumber"];
         node_4_5_->node_4_5_1
         node_4_5_->node_4_5_2
         node_4_5_->
-        node_4_14_;
-        node_4_14_[label="false"];node_1_1_->node_5_5_;
+        node_4_24_;
+        node_4_24_[label="2021"];nodeOriginal->node_4_5_;
         node_5_5_[label="\<Instruccion\>\nArray Declaracion"];
-        node_5_5_1[label="\<Nombre\>\n{x}"];
+        node_5_5_1[label="\<Nombre\>\n{lista}"];
         node_5_5_2[label="\<Tipo\>\nstring"];
         node_5_5_3[label="\<Contenido\>"];
         node_5_5_->node_5_5_1;
@@ -35,179 +33,96 @@ node[shape=box];nodeOriginal[label="<\Lista_Instrucciones\>"];
         node_5_5_->node_5_5_3;
         
             node_5_5_3->
-        node_5_25_;
-        node_5_25_[label="\"ho\""];
+        node_5_28_;
+        node_5_28_[label="\"c\""];
             
             node_5_5_3->
-        node_5_29_;
-        node_5_29_[label="\"3\""];
+        node_5_32_;
+        node_5_32_[label="\"o\""];
             
             node_5_5_3->
-        node_5_33_;
-        node_5_33_[label="\"4\""];
-            node_1_1_->node_6_5_;
-        node_6_5_[label="\<Instruccion\>\nArray Declaracion"];
-        node_6_5_1[label="\<Nombre\>\n{x1}"];
-        node_6_5_2[label="\<Tipo\>\nnumber"];
-        node_6_5_3[label="\<Contenido\>"];
-        node_6_5_->node_6_5_1;
-        node_6_5_->node_6_5_2;
-        node_6_5_->node_6_5_3;
-        
-            node_6_5_3->
-        node_6_22_;
-        node_6_22_[label="1"];
+        node_5_36_;
+        node_5_36_[label="\"m\""];
             
-            node_6_5_3->
-        node_6_24_;
-        node_6_24_[label="3"];
-            node_1_1_->node_7_5_;
-        node_7_5_[label="\<Instruccion\>\nArray Declaracion"];
-        node_7_5_1[label="\<Nombre\>\n{x3}"];
-        node_7_5_2[label="\<Tipo\>\nnumber"];
-        node_7_5_3[label="\<Contenido\>"];
-        node_7_5_->node_7_5_1;
-        node_7_5_->node_7_5_2;
-        node_7_5_->node_7_5_3;
-        
-            node_7_5_3->
-        node_7_22_;
-        node_7_22_[label="11"];
+            node_5_5_3->
+        node_5_40_;
+        node_5_40_[label="\"p\""];
             
-            node_7_5_3->
+            node_5_5_3->
+        node_5_44_;
+        node_5_44_[label="\"i\""];
+            nodeOriginal->node_5_5_;
+        node_6_5_[label="\<Instruccion\>\nconsole"];node_6_5_->
+        node_6_17_;
+        node_6_17_[label="{lista}"];
+        nodeOriginal->node_6_5_;
+        node_7_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_7_5_1[label="\<Nombre\>\nx"];
+        node_7_5_2[label="\<Tipo\>\nstring"];
+        node_7_5_->node_7_5_1
+        node_7_5_->node_7_5_2
+        node_7_5_->
+            node_7_19_;
+            node_7_19_[label="lista\n<\array\> "];
+            node_7_19_
+            node_7_19_->
         node_7_25_;
-        node_7_25_[label="22"];
-            node_1_1_->node_8_5_;
+        node_7_25_[label="1"];
+            nodeOriginal->node_7_5_;
         node_8_5_[label="\<Instruccion\>\nconsole"];node_8_5_->
-        node_8_17_;
-        node_8_17_[label="{x}"];
-        node_1_1_->node_9_5_;
-        node_9_5_[label="\<Instruccion\> \n pop"];
-        node_1_1_->node_10_5_;
+            node_8_17_;
+            node_8_17_[label="lista\n<\array\> "];
+            node_8_17_
+            node_8_17_->
+        node_8_23_;
+        node_8_23_[label="0"];
+            nodeOriginal->node_8_5_;
+        node_9_5_[label="\<Instruccion\>\nconsole"];node_9_5_->
+            node_9_17_;
+            node_9_17_[label="lista\n<\array\> "];
+            node_9_17_
+            node_9_17_->
+        node_9_23_;
+        node_9_23_[label="1"];
+            nodeOriginal->node_9_5_;
         node_10_5_[label="\<Instruccion\>\nconsole"];node_10_5_->
-        node_10_17_;
-        node_10_17_[label="{x}"];
-        node_1_1_->node_11_5_;
-        node_11_5_[label="\<Instruccion\> \n pop"];
-        node_1_1_->node_12_5_;
+            node_10_17_;
+            node_10_17_[label="lista\n<\array\> "];
+            node_10_17_
+            node_10_17_->
+        node_10_23_;
+        node_10_23_[label="2"];
+            nodeOriginal->node_10_5_;
+        node_11_5_[label="\<Instruccion\>\nconsole"];node_11_5_->
+            node_11_17_;
+            node_11_17_[label="lista\n<\array\> "];
+            node_11_17_
+            node_11_17_->
+        node_11_23_;
+        node_11_23_[label="3"];
+            nodeOriginal->node_11_5_;
         node_12_5_[label="\<Instruccion\>\nconsole"];node_12_5_->
-        node_12_17_;
-        node_12_17_[label="{x}"];
-        node_1_1_->node_13_5_;
-        node_13_5_[label="\<Instruccion\> \n push"];
-        
-            node_13_5_[label="\<Instruccion\> \n push"];
-            node_13_5_->
-        node_13_13_;
-        node_13_13_[label="+"];
-        node_13_13_->
-        node_13_12_;
-        node_13_12_[label="1"];
-        node_13_13_->
-        node_13_16_;
-        node_13_16_[label="\"m\""];
-        
-            node_1_1_->node_14_5_;
+            node_12_17_;
+            node_12_17_[label="lista\n<\array\> "];
+            node_12_17_
+            node_12_17_->
+        node_12_23_;
+        node_12_23_[label="4"];
+            nodeOriginal->node_12_5_;
+        node_13_5_[label="\<Instruccion\>\nconsole"];node_13_5_->
+            node_13_17_;
+            node_13_17_[label="lista\n<\array pop\> "];
+            nodeOriginal->node_13_5_;
         node_14_5_[label="\<Instruccion\>\nconsole"];node_14_5_->
-        node_14_17_;
-        node_14_17_[label="{x}"];
-        node_1_1_->node_15_5_;
-            node_15_5_[label="\<Instruccion\>\nArray asignacion"];
-            node_15_5_1[label="\<Index\>"];
-            node_15_5_2[label="\<Asignar\>"];
-            node_15_5_->node_15_5_1;
-            node_15_5_->node_15_5_2;
-            node_15_5_1->
-        node_15_7_;
-        node_15_7_[label="0"];
-            node_15_5_2->
-        node_15_12_;
-        node_15_12_[label="\"5\""];
-            node_1_1_->node_16_5_;
-            node_16_5_[label="\<Instruccion\>\nArray asignacion"];
-            node_16_5_1[label="\<Index\>"];
-            node_16_5_2[label="\<Asignar\>"];
-            node_16_5_->node_16_5_1;
-            node_16_5_->node_16_5_2;
-            node_16_5_1->
-        node_16_7_;
-        node_16_7_[label="1"];
-            node_16_5_2->
-        node_16_12_;
-        node_16_12_[label="\"5\""];
-            node_1_1_->node_17_5_;
-        node_17_5_[label="\<Instruccion\>\nconsole"];node_17_5_->
-        node_17_17_;
-        node_17_17_[label="{x}"];
-        node_1_1_->node_18_5_;
-            node_18_5_[label="\<Instruccion\>\nArray asignacion"];
-            
-                node_18_5_->
-        node_18_10_;
-        node_18_10_[label="\",\""];
-                node_1_1_->node_19_5_;
-        node_19_5_[label="\<Instruccion\>\nAsignacion"];
-        node_19_5_1[label="\<Nombre\>\nvar"];
-        node_19_5_->node_19_5_1;
-        node_19_5_->
-        node_19_9_;
-        node_19_9_[label="1996"];
-        node_1_1_->node_22_5_;
-        node_22_5_ [label="\<Instruccion\>\nFuncion"];
-        node_22_5_1[label="\<Nombre\>\nget"];
-        node_22_5_2[label="\<Parametros\>"];
-        node_22_5_->node_22_5_1;
-        node_22_5_->node_22_5_2;
-        node_22_5_->node_22_19_;
-        
-        node_22_19_[label="Lista Instrucciones"];        
-        node_22_19_->node_23_9_;
-        node_23_9_[label="\<Instruccion\>\nconsole"];node_23_9_->
-        node_23_21_;
-        node_23_21_[label="{x}"];
-        node_1_1_->node_27_5_;
-        node_27_5_ [label="\<Instruccion\>\nLlamada funcion"];
-        node_27_5_1 [label="{get}"];
-        node_27_5_2 [label="<\Parametros\>"];
-        node_27_5_->node_27_5_2;
-        node_27_5_->node_27_5_1;
-        node_1_1_->node_28_5_;
-        node_28_5_[label="Lista Instrucciones"];        
-        node_28_5_->node_29_9_;
-        node_29_9_[label="\<Instruccion\>\nArray Declaracion"];
-        node_29_9_1[label="\<Nombre\>\n{x}"];
-        node_29_9_2[label="\<Tipo\>\nstring"];
-        node_29_9_3[label="\<Contenido\>"];
-        node_29_9_->node_29_9_1;
-        node_29_9_->node_29_9_2;
-        node_29_9_->node_29_9_3;
-        
-            node_29_9_3->
-        node_29_29_;
-        node_29_29_[label="\"ho\""];
-            
-            node_29_9_3->
-        node_29_33_;
-        node_29_33_[label="\"3\""];
-            
-            node_29_9_3->
-        node_29_37_;
-        node_29_37_[label="\"4\""];
-            node_28_5_->node_30_9_;
-        node_30_9_[label="\<Instruccion\>\nDeclaracion let"];
-        node_30_9_1[label="\<Nombre\>\nvar"];
-        node_30_9_2[label="\<Tipo\>\nnull"];
-        node_30_9_->node_30_9_1
-        node_30_9_->node_30_9_2
-        node_30_9_->
-        node_30_17_;
-        node_30_17_[label="3"];node_28_5_->node_31_9_;node_31_9_[label="\<Instruccion\>\nGraficar_TS"];nodeOriginal->node_1_1_;
-        node_35_1_[label="\<Instruccion\>\nDeclaracion let"];
-        node_35_1_1[label="\<Nombre\>\nvariable"];
-        node_35_1_2[label="\<Tipo\>\nnull"];
-        node_35_1_->node_35_1_1
-        node_35_1_->node_35_1_2
-        node_35_1_->
-        node_35_14_;
-        node_35_14_[label="2021"];nodeOriginal->node_35_1_;
+            node_14_17_;
+            node_14_17_[label="lista\n<\array length\> "];
+            nodeOriginal->node_14_5_;
+        node_15_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_15_5_1[label="\<Nombre\>\ny"];
+        node_15_5_2[label="\<Tipo\>\nnumber"];
+        node_15_5_->node_15_5_1
+        node_15_5_->node_15_5_2
+        node_15_5_->
+        node_15_18_;
+        node_15_18_[label="12"];nodeOriginal->node_15_5_;node_16_5_[label="\<Instruccion\>\nGraficar_TS"];nodeOriginal->node_16_5_;
 }

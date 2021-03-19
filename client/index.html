@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>TOSLT</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">TOSLT</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Principal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="code.html">Codigo</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br><br><br><br>
+    <div class="container">
+        <h1 class="display-3">Hola, Bienvenido!</h1>
+        <p class="lead">Este proyecto permite reconocer una sintaxis basica del lenguaje TypeScript y construir un arbol
+            sintactico. El cual se recorre, ejecuta y analiza cada una las acciones ingresadas por el usuario.</p>
+        <hr class="my-4">
+        <p>Utiliza una traduccion orientada a la sintaxis para analizar sentencias basicas del lenguaje TypeScript,
+            tales como expresiones aritmeticas, logicas y relacionales, asi como tambien instrucciones de declaracion,
+            asignacion,ciclos y funciones.</p>
+        <p class="lead">
+            <br><br>
+            <a class="button" onclick="window.location.href='./code.html'"><span>Ir a codigo</span></a>
+        </p>
+    </div>
+    <br><br><br>
+
+
+    <div class="container">
+        <div class="row g-3">
+            <div class="col">
+                <h3>AST</h3>
+                <p>Segun el codigo que se ingrese el usuario, se genera un arbol sintactico.</p>
+                <img src="image/ast.png" class="rounded float-start" alt="imagen ast">
+            </div>
+            <div class="col">
+                <h3>Errores</h3>
+                <p>Se presenta una tabla la cual contiene a detalle de los errores lexicos, sintacticos y semanticos que
+                    se reconocieron, ademas una descripcion del error, la linea y columna en donde se encontro en el
+                    archivo de entrada</p>
+                <img src="image/error.png" class="rounded float-start" alt="imagen ast">
+            </div>
+            <div class="col">
+                <h3>Tabla de simbolos</h3>
+                <p>Se presenta una tabla de simbolos que contiene detalle de las variables, arreglos y funciones que se
+                    reconocen en un entorno. Datos como nombre,tipo y valor. </p>
+                <img src="image/ts.png" class="rounded float-start" alt="imagen ast">
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

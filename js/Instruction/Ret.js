@@ -1,0 +1,59 @@
+import { Instruction } from "../Abstract/Instruction";
+const parser = require('../Grammar/Grammar');
+export class Ret extends Instruction {
+    constructor(expresion, line, column) {
+        super(line, column);
+        this.expresion = expresion;
+    }
+    execute(environment) {
+        //console.log("-------------------");
+        //console.log(parser.pila_funciones);
+        //console.log("-------------------");
+        if (parser.pila_funciones.length == 0) {
+            throw new Error("<tr><td>semantico</td><td>Este return  esta fuera de una funcion</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+        }
+        if (this.expresion == null) {
+            //-----------------------------------------------------------
+            //  el return no tiene una expresion 
+            //-----------------------------------------------------------
+            //verficiar que la funcion en donde estoy tambien sea solo una funcion 
+            var funcion_analizar = parser.pila_funciones[parser.pila_funciones.length - 1];
+            if (funcion_analizar.retorno != "") {
+                //hacer el pop
+                parser.pila_funciones.pop();
+                //mostrar error
+                throw new Error("<tr><td>semantico</td><td>Este return tiene que devolver una expresion '" +
+                    funcion_analizar.retorno + "'</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+            }
+            else {
+                //ejecutar todo normal
+                parser.pila_funciones.pop();
+                return "@si";
+            }
+        }
+        //-----------------------------------------------------------
+        //  el return tiene una expresion 
+        //-----------------------------------------------------------
+        const expre = this.expresion.execute(environment);
+        var funcion_analizar = parser.pila_funciones[parser.pila_funciones.length - 1];
+        if (expre.type == 0 && funcion_analizar.retorno == "number" ||
+            expre.type == 1 && funcion_analizar.retorno == "string" ||
+            expre.type == 2 && funcion_analizar.retorno == "boolean") {
+            //todo esta bien, significa que retorna una expresion valida
+            parser.pila_funciones.pop();
+            return "@si";
+        }
+        else {
+            parser.pila_funciones.pop();
+            throw new Error("<tr><td>semantico</td><td>Rratas de retornar tipo :" +
+                expre.type + " y tiene que ser '" + funcion_analizar.retorno + "'" + "</td><td>" + this.line + "</td><td>" + this.column + "</td></tr>");
+        }
+    }
+    ast() {
+        parser.ast += 'node' + this.line + '_' + this.column + ' [label="\\<Instruccion\\> \\n Return"];\n';
+        if (this.expresion != null) {
+            parser.ast += 'node' + this.line + '_' + this.column + "-> ";
+            this.expresion.ast();
+        }
+    }
+}

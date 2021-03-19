@@ -355,7 +355,6 @@ Expr
     | '!' Expr       { $$ = new Logical($2, $2,LogicalOption.NOT  , @1.first_line, @1.first_column); }
    
     | F  {  $$ = $1; }
-    //TODO expresiones con array
     | ID '.' 't_length'          { $$= new ExpreArray($1,false,false,null,@1.first_line, @1.first_column); }
     | ID '.' 't_pop'    '(' ')'  { $$= new ExpreArray($1,true ,false,null,@1.first_line, @1.first_column); }
     | ID '['  Expr ']'           { $$= new ExpreArray($1,true ,true ,$3  ,@1.first_line, @1.first_column); }
