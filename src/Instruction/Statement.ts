@@ -27,9 +27,8 @@ export class Statement extends Instruction {
         //recorrer las instrucciones restantes
         for (const x of this.code) {
             if (x instanceof InsFuncion) { }
-            else {
+            else if (x.toString() != ";") {
                 const instruccion = x.execute(newEnv)
-                if (instruccion == "@si") return
             }
         }
 

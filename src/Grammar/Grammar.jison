@@ -18,7 +18,6 @@
     const {Incre} = require('../Instruction/Incre');
     const {InsFuncion} = require('../Instruction/InsFuncion');
     const {Call} = require('../Instruction/Call');
-    const {Ret} =require('../Instruction/Ret');
     const {GraficarTablaSimbolos} = require('../Instruction/Gr');
     const {Arreglo} = require('../Instruction/Arreglo');
     const {ArregloAsignacion} = require('../Instruction/ArregloAsignacion');
@@ -30,6 +29,9 @@
     const {Logical} = require('../Expression/Logical')
     const {LogicalOption} = require('../Expression/LogicalOption')
     const {ArregloAcciones} = require('../Instruction/ArregloAcciones')
+    
+    const { Singleton}=  require("../Singleton/Singleton")
+    const { error } =require("../tool/error")
 %}
 
 %lex
@@ -125,7 +127,13 @@ stringplantilla  [\`][^`]* [\`]
 
 ([a-zA-Z_])[a-zA-Z0-9_ñÑ]*	return 'ID';
 <<EOF>>		            return 'EOF'
-.      {Lista_errores.push("<tr><td>lexico</td><td>No se reconoce el caracter "+yytext + '</td><td>' + (yylineno+1) +'</td><td>'+(yylloc.first_column+1)+'</td></tr>');	}
+.      { 
+            let s= Singleton.getInstance()
+            s.add_error(new error("Lexico","No se reconoce el caracter "+yytext,yylineno+1,yylloc.first_column+1));
+    }
+
+
+
 
 /lex
 
@@ -170,10 +178,12 @@ Instruction
     | ARRAY_MANEJO      ';' {  $$ = $1;  }
     | GRAFICAR_TS       ';' {  $$ = $1;  } 
 
-    
-    | RETORNO          ';' {  $$ = $1;  } 
-    
-    | error            ';' {  console.log("error sintactico en linea " + (yylineno+1) );} //Lista_errores.push("<tr><td>sintactico</td><td>" + `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion</td><td>` + yyloc.last_line + "</td><td>" + (yyloc.last_column+1) + '</td></tr>');                  
+    | error            ';'  {  
+                                console.log("error sintactico en linea " + (yylineno+1) );
+                                //colocar el siguiente codigo en el archivo grammar.js en el= if(!recovering) como penultima instruccion
+                                //let s=Singleton.getInstance();
+                                //s.add_error(new error("Sintactico", `El caracter ${(this.terminals_[symbol] || symbol)} no se esperaba en esta posicion`, yyloc.last_line, yyloc.last_column+1))                  
+                            } 
 ;
 
 /* --------------------------------------- array instruccion --------------------------------------- */
@@ -229,11 +239,6 @@ CALLFUNCION_PARAMETROS
     |                            Expr  {    $$ = [$1];                 }
 ;    
 
-//TODO clase retorno
-RETORNO
-    : 't_return'      { $$= new Ret(null, @1.first_line, @1.first_column); }
-    | 't_return' Expr { $$= new Ret($2  , @1.first_line, @1.first_column); }
-;
 
 /* ---------------------- Operador ternario como instruccion ---------------------- */
 
