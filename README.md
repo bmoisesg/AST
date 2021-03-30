@@ -1,11 +1,10 @@
-## ORGANIZACION DE LENGUAJES Y COMPILADORES 2
-##### UNIVERSIDAD DE SAN CARLOS DE GUATEMALA
-##### 2 SEMESTRE 2020
-##### MOISES GONZALEZ FUENTES 
 
---- 
 ##### Comandos
 ```
 npm run jison
+```
+Compila el archivo .jison y crea un archivo grammar.js
+```
 npm run dev
 ```
+Ejecuta el index de la aplicacion y se queda en escucha por si hay cambios.
