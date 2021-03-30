@@ -2,6 +2,7 @@
 var contador = 0;                   //cuantas pestañas estan vivas
 var ventana_focus = "pestana1";     //nombre de la pestaña que esta activa
 var lista_pos = new Array();
+var ast = ""
 
 /* ----------------------------------------  FUNCIONES PARA TEXTAREA ---------------------------------------- */
 
@@ -47,7 +48,7 @@ function get_next_contador() {
 }
 
 
-function add_tab() {
+function add_tab(c_view) {
     var x = get_next_contador();
     lista_pos.push(x);
     console.log(lista_pos)
@@ -78,6 +79,46 @@ function add_tab() {
     textarea.setAttribute('name', 'textarea' + x);
     textarea.setAttribute('class', 'textarea');
     textarea.setAttribute('style', 'display:none');
+    if (c_view == 1) {
+        textarea.value = `	
+    console.log("hola mundo c:");`
+    } else if (c_view == 2) {
+        textarea.value = `	
+    console.log("hola");
+    console.log("mundo c:");
+    let x=0;
+    x++;
+    console.log(x+1);
+    console.log("------------");
+    console.log(++x);
+    graficar_ts();
+    if(x<10){
+        console.log("el valor de [x] es menor que 10, el valor de la variable es: "+x);
+    }
+    while(x<10){
+      console.log(x);
+      x++;
+    }
+    for(let m=0; m<10;m++){
+        console.log(">"+m);
+    }
+    console.log("fin");`
+    } else if (c_view == 3) {
+        textarea.value = `	
+    let n: number="sdfa";
+    let x:number=5/0;@
+    let xt=123;
+    let x=;
+    graficar_ts();`
+    } else if (c_view == 4) {
+        textarea.value = `	
+    function saludar (name: string ){
+        console.log("--------");
+          console.log("hola "+name);
+          console.log("--------");
+    }
+    saludar("user_test");`
+    }
     textarea.cols = 123;                                      //dimensiones del text
     textarea.rows = 30;
 
@@ -136,31 +177,51 @@ function index(pestania) {
     } catch (error) { }
 }
 
+
 function ejecutarParser() {
-import { parser } from '../src/Grammar/Grammar';
-  //get_data_textarea();
-  const entrada=get_data_textarea()
-  const ast = parser.parse(entrada);
-  const env = new Environment(null);                     
-  const s= Singleton.getInstance();
+    const s = Singleton.getInstance();
+    s.clear_ast()
+    s.clear_entorno()
+    s.clear_error()
+    s.clear_consola()
 
-  s.add_ast(`nodeOriginal[label="<\\Lista_Instrucciones\\>"];`)
+    const ast = Grammar.parse(get_data_textarea())
+    const env = new Environment(null);
 
-  //generar el ast primero
-  for (const instr of ast) {
-      try {
-          instr.ast();
-          s.add_ast(`nodeOriginal->node_${instr.line}_${instr.column}_;`)
-      } catch (error) {
-      }
-  }
+    s.add_ast(`nodeOriginal[label="<\\Lista_Instrucciones\\>"];`)
 
-  //recorrer las instrucciones y ejecutarlas
-  for (const instruccion of ast) {
-      try {
-          instruccion.execute(env);
-      } catch (error) {
-          s.add_error(error)
-      }
-  }
+    //generar el ast primero
+    for (const instr of ast) {
+        try {
+            instr.ast();
+            s.add_ast(`nodeOriginal->node_${instr.line}_${instr.column}_;`)
+        } catch (error) {
+        }
+    }
+
+    //recorrer las instrucciones y ejecutarlas
+    for (const instruccion of ast) {
+        try {
+            instruccion.execute(env);
+        } catch (error) {
+            s.add_error(error)
+        }
+    }
+
+    console.log(s.get_consola())
+    this.ast = "digraph G {\nnode[shape=box];" + s.get_ast() + "\n}"
+    document.getElementById("div_ts").innerHTML = s.get_entorno()
+    document.getElementById("div_error").innerHTML = s.get_error()
+    document.getElementById("terminal").innerHTML = s.get_consola().replaceAll("\n", "<br/>")
+
+
+    //document.getElementById("terminal").innerHTML = "hola\nmundo"
+}
+
+function viewTree() {
+    d3.select("#graph").graphviz({
+        useWorker: false,
+        zoom: false
+    })
+        .renderDot(ast);
 }

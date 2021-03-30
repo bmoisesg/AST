@@ -6,8 +6,44 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>TOSLT</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/index.css'>
+    <script src='script.js'></script>
+    <script src="js/Grammar.js"></script>
+    <script src="js/Abstract/Expression.js"></script>
+    <script src="js/Abstract/Instruction.js"></script>
+    <script src="js/Abstract/Retorno.js"></script>
+    <script src="js/Expression/Access.js"></script>
+    <script src="js/Expression/ArithmeticOption.js"></script>
+    <script src="js/Expression/Arithmetic.js"></script>
+    <script src="js/Expression/ExpreArray.js"></script>
+    <script src="js/Expression/IncreDecre.js"></script>
+    <script src="js/Expression/IncreDecreOption.js"></script>
+    <script src="js/Expression/Literal.js"></script>
+    <script src="js/Expression/Logical.js"></script>
+    <script src="js/Expression/LogicalOption.js"></script>
+    <script src="js/Expression/Relational.js"></script>
+    <script src="js/Expression/RelationalOpcion.js"></script>
+    <script src="js/Instruction/Arreglo.js"></script>
+    <script src="js/Instruction/ArregloAcciones.js"></script>
+    <script src="js/Instruction/ArregloAsignacion.js"></script>
+    <script src="js/Instruction/Asignacion.js"></script>
+    <script src="js/Instruction/Call.js"></script>
+    <script src="js/Instruction/Declaration.js"></script>
+    <script src="js/Instruction/Dowhile.js"></script>
+    <script src="js/Instruction/Gr.js"></script>
+    <script src="js/Instruction/If.js"></script>
+    <script src="js/Instruction/Incre.js"></script>
+    <script src="js/Instruction/InsFuncion.js"></script>
+    <script src="js/Instruction/InstFor.js"></script>
+    <script src="js/Instruction/let.js"></script>
+    <script src="js/Instruction/OperadorTernario.js"></script>
+    <script src="js/Instruction/Print.js"></script>
+    <script src="js/Instruction/Statement.js"></script>
+    <script src="js/Instruction/While.js"></script>
+    <script src="js/Singleton/Singleton.js"></script>
+    <script src="js/Symbol/Environment.js"></script>
+    <script src="js/Symbol/Symbol.js"></script>
+    <script src="js/tool/error.js"></script>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -17,10 +53,17 @@
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
 
 </head>
 
-<body>
+<body onload="add_tab(0);">
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="https://unpkg.com/@hpcc-js/wasm@0.3.13/dist/index.min.js"></script>
+    <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">TOSLT</a>
@@ -32,7 +75,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Principal</a>
+                        <a class="nav-link " aria-current="page" href="index.html">Principal</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="">Codigo</a>
@@ -43,16 +86,40 @@
                             Reportes
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">AST</a></li>
-                            <li><a class="dropdown-item" href="#">Tabla de simbolos </a></li>
-                            <li><a class="dropdown-item" href="#">Tabla erores lexico, sintactuico y semantico </a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_ast"
+                                    data-bs-whatever="@mdo" onclick="viewTree();">AST</a>
+                            </li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_ts"
+                                    data-bs-whatever="@mdo">
+                                    Tabla de simbolos </a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_error"
+                                    data-bs-whatever="@mdo">
+                                    Tabla errores lexico, sintactico y semantico </a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Ejemplos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" onclick="add_tab(1);">Ejemplo1 - Hola mundo</a></li>
+                            <li><a class="dropdown-item" onclick="add_tab(2);">Ejemplo2 - Basic</a></li>
+                            <li><a class="dropdown-item" onclick="add_tab(3);">Ejemplo3 - Reporte errores</a></li>
+                            <li><a class="dropdown-item" onclick="add_tab(4);">Ejemplo3 - Funcion</a></li>
 
                         </ul>
                     </li>
                 </ul>
 
-                <button class="btn btn-outline-success" type="submit"
-                    onclick="ejecutarParser()">Ejecutar</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+                    onclick="ejecutarParser()" data-bs-toggle="modal" data-bs-target="#modal_consola"
+                    data-bs-whatever="@mdo"><i class="fa fa-play"></i> &nbspEjecutar</button>&nbsp
+                <button class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" data-bs-toggle="modal"
+                    data-bs-target="#modal_acercade" data-bs-whatever="@mdo"><i class="fa fa-info"></i></button>
+
             </div>
 
 
@@ -61,10 +128,12 @@
 
     </nav>
     <br>
+    <!-- onclick="document.getElementById('modalDIV').style.display='block'"-->
+
     <table style="margin-left: auto;margin-right:auto;width: 75%;">
         <tr>
             <td style="width:5%;">
-                <button class="button_mas" onclick="add_tab();">+</button>
+                <button class="button_mas" onclick="add_tab(0);">+</button>
             </td>
             <td style="width: 70%;">
                 <div id="pestanas">
@@ -79,6 +148,94 @@
         </tr>
 
     </table>
+
+
+
+    <!-- modal tabla de simbolos -->
+    <div class="modal fade" id="modal_ts" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reporte Tabla de simbolos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="div_ts"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal error -->
+    <div class="modal fade" id="modal_error" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Reporte Errores</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="div_error"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal reporte ast-->
+    <div class="modal fade" id="modal_ast" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Reporte AST - Abstract Syntax Tree</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="graph"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal console -->
+    <div class="modal fade" id="modal_consola" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel3">Out:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 id="terminal"></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal acerca de  -->
+    <div class="modal fade" id="modal_acercade" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Acerca de ...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h7>Correo: bmoisesg@gmail.com</h7>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
