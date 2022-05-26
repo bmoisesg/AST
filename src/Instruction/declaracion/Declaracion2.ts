@@ -1,9 +1,9 @@
-import { Instruction } from "../Abstract/Instruction"
-import { Environment } from "../Symbol/Environment"
-import { Expression } from "../Abstract/Expression"
-import { Singleton } from "../Singleton/Singleton"
-import { error, TypeError } from "../tool/error"
-import { Type, TypetoString, StringToType } from "../Abstract/Retorno"
+import { Instruction } from "../../Abstract/Instruction"
+import { Environment } from "../../Symbol/Environment"
+import { Expression } from "../../Abstract/Expression"
+import { Singleton } from "../../Singleton/Singleton"
+import { error, TypeError } from "../../tool/error"
+import { Type, TypetoString, StringToType } from "../../Abstract/Retorno"
 
 export class Declaracion2 extends Instruction {
 
