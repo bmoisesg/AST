@@ -8,12 +8,12 @@
     const {If} = require('../Instruction/If');
     const {Print} = require('../Instruction/Print');
     const {Statement} = require('../Instruction/Statement');
-    const {While} = require('../Instruction/While');
+    const {While} = require('../Instruction/ciclos/While');
     const {Declaration} = require('../Instruction/Declaration');
-    const {Let} = require('../Instruction/let');
+    const {Declaracion2} = require('../Instruction/Declaracion2');
     const {Asignacion} = require('../Instruction/Asignacion');
     const {OperadorTernario} = require('../Instruction/OperadorTernario');
-    const {DoWhile} = require('../Instruction/Dowhile');
+    const {DoWhile} = require('../Instruction/ciclos/Dowhile');
     const {InstFor} = require('../Instruction/InstFor');
     const {Incre} = require('../Instruction/Incre');
     const {InsFuncion} = require('../Instruction/InsFuncion');
@@ -264,10 +264,10 @@ INCREDECRE
 /*------------------------  Declaracion de variables (let y const)  -----------------------  */
 
 LET
-    : 't_let' ID           '=' Expr { $$ = new Let($2, $4  , null, @1.first_line, @1.first_column); }
-    | 't_let' ID ':' TIPOS '=' Expr { $$ = new Let($2, $6  , $4  , @1.first_line, @1.first_column); }
-    | 't_let' ID ':' TIPOS          { $$ = new Let($2, null, $4  , @1.first_line, @1.first_column); }
-    | 't_let' ID                    { $$ = new Let($2, null, null, @1.first_line, @1.first_column); }
+    : 't_let' ID           '=' Expr { $$ = new Declaracion2($2, $4  , null, @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS '=' Expr { $$ = new Declaracion2($2, $6  , $4  , @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS          { $$ = new Declaracion2($2, null, $4  , @1.first_line, @1.first_column); }
+    | 't_let' ID                    { $$ = new Declaracion2($2, null, null, @1.first_line, @1.first_column); }
 ;
 
 CONST

@@ -1,9 +1,17 @@
 {
 
     let numero: string="Hola";
-
-    let num void;
+    let num:string ;
     console.log("hola mudno");
+    console.log(num);
     graficar_ts();
- 
+
+    let x=5;
+
+    do{
+        x++;
+        console.log(x);        
+    } while(x<10);
+    
+    
 }

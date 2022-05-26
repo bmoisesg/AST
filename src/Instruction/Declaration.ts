@@ -1,7 +1,7 @@
 import { Instruction } from "../Abstract/Instruction"
 import { Environment } from "../Symbol/Environment"
 import { Expression } from "../Abstract/Expression"
-import { error } from "../tool/error"
+import { error, TypeError } from "../tool/error"
 import { TypetoString, Type } from "../Abstract/Retorno"
 import { Singleton } from "../Singleton/Singleton"
 
@@ -9,8 +9,8 @@ export class Declaration extends Instruction {
 
     constructor(
         public nombre: string,
-        public value: Expression, //siempre tiene que tener una expresion como es una declaracion CONST
-        public tipo: string, 
+        public expre: Expression, //siempre tiene que tener una expresion como es una declaracion CONST
+        public tipo: string,
         line: number,
         column: number
     ) {
@@ -18,13 +18,18 @@ export class Declaration extends Instruction {
     }
 
     public execute(env: Environment) {
-        const expression = this.value.execute(env)
+
+        if (env.revisarRepetido(this.nombre)) {
+            
+            throw new error(TypeError.Semantico, `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
+        }
+
+        const expression = this.expre.execute(env)
 
         if (this.tipo == null) {
 
-            //cuando la declaracion no tiene un tipo de dato definido
-            const c = env.guardar_variable(this.nombre, expression.value, expression.type, false)
-            if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
+            //cuando la declaracion no tiene un tipo de dato definido, entonces se toma el que retorna la expresion
+            env.guardar_variable(this.nombre, expression.value, expression.type, false)
 
         } else {
 
@@ -34,10 +39,9 @@ export class Declaration extends Instruction {
                 expression.type == Type.BOOLEAN && this.tipo == "boolean"
             ) {
 
-                const c = env.guardar_variable(this.nombre, expression.value, expression.type, false)
-                if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
+                env.guardar_variable(this.nombre, expression.value, expression.type, false)
 
-            } else throw new error("Semantico", `El tipo de dato de la expresion [${TypetoString(expression.type)}] no es compatible con [${this.tipo}]`, this.line, this.column)
+            } else throw new error(TypeError.Semantico, `La expresion es de tipo [${TypetoString(expression.type)}] y se intenta asignar a una variable tipo [${this.tipo}]`, this.line, this.column)
 
         }
     }
@@ -51,7 +55,7 @@ export class Declaration extends Instruction {
         ${nombreNodo}2[label="\\<Tipo\\>\\n${this.tipo}"];
         ${nombreNodo}->${nombreNodo}1
         ${nombreNodo}->${nombreNodo}2
-        ${nombreNodo}->${this.value.ast()}`)
-        
+        ${nombreNodo}->${this.expre.ast()}`)
+
     }
 }

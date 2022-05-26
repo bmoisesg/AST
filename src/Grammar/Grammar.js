@@ -179,16 +179,16 @@ case 49: case 50:
  this.$= new Incre($$[$0],$$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column); 
 break;
 case 52:
- this.$ = new Let($$[$0-2], $$[$0]  , null, _$[$0-3].first_line, _$[$0-3].first_column); 
+ this.$ = new Declaracion2($$[$0-2], $$[$0]  , null, _$[$0-3].first_line, _$[$0-3].first_column); 
 break;
 case 53:
- this.$ = new Let($$[$0-4], $$[$0]  , $$[$0-2]  , _$[$0-5].first_line, _$[$0-5].first_column); 
+ this.$ = new Declaracion2($$[$0-4], $$[$0]  , $$[$0-2]  , _$[$0-5].first_line, _$[$0-5].first_column); 
 break;
 case 54:
- this.$ = new Let($$[$0-2], null, $$[$0]  , _$[$0-3].first_line, _$[$0-3].first_column); 
+ this.$ = new Declaracion2($$[$0-2], null, $$[$0]  , _$[$0-3].first_line, _$[$0-3].first_column); 
 break;
 case 55:
- this.$ = new Let($$[$0], null, null, _$[$0-1].first_line, _$[$0-1].first_column); 
+ this.$ = new Declaracion2($$[$0], null, null, _$[$0-1].first_line, _$[$0-1].first_column); 
 break;
 case 56:
  this.$ = new Declaration($$[$0-2], $$[$0], null, _$[$0-3].first_line, _$[$0-3].first_column); 
@@ -582,12 +582,12 @@ _handle_error:
     const {If} = require('../Instruction/If');
     const {Print} = require('../Instruction/Print');
     const {Statement} = require('../Instruction/Statement');
-    const {While} = require('../Instruction/While');
+    const {While} = require('../Instruction/ciclos/While');
     const {Declaration} = require('../Instruction/Declaration');
-    const {Let} = require('../Instruction/let');
+    const {Declaracion2} = require('../Instruction/Declaracion2');
     const {Asignacion} = require('../Instruction/Asignacion');
     const {OperadorTernario} = require('../Instruction/OperadorTernario');
-    const {DoWhile} = require('../Instruction/Dowhile');
+    const {DoWhile} = require('../Instruction/ciclos/Dowhile');
     const {InstFor} = require('../Instruction/InstFor');
     const {Incre} = require('../Instruction/Incre');
     const {InsFuncion} = require('../Instruction/InsFuncion');

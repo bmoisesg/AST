@@ -2,7 +2,8 @@ export enum Type {
     NUMBER,
     STRING,
     BOOLEAN,
-    error
+    error,
+    DEFAULT
 }
 
 export function TypetoString(objeto: Type): string {
@@ -21,4 +22,17 @@ export function TypetoString(objeto: Type): string {
 export type Retorno = {
     value: any,
     type: Type
+}
+
+export function StringToType(cadena:string):Type {
+    switch (cadena) {
+        case "number":
+            return Type.NUMBER
+        case "string":
+            return Type.STRING
+        case "boolean":
+            return Type.BOOLEAN
+        default:
+            return Type.error
+    }
 }

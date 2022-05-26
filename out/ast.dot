@@ -9,5 +9,52 @@ node[shape=box];nodeOriginal[label="<\Lista_Instrucciones\>"];
         node_3_5_->node_3_5_2
         node_3_5_->
         node_3_29_;
-        node_3_29_[label="\"Hola\""];node_1_1_->node_undefined_undefined_;
+        node_3_29_[label="\"Hola\""];node_1_1_->node_4_5_;
+        node_4_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_4_5_1[label="\<Nombre\>\nnum"];
+        node_4_5_2[label="\<Tipo\>\nstring"];
+        node_4_5_->node_4_5_1
+        node_4_5_->node_4_5_2
+        node_1_1_->node_5_5_;
+        node_5_5_[label="\<Instruccion\>\nconsole"];node_5_5_->
+        node_5_28_;
+        node_5_28_[label="\"hola mudno\""];node_1_1_->node_6_5_;
+        node_6_5_[label="\<Instruccion\>\nconsole"];node_6_5_->
+        node_6_17_;
+        node_6_17_[label="{num}"];
+        node_1_1_->node_7_5_;node_7_5_[label="\<Instruccion\>\nGraficar_TS"];node_1_1_->node_9_5_;
+        node_9_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_9_5_1[label="\<Nombre\>\nx"];
+        node_9_5_2[label="\<Tipo\>\nnull"];
+        node_9_5_->node_9_5_1
+        node_9_5_->node_9_5_2
+        node_9_5_->
+        node_9_11_;
+        node_9_11_[label="5"];node_1_1_->node_11_5_;
+        node_11_5_[label="\<Instruccion\>\ndo while"];
+        node_11_5_1[label="\<Condicion\>"];
+        node_11_5_->node_11_5_1;
+        node_11_5_1->
+        node_14_14_;
+        node_14_14_[label="\<"];
+        node_14_14_->
+        node_14_13_;
+        node_14_13_[label="{x}"];
+        
+        node_14_14_->
+        node_14_15_;
+        node_14_15_[label="10"];
+        
+        node_11_5_->node_11_7_;        
+        
+        node_11_7_[label="Lista Instrucciones"];        
+        node_11_7_->node_12_9_;
+        node_12_9_[label="\<Instruccion\>\nIncremento"];
+        node_12_9_1[label="{x}"];
+        node_12_9_->node_12_9_1;
+        node_11_7_->node_13_9_;
+        node_13_9_[label="\<Instruccion\>\nconsole"];node_13_9_->
+        node_13_21_;
+        node_13_21_[label="{x}"];
+        nodeOriginal->node_1_1_;
 }
