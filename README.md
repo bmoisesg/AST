@@ -75,3 +75,30 @@ Posibles errores:
 - La expresion no es de tipo booleana
 
 
+`Incremento`
+Aumenta el valor numerico de una varibale
+
+```
+++ <nombreVariable>;
+<nombreVariable>++;
+```
+
+Posibles errres:
+- La variable no existe
+- No se puede editar el valor de la variable, porque es una const
+- El tipo de dato de la varible no es numerica
+
+
+`Decremento`
+Disminuye el valor numerico de una varibale
+
+```
+-- <nombreVariable>;
+<nombreVariable>-- ;
+```
+
+Posibles errres:
+- La variable no existe
+- No se puede editar el valor de la variable, porque es una const
+- El tipo de dato de la varible no es numerica
+

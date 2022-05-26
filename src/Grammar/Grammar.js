@@ -172,11 +172,17 @@ break;
 case 44:
  this.$=new OperadorTernario($$[$0-5], $$[$0-2], $$[$0] ,_$[$0-3].first_line, _$[$0-3].first_column ); 
 break;
-case 48: case 51:
+case 48:
  this.$= new Incre($$[$0-1],$$[$0],_$[$0].first_line,_$[$0].first_column); 
 break;
-case 49: case 50:
+case 49:
  this.$= new Incre($$[$0],$$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column); 
+break;
+case 50:
+ this.$= new Decre($$[$0],$$[$0-1],_$[$0-1].first_line,_$[$0-1].first_column); 
+break;
+case 51:
+ this.$= new Decre($$[$0-1],$$[$0],_$[$0].first_line,_$[$0].first_column); 
 break;
 case 52:
  this.$ = new Declaracion2($$[$0-2], $$[$0]  , null, _$[$0-3].first_line, _$[$0-3].first_column); 
@@ -590,7 +596,7 @@ _handle_error:
     const {DoWhile} = require('../Instruction/ciclos/Dowhile');
     const {InstFor} = require('../Instruction/InstFor');
     const {Incre} = require('../Instruction/asignacion/Incre');
-    //const {Incre} = require('../Instruction/asignacion/Incre');
+    const {Decre} = require('../Instruction/asignacion/Decre');
     const {InsFuncion} = require('../Instruction/InsFuncion');
     const {Call} = require('../Instruction/Call');
     const {GraficarTablaSimbolos} = require('../Instruction/Gr');

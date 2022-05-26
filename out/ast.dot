@@ -56,5 +56,72 @@ node[shape=box];nodeOriginal[label="<\Lista_Instrucciones\>"];
         node_13_9_[label="\<Instruccion\>\nconsole"];node_13_9_->
         node_13_21_;
         node_13_21_[label="{x}"];
+        node_1_1_->node_16_5_;
+        node_16_5_[label="\<Instruccion\>\nconsole"];node_16_5_->
+        node_16_30_;
+        node_16_30_[label="\"------------\""];node_1_1_->node_17_5_;
+        node_17_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_17_5_1[label="\<Nombre\>\nb1"];
+        node_17_5_2[label="\<Tipo\>\nnull"];
+        node_17_5_->node_17_5_1
+        node_17_5_->node_17_5_2
+        node_17_5_->
+        node_17_12_;
+        node_17_12_[label="100"];node_1_1_->node_18_5_;
+        node_18_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_18_5_1[label="\<Nombre\>\nb2"];
+        node_18_5_2[label="\<Tipo\>\nnull"];
+        node_18_5_->node_18_5_1
+        node_18_5_->node_18_5_2
+        node_18_5_->
+        node_18_12_;
+        node_18_12_[label="100"];node_1_1_->node_19_5_;
+        node_19_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_19_5_1[label="\<Nombre\>\nb3"];
+        node_19_5_2[label="\<Tipo\>\nnull"];
+        node_19_5_->node_19_5_1
+        node_19_5_->node_19_5_2
+        node_19_5_->
+        node_19_12_;
+        node_19_12_[label="100"];node_1_1_->node_20_5_;
+        node_20_5_[label="\<Instruccion\>\nDeclaracion let"];
+        node_20_5_1[label="\<Nombre\>\nb4"];
+        node_20_5_2[label="\<Tipo\>\nnull"];
+        node_20_5_->node_20_5_1
+        node_20_5_->node_20_5_2
+        node_20_5_->
+        node_20_12_;
+        node_20_12_[label="100"];node_1_1_->node_23_5_;
+        node_23_5_[label="\<Instruccion\>\nIncremento"];
+        node_23_5_1[label="{b1}"];
+        node_23_5_->node_23_5_1;
+        node_1_1_->node_24_5_;
+        node_24_5_[label="\<Instruccion\>\nconsole"];node_24_5_->
+        node_24_17_;
+        node_24_17_[label="{b1}"];
+        node_1_1_->node_25_7_;
+        node_25_7_[label="\<Instruccion\>\nIncremento"];
+        node_25_7_1[label="{b2}"];
+        node_25_7_->node_25_7_1;
+        node_1_1_->node_26_5_;
+        node_26_5_[label="\<Instruccion\>\nconsole"];node_26_5_->
+        node_26_17_;
+        node_26_17_[label="{b2}"];
+        node_1_1_->node_27_5_;
+        node_27_5_[label="\<Instruccion\>\nDecremento"];
+        node_27_5_1[label="{b3}"];
+        node_27_5_->node_27_5_1;
+        node_1_1_->node_28_5_;
+        node_28_5_[label="\<Instruccion\>\nconsole"];node_28_5_->
+        node_28_17_;
+        node_28_17_[label="{b3}"];
+        node_1_1_->node_29_7_;
+        node_29_7_[label="\<Instruccion\>\nDecremento"];
+        node_29_7_1[label="{b3}"];
+        node_29_7_->node_29_7_1;
+        node_1_1_->node_30_5_;
+        node_30_5_[label="\<Instruccion\>\nconsole"];node_30_5_->
+        node_30_17_;
+        node_30_17_[label="{b3}"];
         nodeOriginal->node_1_1_;
 }

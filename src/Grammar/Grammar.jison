@@ -258,8 +258,8 @@ OP_TERNARIO_ST
 INCREDECRE
     :   '++' ID   { $$= new Incre($1,$2,@2.first_line,@2.first_column); }
     |   ID  '++'  { $$= new Incre($2,$1,@1.first_line,@1.first_column); }
-    |   ID  '--'  { $$= new Incre($2,$1,@1.first_line,@1.first_column); }
-    |   '--' ID   { $$= new Incre($1,$2,@2.first_line,@2.first_column); }
+    |   ID  '--'  { $$= new Decre($2,$1,@1.first_line,@1.first_column); }
+    |   '--' ID   { $$= new Decre($1,$2,@2.first_line,@2.first_column); }
 ;
 
 /*------------------------  Declaracion de variables (let y const)  -----------------------  */
