@@ -2,7 +2,7 @@
 (function (ArithmeticOption) {
     /*0*/ ArithmeticOption[ArithmeticOption["MAS"] = 0] = "MAS";
     /*1*/ ArithmeticOption[ArithmeticOption["MENOS"] = 1] = "MENOS";
-    /*2*/ ArithmeticOption[ArithmeticOption["MULTIPLICACION"] = 2] = "MULTIPLICACION";
+    /*2*/ ArithmeticOption[ArithmeticOption["MULT"] = 2] = "MULT";
     /*3*/ ArithmeticOption[ArithmeticOption["DIV"] = 3] = "DIV";
     /*4*/ ArithmeticOption[ArithmeticOption["MODULO"] = 4] = "MODULO";
     /*5*/ ArithmeticOption[ArithmeticOption["POT"] = 5] = "POT";
@@ -13,7 +13,7 @@
  * @param objeto Enum ArithmeticOption
  * @return simbolo como string
  */
- function get_simbolo(objeto) {
+ function optionToSymbol(objeto) {
     switch (objeto) {
         case 0:
             return "+";
@@ -37,7 +37,7 @@
  * @param objeto Enum ArithmeticOption
  * @return nombre del simbolo en string
  */
- function getName(objeto) {
+ function optionToString(objeto) {
     switch (objeto) {
         case 0:
             return "suma";

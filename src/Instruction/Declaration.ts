@@ -2,7 +2,7 @@ import { Instruction } from "../Abstract/Instruction"
 import { Environment } from "../Symbol/Environment"
 import { Expression } from "../Abstract/Expression"
 import { error } from "../tool/error"
-import { get, Type } from "../Abstract/Retorno"
+import { TypetoString, Type } from "../Abstract/Retorno"
 import { Singleton } from "../Singleton/Singleton"
 
 export class Declaration extends Instruction {
@@ -37,7 +37,7 @@ export class Declaration extends Instruction {
                 const c = env.guardar_variable(this.nombre, expression.value, expression.type, false)
                 if (!c) throw new error("Semantico", `La variable '${this.nombre}' ya existe en el entorno actual`, this.line, this.column)
 
-            } else throw new error("Semantico", `El tipo de dato de la expresion [${get(expression.type)}] no es compatible con [${this.tipo}]`, this.line, this.column)
+            } else throw new error("Semantico", `El tipo de dato de la expresion [${TypetoString(expression.type)}] no es compatible con [${this.tipo}]`, this.line, this.column)
 
         }
     }

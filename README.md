@@ -1,5 +1,8 @@
 
-##### Comandos
+##### Commands for install dependeces
+
+```npm install ```
+
 ```
 npm run jison
 ```

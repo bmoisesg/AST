@@ -9,7 +9,7 @@
  * @param objeto logicaloption
  * @returns el simbolo logico que se envio y retorna como string
  */
- function getSimbol(objeto) {
+ function OptionToSymbol(objeto) {
     switch (objeto) {
         case 0:
             return "&&";
@@ -25,7 +25,7 @@
  * @param objeto logicalOption
  * @returns nombre del simbolo que se envio y retorna como string
  */
- function getName(objeto) {
+ function optionToString(objeto) {
     switch (objeto) {
         case 0:
             return "AND";

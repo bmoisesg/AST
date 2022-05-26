@@ -8,7 +8,7 @@
     "dev": "nodemon",
     "jison": "jison ./src/Grammar/Grammar.jison && mv Grammar.js ./src/Grammar/"
   },
-  "author": "MoisesGonzalezFuentes",
+  "author": "melmv",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^14.0.27",

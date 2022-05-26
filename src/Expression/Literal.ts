@@ -32,10 +32,10 @@ export class Literal extends Expression {
     public ast() {
 
         const nombre = `node_${this.line}_${this.column}_`
-        if(this.type==Type.STRING) return `
+        if (this.type == Type.STRING) return `
         ${nombre};
         ${nombre}[label="\\"${this.value.toString()}\\""];`
- 
+
         else return `
         ${nombre};
         ${nombre}[label="${this.value.toString()}"];`

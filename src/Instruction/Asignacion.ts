@@ -2,7 +2,7 @@ import { Instruction } from "../Abstract/Instruction"
 import { Environment } from "../Symbol/Environment"
 import { Expression } from "../Abstract/Expression"
 import { error } from "../tool/error"
-import { get } from "../Abstract/Retorno"
+import { TypetoString } from "../Abstract/Retorno"
 import { Singleton } from "../Singleton/Singleton"
 
 export class Asignacion extends Instruction {
@@ -24,7 +24,7 @@ export class Asignacion extends Instruction {
         //validar que todo este bien antes de actualizar la variable
         if (variable == null || variable == undefined) throw new error("Semantico", `No encontre una variable con este nombre '${this.nombre}'`, this.line, this.column)
         if (!variable?.edit) throw new error("Semantico", `Asignacion incorrecta, la variable con nombre '${this.nombre}' es una const y no puede cambiar valor`, this.line, this.column)
-        if (variable?.type != expresion.type) throw new error("Semantico", `Asignacion incorrecta, la variable con nombre '${this.nombre}' es de tipo [${get(variable?.type)}] y se le esta tratando de asignar un tipo [${get(expresion.type)}]`, this.line, this.column)
+        if (variable?.type != expresion.type) throw new error("Semantico", `Asignacion incorrecta, la variable con nombre '${this.nombre}' es de tipo [${TypetoString(variable?.type)}] y se le esta tratando de asignar un tipo [${TypetoString(expresion.type)}]`, this.line, this.column)
 
         env.actualizar_variable(this.nombre, expresion.value)
 

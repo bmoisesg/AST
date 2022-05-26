@@ -342,7 +342,7 @@ Expr
    
     | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MAS            , @2.first_line, @2.first_column); }       
     | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MENOS          , @2.first_line, @2.first_column); }
-    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MULTIPLICACION , @2.first_line, @2.first_column); }       
+    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MULT , @2.first_line, @2.first_column); }       
     | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV            , @2.first_line, @2.first_column); }
     | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO         , @2.first_line, @2.first_column); }
     | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT            , @2.first_line, @2.first_column); }

@@ -1,7 +1,7 @@
 import { Instruction } from "../Abstract/Instruction"
 import { Environment } from "../Symbol/Environment"
 import { Expression } from "../Abstract/Expression"
-import { get, Type } from "../Abstract/Retorno"
+import { TypetoString, Type } from "../Abstract/Retorno"
 import { error } from "../tool/error"
 import { Singleton } from "../Singleton/Singleton"
 
@@ -20,7 +20,7 @@ export class OperadorTernario extends Instruction {
     public execute(env: Environment) {
         const condition = this.condicion.execute(env);
 
-        if (condition.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion ternaria tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${get(condition.type)}}]]`, this.line, this.column)
+        if (condition.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion ternaria tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${TypetoString(condition.type)}}]]`, this.line, this.column)
 
         if (condition.value) this.valor1.execute(env)
         else this.valor2.execute(env)

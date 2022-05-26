@@ -1,31 +1,23 @@
 export enum LogicalOption {
-    /*0*/AND,
-    /*1*/OR,
-    /*2*/NOT
+    AND,
+    OR,
+    NOT
 }
 
-/**
- * 
- * @param objeto logicaloption
- * @returns el simbolo logico que se envio y retorna como string
- */
-export function getSimbol(objeto: LogicalOption): string {
-    switch (objeto) {
+export function OptionToSymbol(option: LogicalOption): string {
+    switch (option) {
         case 0:
             return "&&"
         case 1:
             return "\\|\\|"
         case 2:
             return "!"
+        default:
+            return ""
     }
-    return ""
 }
-/**
- * 
- * @param objeto logicalOption
- * @returns nombre del simbolo que se envio y retorna como string 
- */
-export function getName(objeto: LogicalOption): string {
+
+export function optionToString(objeto: LogicalOption): string {
     switch (objeto) {
         case 0:
             return "AND"
@@ -33,6 +25,7 @@ export function getName(objeto: LogicalOption): string {
             return "OR"
         case 2:
             return "NOT"
+        default:
+            return ""
     }
-    return ""
 }

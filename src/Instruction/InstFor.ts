@@ -2,7 +2,7 @@ import { Instruction } from "../Abstract/Instruction"
 import { Expression } from "../Abstract/Expression"
 import { Environment } from "../Symbol/Environment"
 import { Singleton } from "../Singleton/Singleton"
-import { get, Type } from "../Abstract/Retorno"
+import { TypetoString, Type } from "../Abstract/Retorno"
 import { error } from "../tool/error"
 
 export class InstFor extends Instruction {
@@ -26,7 +26,7 @@ export class InstFor extends Instruction {
         this.declaracion.execute(newEnv)
         let condicion = this.condicion_seguir.execute(newEnv)
         //verificar que la expresion sea de tipo boolean
-        if (condicion.type != Type.BOOLEAN) throw new error("Semantico", `La instruccion for necesita una expresion booleana para ejecutarse y se reconocio el typo [${get(condicion.type)}] en la expresion`, this.line, this.column)
+        if (condicion.type != Type.BOOLEAN) throw new error("Semantico", `La instruccion for necesita una expresion booleana para ejecutarse y se reconocio el typo [${TypetoString(condicion.type)}] en la expresion`, this.line, this.column)
         while (condicion.value) {
             this.code.execute(newEnv)
             this.iterador.execute(newEnv)

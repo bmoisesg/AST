@@ -1,57 +1,51 @@
 export enum ArithmeticOption {
-    /*0*/  MAS,
-    /*1*/  MENOS,
-    /*2*/  MULTIPLICACION,
-    /*3*/  DIV,
-    /*4*/  MODULO,
-    /*5*/  POT,
-    /*6*/  NEGACION
+    MAS,
+    MENOS,
+    MULT,
+    DIV,
+    MODULO,
+    POT,
+    NEGACION,
 }
-/**
- * 
- * @param objeto Enum ArithmeticOption 
- * @return simbolo como string 
- */
-export function get_simbolo(objeto: ArithmeticOption): string {
-    switch (objeto) {
+
+//Pasar el enum a un simbolo
+export function optionToSymbol(option: ArithmeticOption): string {
+    switch (option) {
         case 0:
-            return "+"
+            return "+";
         case 1:
         case 6:
-            return "-"
+            return "-";
         case 2:
-            return "*"
+            return "*";
         case 3:
-            return "/"
+            return "/";
         case 4:
-            return "%"
+            return "%";
         case 5:
-            return "**"
+            return "**";
         default:
-            return ""
+            return "";
     }
 }
-/**
- * 
- * @param objeto Enum ArithmeticOption 
- * @return nombre del simbolo en string
- */
-export function getName(objeto: ArithmeticOption): string {
-    switch (objeto) {
+
+//Pasar el enum a una cadena
+export function optionToString(option: ArithmeticOption): string {
+    switch (option) {
         case 0:
-            return "suma"
+            return "suma";
         case 1:
         case 6:
-            return "resta"
+            return "resta";
         case 2:
-            return "mutiplicacion"
+            return "mutiplicacion";
         case 3:
-            return "division"
+            return "division";
         case 4:
-            return "modulo"
+            return "modulo";
         case 5:
-            return "potencia"
+            return "potencia";
         default:
-            return ""
+            return "";
     }
 }

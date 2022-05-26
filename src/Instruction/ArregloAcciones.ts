@@ -3,7 +3,7 @@ import { Instruction } from "../Abstract/Instruction"
 import { Environment } from "../Symbol/Environment"
 import { error } from "../tool/error"
 import { get_num } from "./Arreglo"
-import { get } from "../Abstract/Retorno"
+import { TypetoString } from "../Abstract/Retorno"
 import { Singleton } from "../Singleton/Singleton"
 
 export class ArregloAcciones extends Instruction {
@@ -31,7 +31,7 @@ export class ArregloAcciones extends Instruction {
             array.pop()
         } else {
             const tmp = this.expre.execute(env)
-            if (tmp.type != get_num(objeto.tipo)) throw new error("Semantico", `La expresion tiene que ser del mismo tipo que el array, el array '${this.nombre}' es tipo [${objeto.tipo}] y se detecto el tipo [${get(tmp.type)}]`, this.line, this.column)
+            if (tmp.type != get_num(objeto.tipo)) throw new error("Semantico", `La expresion tiene que ser del mismo tipo que el array, el array '${this.nombre}' es tipo [${objeto.tipo}] y se detecto el tipo [${TypetoString(tmp.type)}]`, this.line, this.column)
             array.push(tmp.value)
         }
         env.update_array(this.nombre, array)

@@ -1,8 +1,8 @@
 import { Expression } from "../Abstract/Expression"
-import { get, Retorno, Type } from "../Abstract/Retorno"
+import { TypetoString, Retorno, Type } from "../Abstract/Retorno"
 import { Environment } from "../Symbol/Environment"
 import { error } from "../tool/error"
-import { RelationalOption, get_simbolo, getName } from "./RelationalOpcion"
+import { RelationalOption, optionToSymbol, optionToString } from "./RelationalOpcion"
 
 export class Relational extends Expression {
 
@@ -50,14 +50,14 @@ export class Relational extends Expression {
             }
 
         }
-        throw new error("Semantico", `Error tipo de datos en operando ${getName(this.type)}, tipo [${get(valueIzq.type)}] con tipo [${get(valueDer.type)}]`, this.line, this.column)
+        throw new error("Semantico", `Error tipo de datos en operando ${optionToString(this.type)}, tipo [${TypetoString(valueIzq.type)}] con tipo [${TypetoString(valueDer.type)}]`, this.line, this.column)
 
     }
     public ast() {
         const nombreNodo = `node_${this.line}_${this.column}_`
         return `
         ${nombreNodo};
-        ${nombreNodo}[label="${get_simbolo(this.type)}"];
+        ${nombreNodo}[label="${optionToSymbol(this.type)}"];
         ${nombreNodo}->${this.left.ast()}
         ${nombreNodo}->${this.right.ast()}
         `

@@ -1,6 +1,6 @@
 import { Expression } from "../Abstract/Expression"
 import { Instruction } from "../Abstract/Instruction"
-import { get, Type } from "../Abstract/Retorno"
+import { TypetoString, Type } from "../Abstract/Retorno"
 import { Singleton } from "../Singleton/Singleton"
 import { Environment } from "../Symbol/Environment"
 import { error } from "../tool/error"
@@ -30,7 +30,7 @@ export class ArregloAsignacion extends Instruction {
             const expre_index = this.expresionIndex.execute(env)
             const expre_asig = this.expresionAsignar.execute(env)
             if (expre_index.type != Type.NUMBER) throw new error("Semantico", `El tipo de dato del index no es valido, tiene que ser [NUMBER]`, this.line, this.column)
-            if (expre_asig.type != get_num(objeto.tipo)) throw new error("Semantico", `La asignacion es de tipo [${get(expre_asig.type)}] pero el array tiene que ser tipo [${objeto.tipo}]`, this.line, this.column)
+            if (expre_asig.type != get_num(objeto.tipo)) throw new error("Semantico", `La asignacion es de tipo [${TypetoString(expre_asig.type)}] pero el array tiene que ser tipo [${objeto.tipo}]`, this.line, this.column)
             array[expre_index.value] = expre_asig.value
 
         } else {

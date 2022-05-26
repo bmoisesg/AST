@@ -1,7 +1,7 @@
 import { Instruction } from "../Abstract/Instruction"
 import { Expression } from "../Abstract/Expression"
 import { Environment } from "../Symbol/Environment"
-import { get, Type } from "../Abstract/Retorno"
+import { TypetoString, Type } from "../Abstract/Retorno"
 import { Singleton } from "../Singleton/Singleton"
 import { error } from "../tool/error"
 
@@ -19,12 +19,12 @@ export class DoWhile extends Instruction {
     public execute(env: Environment) {
 
         let c = this.condicion.execute(env)
-        if (c.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion do while tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${get(c.type)}]`, this.line, this.column)
+        if (c.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion do while tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${TypetoString(c.type)}]`, this.line, this.column)
 
         while (c.value) {
             this.code.execute(env)
             c = this.condicion.execute(env)
-            if (c.type != Type.BOOLEAN) throw new error("Semantico", `La condición de la instruccion do while tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${get(c.type)}]`, this.line, this.column)
+            if (c.type != Type.BOOLEAN) throw new error("Semantico", `La condición de la instruccion do while tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${TypetoString(c.type)}]`, this.line, this.column)
         }
     }
     public ast() {
