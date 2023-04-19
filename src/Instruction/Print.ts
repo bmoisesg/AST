@@ -14,10 +14,10 @@ export class Print extends Instruction {
         super(line, column);
     }
 
-    public execute(environment: Environment) {
+    public execute(env: Environment) {
 
         const s = Singleton.getInstance()
-        const expresion = this.value?.execute(environment);
+        const expresion = this.value?.execute(env);
         if (expresion != null) {
             if (expresion.type != Type.error) s.add_consola(expresion.value)
         }

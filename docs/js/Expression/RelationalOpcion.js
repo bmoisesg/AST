@@ -12,7 +12,7 @@ var RelationalOption;
  * @param objeto el relationalOpcion
  * @returns simbolo del signo relacional en string
  */
-function get_simbolo(objeto) {
+function optionToSymbol(objeto) {
     switch (objeto) {
         case 0:
             return "==";
@@ -35,7 +35,7 @@ function get_simbolo(objeto) {
  * @param objeto enum relacional
  * @returns devuelve el nombre del simbolo relacional como tipo string
  */
-function getName(objeto) {
+function optionToString(objeto) {
     switch (objeto) {
         case 0:
             return "igualdad";

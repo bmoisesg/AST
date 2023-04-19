@@ -1,8 +1,8 @@
-import { Instruction } from "../Abstract/Instruction"
-import { get, Type } from "../Abstract/Retorno"
-import { Singleton } from "../Singleton/Singleton"
-import { Environment } from "../Symbol/Environment"
-import { error } from "../tool/error"
+import { Instruction } from "../../Abstract/Instruction"
+import { TypetoString, Type } from "../../Abstract/Retorno"
+import { Singleton } from "../../Singleton/Singleton"
+import { Environment } from "../../Symbol/Environment"
+import { error } from "../../tool/error"
 
 export class Incre extends Instruction {
 
@@ -23,9 +23,9 @@ export class Incre extends Instruction {
         //verificar que exista, que sea editable y que sea del tipo number
         if (variable == null) throw new error("Semantico", `Variable '${this.id}' no encontrada `, this.line, this.column)
         if (!variable.edit) throw new error("Semantico", `La variable '${this.id}' es const y no es permitido cambiar su valor`, this.line, this.column)
-        if (variable.type != Type.NUMBER) throw new error("Semantico", `La variable '${this.id}' tiene que ser de tipo [NUMBER] y se detecto ${get(variable.type)}`, this.line, this.column)
+        if (variable.type != Type.NUMBER) throw new error("Semantico", `La variable '${this.id}' tiene que ser de tipo [NUMBER] y se detecto ${TypetoString(variable.type)}`, this.line, this.column)
 
-        this.tipo == "++" ? variable.value++ : variable.value--
+        variable.value++ 
         env.actualizar_variable(this.id, variable.value)
 
     }
@@ -34,7 +34,7 @@ export class Incre extends Instruction {
 
         const s = Singleton.getInstance()
         const name_node = `node_${this.line}_${this.column}_`
-        const label = this.tipo == "++" ? "Incremento" : "Decremento"
+        const label = "Incremento" 
 
         s.add_ast(`
         ${name_node}[label="\\<Instruccion\\>\\n${label}"];

@@ -34,13 +34,13 @@
                     return { value: valueIzq.value >= valueDer.value, type: Type.BOOLEAN };
             }
         }
-        throw new error("Semantico", `Error tipo de datos en operando ${getName(this.type)}, tipo [${get(valueIzq.type)}] con tipo [${get(valueDer.type)}]`, this.line, this.column);
+        throw new error("Semantico", `Error tipo de datos en operando ${optionToString(this.type)}, tipo [${get(valueIzq.type)}] con tipo [${get(valueDer.type)}]`, this.line, this.column);
     }
     ast() {
         const nombreNodo = `node_${this.line}_${this.column}_`;
         return `
         ${nombreNodo};
-        ${nombreNodo}[label="${get_simbolo(this.type)}"];
+        ${nombreNodo}[label="${optionToSymbol(this.type)}"];
         ${nombreNodo}->${this.left.ast()}
         ${nombreNodo}->${this.right.ast()}
         `;

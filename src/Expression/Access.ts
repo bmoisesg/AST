@@ -1,7 +1,7 @@
 import { Expression } from "../Abstract/Expression"
 import { Environment } from "../Symbol/Environment"
 import { Retorno, Type } from "../Abstract/Retorno"
-import { error } from "../tool/error"
+import { error, TypeError } from "../tool/error"
 
 
 export class Access extends Expression {
@@ -14,19 +14,18 @@ export class Access extends Expression {
         super(line, column)
     }
 
-    public execute(environment: Environment): Retorno {
+    public execute(env: Environment): Retorno {
 
-        //traer la variable
-        const value = environment.get_variable(this.id)
+        const variable = env.get_variable(this.id)
 
-        if (value == null) {
-            //verificar si es un array
-            const tmp = environment.get_array(this.id)
+        if (variable == null) {
+            //Revisar si es un array
+            const tmp = env.get_array(this.id)
             if (tmp != null) return { value: tmp.contenido, type: Type.STRING }
-            throw new error("Semantico", `Variable '${this.id}' no encontrada `, this.line, this.column)
+            throw new error(TypeError.Semantico, `Variable '${this.id}' no encontrada `, this.line, this.column)
         }
 
-        return { value: value.value, type: value.type };
+        return { value: variable.value, type: variable.type };
     }
     public ast() {
         const name_nodo = `node_${this.line}_${this.column}_`

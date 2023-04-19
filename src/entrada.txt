@@ -1,9 +1,33 @@
 {
 
     let numero: string="Hola";
-
-    let num void;
+    let num:string ;
     console.log("hola mudno");
+    console.log(num);
     graficar_ts();
- 
+
+    let x=5;
+
+    do{
+        x++;
+        console.log(x);        
+    } while(x<10);
+
+    console.log("------------");
+    let b1=100;
+    let b2=100;
+    let b3=100;
+    let b4=100;
+
+
+    b1++;
+    console.log(b1);
+    ++b2;
+    console.log(b2);
+    b3--;
+    console.log(b3);
+    --b3;
+    console.log(b3);
+    
+    
 }

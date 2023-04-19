@@ -1,15 +1,12 @@
 export enum Type {
-    /*0*/NUMBER,
-    /*1*/STRING,
-    /*2*/BOOLEAN,
-    /*3*/error
+    NUMBER,
+    STRING,
+    BOOLEAN,
+    error,
+    DEFAULT
 }
-/**
- * 
- * @param objeto Objeto tipo Type
- * @returns String con el nombre del tipo 
- */
-export function get(objeto: Type): string {
+
+export function TypetoString(objeto: Type): string {
     switch (objeto) {
         case 0:
             return "number"
@@ -25,4 +22,17 @@ export function get(objeto: Type): string {
 export type Retorno = {
     value: any,
     type: Type
+}
+
+export function StringToType(cadena:string):Type {
+    switch (cadena) {
+        case "number":
+            return Type.NUMBER
+        case "string":
+            return Type.STRING
+        case "boolean":
+            return Type.BOOLEAN
+        default:
+            return Type.error
+    }
 }

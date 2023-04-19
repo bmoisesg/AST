@@ -2,7 +2,7 @@ import { Instruction } from "../Abstract/Instruction"
 import { Environment } from "../Symbol/Environment"
 import { Expression } from "../Abstract/Expression"
 import { error } from "../tool/error"
-import { get, Type } from "../Abstract/Retorno"
+import { TypetoString, Type } from "../Abstract/Retorno"
 import { Singleton } from "../Singleton/Singleton"
 
 export class Call extends Instruction {
@@ -40,7 +40,7 @@ export class Call extends Instruction {
                 element == "boolean" && array[i] == Type.BOOLEAN
             ) {
                 //significa que son del mismo tipo
-            } else throw new error("Semantico", `Error de parametros, no se esperaba un tipo [${get(array[i])}] en la posicion ${i + 1} de los parametros de la funcion`, this.line, this.column)
+            } else throw new error("Semantico", `Error de parametros, no se esperaba un tipo [${TypetoString(array[i])}] en la posicion ${i + 1} de los parametros de la funcion`, this.line, this.column)
         }
 
         //en este punto, la funcion esta lista para invocar la funcion

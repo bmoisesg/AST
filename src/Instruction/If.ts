@@ -1,7 +1,7 @@
 import { Instruction } from "../Abstract/Instruction"
 import { Expression } from "../Abstract/Expression"
 import { Environment } from "../Symbol/Environment"
-import { get, Type } from "../Abstract/Retorno"
+import { TypetoString, Type } from "../Abstract/Retorno"
 import { error } from "../tool/error"
 import { Singleton } from "../Singleton/Singleton"
 
@@ -20,7 +20,7 @@ export class If extends Instruction {
     public execute(env: Environment) {
 
         const expresion = this.condition.execute(env)
-        if (expresion.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion if tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${get(expresion.type)}}]]`, this.line, this.column)
+        if (expresion.type != Type.BOOLEAN) throw new error("Semantico", `La condicion de la instruccion if tiene que ser tipo [BOOLEAN] y se reconocio el tipo [${TypetoString(expresion.type)}}]]`, this.line, this.column)
 
         if (expresion.value) this.code.execute(env)
         else this.elsSt?.execute(env)

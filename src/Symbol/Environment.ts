@@ -16,11 +16,36 @@ export class Environment {
     }
 
     /**
+     * 
+     * @param nombre nombre de la variable,arreglo o funcion que se quiere declarar
+     * @returns si encontro el nombre en la tabla de simbolos retorna un true
+     */
+     public revisarRepetido(nombre: string): boolean {
+
+        //revisar en los arreglos almacenados
+        for (let entry of Array.from(this.arreglos.entries())) {
+            if (entry[0] == nombre) return true;
+        }
+        //revisar en las variables almacenadas
+        for (let entry of Array.from(this.variables.entries())) {
+            if (entry[0] == nombre) return true;
+        }
+        //revisar en las funciones almacenadas
+        for (let entry of Array.from(this.funciones.entries())) {
+            if (entry[0] == nombre) return true;
+        }
+        //no encontro el nombre , significa que esta disponible para usar
+        return false
+    }
+
+    //  VARIABLES:
+
+    /**
      * Metodo para guardar una VARIABLE en la tabla de simbolos
      * @param id nombre de la variable
      * @param valor valor de la variable
      * @param type tipo de dato de la variable
-     * @param condicion si es editable
+     * @param condicion si es editable o no
      * @returns boolan si se efectuo el almacenamiento de la variable
      */
     public guardar_variable(nombre: string, valor: any, type: Type, condicion: boolean): boolean {
@@ -36,7 +61,7 @@ export class Environment {
     /**
      * Metodo para actualizar una VARIABLE almacenada en la tabla de simbolos con un nombre 
      * @param nombre Nombre de la variable que se quiere actualizar
-     * @param valor Valor con el que se actualizara
+     * @param valor Nuevo valor de la variable
      */
     public actualizar_variable(nombre: string, valor: any) {
 
@@ -69,28 +94,7 @@ export class Environment {
         return null;
     }
 
-    /**
-     * 
-     * @param nombre nombre de la variable,arreglo o funcion que se quiere declarar
-     * @returns si encontro el nombre en la tabla de simbolos retorna un true
-     */
-    public revisarRepetido(nombre: string): boolean {
-
-        //revisar en los arreglos almacenados
-        for (let entry of Array.from(this.arreglos.entries())) {
-            if (entry[0] == nombre) return true;
-        }
-        //revisar en las variables almacenadas
-        for (let entry of Array.from(this.variables.entries())) {
-            if (entry[0] == nombre) return true;
-        }
-        //revisar en las funciones almacenadas
-        for (let entry of Array.from(this.funciones.entries())) {
-            if (entry[0] == nombre) return true;
-        }
-        //no encontro el nombre , osea que esta disponible para usar
-        return false
-    }
+    // FUNCIONES:
 
     /**
      * Guardar la funcion en la tabla de simbolos, literalmente se guardar la instruccion "Instfuncion"
@@ -114,6 +118,8 @@ export class Environment {
         }
         return env
     }
+
+    //ARREGLOS
 
     /**
      * Guardar un arreglo en la tabla de simbolos

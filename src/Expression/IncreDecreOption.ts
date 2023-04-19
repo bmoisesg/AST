@@ -4,6 +4,7 @@ export enum IncreDecreOption {
     /*2*/DECREMENTO1,/*ID--*/
     /*3*/DECREMENTO2 /*--ID*/
 }
+
 export function getname(objeto: IncreDecreOption): string {
     switch (objeto) {
         case 0:

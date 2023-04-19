@@ -8,14 +8,15 @@
     const {If} = require('../Instruction/If');
     const {Print} = require('../Instruction/Print');
     const {Statement} = require('../Instruction/Statement');
-    const {While} = require('../Instruction/While');
-    const {Declaration} = require('../Instruction/Declaration');
-    const {Let} = require('../Instruction/let');
-    const {Asignacion} = require('../Instruction/Asignacion');
+    const {While} = require('../Instruction/ciclos/While');
+    const {Declaration} = require('../Instruction/declaracion/Declaration');
+    const {Declaracion2} = require('../Instruction/declaracion/Declaracion2');
+    const {Asignacion} = require('../Instruction/asignacion/Asignacion');
     const {OperadorTernario} = require('../Instruction/OperadorTernario');
-    const {DoWhile} = require('../Instruction/Dowhile');
+    const {DoWhile} = require('../Instruction/ciclos/Dowhile');
     const {InstFor} = require('../Instruction/InstFor');
-    const {Incre} = require('../Instruction/Incre');
+    const {Incre} = require('../Instruction/asignacion/Incre');
+    const {Decre} = require('../Instruction/asignacion/Decre');
     const {InsFuncion} = require('../Instruction/InsFuncion');
     const {Call} = require('../Instruction/Call');
     const {GraficarTablaSimbolos} = require('../Instruction/Gr');
@@ -257,17 +258,17 @@ OP_TERNARIO_ST
 INCREDECRE
     :   '++' ID   { $$= new Incre($1,$2,@2.first_line,@2.first_column); }
     |   ID  '++'  { $$= new Incre($2,$1,@1.first_line,@1.first_column); }
-    |   ID  '--'  { $$= new Incre($2,$1,@1.first_line,@1.first_column); }
-    |   '--' ID   { $$= new Incre($1,$2,@2.first_line,@2.first_column); }
+    |   ID  '--'  { $$= new Decre($2,$1,@1.first_line,@1.first_column); }
+    |   '--' ID   { $$= new Decre($1,$2,@2.first_line,@2.first_column); }
 ;
 
 /*------------------------  Declaracion de variables (let y const)  -----------------------  */
 
 LET
-    : 't_let' ID           '=' Expr { $$ = new Let($2, $4  , null, @1.first_line, @1.first_column); }
-    | 't_let' ID ':' TIPOS '=' Expr { $$ = new Let($2, $6  , $4  , @1.first_line, @1.first_column); }
-    | 't_let' ID ':' TIPOS          { $$ = new Let($2, null, $4  , @1.first_line, @1.first_column); }
-    | 't_let' ID                    { $$ = new Let($2, null, null, @1.first_line, @1.first_column); }
+    : 't_let' ID           '=' Expr { $$ = new Declaracion2($2, $4  , null, @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS '=' Expr { $$ = new Declaracion2($2, $6  , $4  , @1.first_line, @1.first_column); }
+    | 't_let' ID ':' TIPOS          { $$ = new Declaracion2($2, null, $4  , @1.first_line, @1.first_column); }
+    | 't_let' ID                    { $$ = new Declaracion2($2, null, null, @1.first_line, @1.first_column); }
 ;
 
 CONST
@@ -342,7 +343,7 @@ Expr
    
     | Expr '+'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MAS            , @2.first_line, @2.first_column); }       
     | Expr '-'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MENOS          , @2.first_line, @2.first_column); }
-    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MULTIPLICACION , @2.first_line, @2.first_column); }       
+    | Expr '*'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MULT , @2.first_line, @2.first_column); }       
     | Expr '/'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.DIV            , @2.first_line, @2.first_column); }
     | Expr '%'  Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.MODULO         , @2.first_line, @2.first_column); }
     | Expr '**' Expr { $$ = new Arithmetic($1, $3, ArithmeticOption.POT            , @2.first_line, @2.first_column); }

@@ -1,8 +1,8 @@
 import { Expression } from "../Abstract/Expression"
-import { Retorno, Type, get } from "../Abstract/Retorno"
+import { Retorno, Type, TypetoString } from "../Abstract/Retorno"
 import { Environment } from "../Symbol/Environment"
-import { error } from "../tool/error"
-import { ArithmeticOption, get_simbolo, getName } from "./ArithmeticOption"
+import { error, TypeError } from "../tool/error"
+import { ArithmeticOption, optionToSymbol, optionToString } from "./ArithmeticOption"
 
 export class Arithmetic extends Expression {
 
@@ -27,7 +27,7 @@ export class Arithmetic extends Expression {
          */
         if (this.type == ArithmeticOption.MAS) {
             if (nodoIzq.type == Type.BOOLEAN || nodoDer.type == Type.BOOLEAN) {
-                throw new error("Semantico", "Error de tipos en el operando suma, tipo [" + get(nodoIzq.type) + "] con tipo [" + get(nodoDer.type) + "] ", this.line, this.column)
+                throw new error(TypeError.Semantico, "Error de tipos en el operando suma, tipo [" + TypetoString(nodoIzq.type) + "] con tipo [" + TypetoString(nodoDer.type) + "] ", this.line, this.column)
             }
             if (nodoDer.type == Type.NUMBER && nodoIzq.type == Type.NUMBER) {
                 result = { value: (nodoIzq.value + nodoDer.value), type: Type.NUMBER }
@@ -40,7 +40,7 @@ export class Arithmetic extends Expression {
         else if (this.type == ArithmeticOption.NEGACION) {
             if (nodoDer.type == Type.NUMBER)
                 result = { value: nodoIzq.value * -1, type: Type.NUMBER }
-            else throw new error("Semantico", "Error de tipos con operando resta , no se puede negar un tipo [" + get(nodoDer.type) + "]", this.line, this.column)
+            else throw new error(TypeError.Semantico, "Error de tipos con operando resta , no se puede negar un tipo [" + TypetoString(nodoDer.type) + "]", this.line, this.column)
         }
         /**
          * Potencia, modulo, multiplicacion, resta, division
@@ -51,16 +51,16 @@ export class Arithmetic extends Expression {
 
                 if (this.type == ArithmeticOption.POT) { result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.NUMBER } }
                 else if (this.type == ArithmeticOption.MODULO) { result = { value: (nodoIzq.value % nodoDer.value), type: Type.NUMBER } }
-                else if (this.type == ArithmeticOption.MULTIPLICACION) { result = { value: (nodoIzq.value * nodoDer.value), type: Type.NUMBER } }
+                else if (this.type == ArithmeticOption.MULT) { result = { value: (nodoIzq.value * nodoDer.value), type: Type.NUMBER } }
                 else if (this.type == ArithmeticOption.DIV) {
                     if (nodoDer.value == 0) {
-                        throw new error("Semantico", "No se puede realizar una division entre 0", this.line, this.column)
+                        throw new error(TypeError.Semantico, "No se puede realizar una division entre 0", this.line, this.column)
                     }
                     result = { value: (nodoIzq.value / nodoDer.value), type: Type.NUMBER }
                 }
                 else /*(this.type == ArithmeticOption.RESTA)*/ { result = { value: (nodoIzq.value - nodoDer.value), type: Type.NUMBER } }
 
-            } else throw new error("Semantico", `Error de tipos en el operando ${getName(this.type)}, tipo [${get(nodoIzq.type)}] con tipo [${get(nodoDer.type)}]`, this.line, this.column)
+            } else throw new error(TypeError.Semantico, `Error de tipos en el operando ${optionToString(this.type)}, tipo [${TypetoString(nodoIzq.type)}] con tipo [${TypetoString(nodoDer.type)}]`, this.line, this.column)
 
         }
 
@@ -72,7 +72,7 @@ export class Arithmetic extends Expression {
         const name_nodo = `node_${this.line}_${this.column}_`
         return `
         ${name_nodo};
-        ${name_nodo}[label="${get_simbolo(this.type)}"];
+        ${name_nodo}[label="${optionToSymbol(this.type)}"];
         ${name_nodo}->${this.left.ast()}
         ${name_nodo}->${this.right.ast()}
         `

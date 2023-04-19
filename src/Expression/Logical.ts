@@ -1,8 +1,8 @@
 import { Expression } from "../Abstract/Expression"
-import { Retorno, Type, get } from "../Abstract/Retorno"
+import { Retorno, Type, TypetoString } from "../Abstract/Retorno"
 import { Environment } from "../Symbol/Environment"
 import { error } from "../tool/error"
-import { LogicalOption, getName, getSimbol } from "./LogicalOption"
+import { LogicalOption, optionToString, OptionToSymbol } from "./LogicalOption"
 
 export class Logical extends Expression {
 
@@ -21,7 +21,7 @@ export class Logical extends Expression {
 
         //asegurarse que el tipo es boolean
         if (valueIzq.type != Type.BOOLEAN) {
-            throw new error("Semantico", `Error tipos en operando ${getName(this.type)}, tipo [${get(valueIzq.type)}] debe ser [BOLEAN]`, this.line, this.column)
+            throw new error("Semantico", `Error tipos en operando ${optionToString(this.type)}, tipo [${TypetoString(valueIzq.type)}] debe ser [BOLEAN]`, this.line, this.column)
         }
 
         //corto circuito operador AND y OR
@@ -34,7 +34,7 @@ export class Logical extends Expression {
         const valueDer = this.right.execute(env)
         //asegurarse que el tipo es boolean
         if (valueDer.type != Type.BOOLEAN) {
-            throw new error("Semantico", `Error tipos en operando ${getName(this.type)}, tipo [${get(valueDer.type)}] debe ser [BOLEAN]`, this.line, this.column)
+            throw new error("Semantico", `Error tipos en operando ${optionToString(this.type)}, tipo [${TypetoString(valueDer.type)}] debe ser [BOLEAN]`, this.line, this.column)
         }
 
         switch (this.type) {
@@ -53,7 +53,7 @@ export class Logical extends Expression {
         const nombreNodo = `node_${this.line}_${this.column}_`
         return `
         ${nombreNodo};
-        ${nombreNodo}[label="${getSimbol(this.type)}"];
+        ${nombreNodo}[label="${OptionToSymbol(this.type)}"];
         ${nombreNodo}->${this.left.ast()}
         ${nombreNodo}->${this.right.ast()}
         `

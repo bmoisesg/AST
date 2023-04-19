@@ -43,7 +43,7 @@ class Arithmetic extends Expression {
                 else if (this.type == ArithmeticOption.MODULO) {
                     result = { value: (nodoIzq.value % nodoDer.value), type: Type.NUMBER };
                 }
-                else if (this.type == ArithmeticOption.MULTIPLICACION) {
+                else if (this.type == ArithmeticOption.MULT) {
                     result = { value: (nodoIzq.value * nodoDer.value), type: Type.NUMBER };
                 }
                 else if (this.type == ArithmeticOption.DIV) {
@@ -57,7 +57,7 @@ class Arithmetic extends Expression {
                 }
             }
             else
-                throw new error("Semantico", `Error de tipos en el operando ${getName(this.type)}, tipo [${get(nodoIzq.type)}] con tipo [${get(nodoDer.type)}]`, this.line, this.column);
+                throw new error("Semantico", `Error de tipos en el operando ${optionToString(this.type)}, tipo [${get(nodoIzq.type)}] con tipo [${get(nodoDer.type)}]`, this.line, this.column);
         }
         return result;
     }
@@ -65,7 +65,7 @@ class Arithmetic extends Expression {
         const name_nodo = `node_${this.line}_${this.column}_`;
         return `
         ${name_nodo};
-        ${name_nodo}[label="${get_simbolo(this.type)}"];
+        ${name_nodo}[label="${optionToSymbol(this.type)}"];
         ${name_nodo}->${this.left.ast()}
         ${name_nodo}->${this.right.ast()}
         `;
